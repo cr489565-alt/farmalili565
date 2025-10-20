@@ -3,113 +3,117 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>📜 Historial - FarmaciaLili 2.0 📜 </title>
+<title>📜 Historial - FarmaciaLili 2.0 📜</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{
-  font-family:system-ui,sans-serif;
-  background:#66696d;
-  color:#50545e;
-  line-height:1.6;
-  padding-bottom:40px;
-}
-header{
-  background:linear-gradient(90deg,#2563eb,#1e40af);
-  color:white;
-  padding:22px;
-  font-size:24px;
-  font-weight:700;
-  text-align:center;
-  position:relative;
-  box-shadow:0 4px 18px rgba(15,23,42,0.12);
-}
-header img{
-  position:absolute; left:12px; top:50%; transform:translateY(-50%);
-  width:120px; height:80px; border-radius:12px; border:2px solid rgba(255,255,255,0.2);
-}
-nav.main-menu{
-  display:flex;align-items:center;gap:12px;
-  background:#eef6ff;padding:10px 16px;border-bottom:1px solid #dbeafe;
-  position:sticky; top:0; z-index:50;
-}
-.main-menu .menu-link{
-  text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:600;color:#0f172a;border:1px solid #2563eb;
-}
-.main-menu .menu-link.active{background:#2563eb; color:white; border-color: #2563eb;}
-#cajero{margin-left:auto;font-weight:700;color:#1e40af;}
+ body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+        header { background:#ffffff;  color:#000000;  padding: 30px; font-size: 26px; font-weight: bold; text-align: center; position: relative; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        header img { position:absolute; left:10px; top:50%; transform:translateY(-50%); width:150px; height:90px; border-radius:25px; border: 0px solid #e5e7eb; }
+        main { padding:16px; display:flex; flex-direction:column; gap:16px; }
+        .main-menu { display: flex; align-items: center; padding: 10px; background-color: #68af6b; color: white; }
+        .menu-link { color: white; text-decoration: none; margin-right: 15px; }
+        .main-menu .menu-link { color:#1f2937; text-decoration:none; padding:8px 12px; border-radius:8px; font-weight:500; transition:0.2s; border: 1px solid #e5e7eb; }
+        .main-menu .menu-link:hover { background:#ffffff; color:#111827; }
+        .main-menu .menu-link.active { background:#2563eb; color:white; border-color: #2563eb; }
+#cajero { margin-left:auto; font-weight:bold; color:#000000; }
 #logout{background:#ef4444;color:white;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;}
-main{padding:18px;display:flex;flex-direction:column;gap:18px;max-width:1200px;margin:0 auto;}
-section.card{background:white;padding:14px;border-radius:12px;box-shadow:0 6px 24px rgba(15,23,42,0.06);border:1px solid rgba(2,6,23,0.03);}
+main{padding:1px;display:flex;flex-direction:column;gap:18px;max-width:1200px;margin:0 auto;}
+section.card { width: 100%; background:rgb(255, 255, 255);padding:5px;border-radius:12px;box-shadow:0 6px 24px rgba(15,23,42,0.06);border:1px solid rgba(2,6,23,0.03);}
 h2{color:#1e3a8a;margin-bottom:8px;}
-.table-container{width:100%;overflow:auto;margin-top:8px;border-radius:8px;}
+.table-container{width:100%;overflow:auto;margin-top:1px;border-radius:8px;}
 table{width:100%;border-collapse:collapse;font-size:0.95rem;}
 th,td{padding:8px;border-bottom:1px solid #e6eef8;text-align:left;}
-th{background:#1e40af;color:white;position:sticky;top:0;}
+th{background:#68af6b;color:white;position:sticky;top:0;}
 tfoot td{font-weight:700;background:#f1f8ff;text-align:right;}
 .small-muted{font-size:0.9rem;color:#64748b;}
 .toggle-btn{background:#0ea5e9;color:white;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;margin-top:6px;}
 .toggle-btn:hover{opacity:0.95;}
 .hidden{display:none;}
-.modal{display:none;position:fixed;inset:0;background:rgba(2,6,23,0.45);display:flex;align-items:center;justify-content:center;z-index:200;}
-.modal-card{width:520px;background:linear-gradient(180deg,#ffffff,#f0f9ff);border-radius:14px;padding:18px;box-shadow:0 8px 40px rgba(2,6,23,0.3);border:1px solid rgba(30,64,175,0.08);}
-.modal-card h3{margin-bottom:10px;color:#1e40af;text-align:center;}
-.modal-card label{display:flex;justify-content:space-between;align-items:center;margin:6px 0;}
-.modal-card input[type="number"]{width:110px;padding:6px;border-radius:6px;border:1px solid #c7ddff;}
-.modal-card .total-row{margin-top:12px;font-weight:700;color:#0f172a;text-align:right;}
-.btn-primary{background:#16a34a;color:white;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;margin-top:10px;}
-.btn-secondary{background:#ef4444;color:white;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;margin-left:8px;}
-.note{font-size:0.9rem;color:#475569;margin-top:8px;}
-@media (max-width:720px){
-  header img{display:none;}
-  .modal-card{width:92%;}
-  th,td{font-size:0.85rem;padding:6px;}
-}
+.modal {  display: none;  position: fixed; inset: 0; background: rgba(2, 6, 23, 0.45); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal-card { width: 800px; max-width: 300%;        height: 800px; border-radius: 14px; padding: 10px; box-shadow: 0 8px 40px rgba(2, 6, 23, 0.3); border: 1px solid rgba(30, 64, 175, 0.08); background-image:   linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(240, 249, 255, 0.85)),  url("lododoc .png");  background-size: cover; background-position: center; background-repeat: no-repeat; display: flex; flex-direction: column;  overflow-y: auto;}
+.modal-card h3 { margin-bottom: 15px; color: #1e40af; text-align: center; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);}
+.modal-card label { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; gap: 10px; }
+.modal-card input[type="number"] { width: 120px; padding: 8px;  border-radius: 6px; background-color: rgba(255, 255, 255, 0.9); border: 1px solid #ccc;}
+.modal-card .total-row { margin-top: 15px; font-weight: 700; color: #000000; text-align: right;}
+.btn-primary { background: #16a34a; color: white;  padding: 10px 14px; border-radius: 10px;  border: none;  cursor: pointer;  margin-top: 10px; width: 100%; }
+.btn-secondary {  background: #ef4444;  color: white; padding: 10px 14px;  border-radius: 10px;  border: none; cursor: pointer; margin-top: 10px; width: 100%; }
+.note { font-size: 0.9rem; color: #475569; margin-top: 8px;}
+@media (max-width: 720px) { header img {display: none;}
+.modal-card { width: 95%; height: auto; padding: 15px;}
+th, td { font-size: 0.85rem; padding: 6px;}
+.modal-card label {flex-direction: column; align-items: flex-start;}.modal-card input[type="number"] { width: 100%;}
+.btn-primary, .btn-secondary { margin-left: 0;}}
+.dropdown { position: relative; display: inline-block;}
+.dropdown-content { display: none; position: absolute; right: 0; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; border-radius: 8px; overflow: hidden;}
+.dropdown-content a { color: black; padding: 12px 16px; text-decoration: none; display: block;}
+.dropdown-content a:hover { background-color: #f1f1f1;}
+.dropdown:hover .dropdown-content { display: block;}
+.dropdown:hover .toggle-btn { background-color: #0d95d1;}
+.search-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 10px;}
+.search-input { padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.95rem; width: 250px; min-width: 200px;}
+.search-btn { background: #1e40af; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-left: 8px;}
+.search-btn:hover { background: #1e3a8a;}
+.clear-btn { background: #64748b; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; margin-left: 8px;}
+.clear-btn:hover { background: #475569;}
+#historialSection, #historialCorteSection { display: none;}
 </style>
 </head>
 <body>
 <header>
-  <img src="ventas.png" alt="Logo Ventas">
-  📜 Historial - FarmaciaLili 2.0 📜 
+  <img src="lododoc .png" alt="Logo Ventas">
+  📜 Historial -  FarmaciaLili 2.0 📜
 </header>
 
 <nav class="main-menu">
- <a href="farma2.html" class="menu-link ">💳 Ventas</a>
+  <a href="farma2.html" class="menu-link">💳 Ventas</a>
   <a href="inve2.html" class="menu-link">📦 Inventario</a>
   <a href="histori2.html" class="menu-link active">📜 Historial</a>
+
+  <div class="dropdown">
+    <button class="toggle-btn">📋 Opciones</button>
+    <div class="dropdown-content">
+      <a href="#" onclick="toggleHistorial()">📂 Historial de ventas 📂</a>
+      <a href="#" onclick="toggleHistorialCorte()">📋 Historial de Corte 📋</a>
+    </div>
+  </div>
+
   <span id="cajero"></span>
   <button id="logout">Cerrar Sesión</button>
 </nav>
 
 <main>
-  <!-- Ventas Generales -->
   <section class="card">
     <h2>💵 Ventas Generales </h2>
-    <div class="small-muted"> <code>ve¡s</code>  <code></code>.</div>
     <div class="table-container">
       <table id="tabla-ventas-general">
         <thead>
-          <tr><th>#</th><th>Producto</th><th>Código</th><th>Cantidad</th><th>Folio</th><th>Fecha</th><th>Cajero</th><th>Método</th><th>Subtotal</th></tr>
+          <tr>
+            <th>#</th><th>Producto</th><th>Folio Proveedor</th><th>Código Completo</th><th>Cantidad</th><th>Folio</th>
+            <th>Doctor</th><th>Cédula</th><th>Folio Receta</th>
+            <th>Fecha</th><th>Cajero</th><th>Método</th><th>Subtotal</th>
+          </tr>
         </thead>
         <tbody></tbody>
-        <tfoot><tr><td colspan="8">Total General</td><td id="total-general">$0.00</td></tr></tfoot>
+        <tfoot>
+            <tr><td colspan="12">Total General (sin Proveedores)</td><td id="total-general">$0.00</td></tr>
+            <tr><td colspan="12">Total Proveedores</td><td id="total-proveedores">$0.00</td></tr>
+        </tfoot>
       </table>
     </div>
   </section>
 
-  <!-- Ventas Antibióticos -->
   <section class="card">
     <h2>💊 Ventas Antibióticos</h2>
     <div class="table-container">
       <table id="tabla-antibioticos">
         <thead>
           <tr>
-            <th>#</th><th>Producto</th><th>Código</th><th>Cantidad</th><th>Folio</th><th>Doctor</th><th>Cédula</th><th>Dirección</th><th>Receta</th><th>Lote</th><th>Fecha</th><th>Cajero</th><th>Método</th><th>Subtotal</th>
+            <th>#</th><th>Producto</th><th>Código</th><th>Código Completo</th><th>Cantidad</th><th>Folio</th><th>Doctor</th><th>Cédula</th><th>Dirección</th><th>Receta</th><th>Lote</th><th>Fecha</th><th>Cajero</th><th>Método</th><th>Subtotal</th>
           </tr>
         </thead>
         <tbody></tbody>
         <tfoot>
-          <tr><td colspan="13">Total Antibióticos</td><td id="total-antibioticos">$0.00</td></tr>
-          <tr><td colspan="14" style="text-align:center;">
+          <tr><td colspan="14">Total Antibióticos</td><td id="total-antibioticos">$0.00</td></tr>
+          <tr><td colspan="15" style="text-align:center;">
             <button class="btn-primary" onclick="abrirModalCorte()">💾 Realizar Corte</button>
           </td></tr>
         </tfoot>
@@ -117,243 +121,697 @@ tfoot td{font-weight:700;background:#f1f8ff;text-align:right;}
     </div>
   </section>
 
-  <!-- Botón desplegable Historial de Cortes -->
-  <section class="card">
-    <button class="toggle-btn" onclick="toggle('historialSection')">📂 Mostrar / Ocultar Historial de Cortes</button>
-    <div id="historialSection" class="hidden" style="margin-top:12px;">
-      <h2>📊 Historial de Cortes</h2>
-      <div class="small-muted" id="histPassDiv">Ingresa contraseña para visualizar el historial.</div>
-      <div style="margin:8px 0;" id="inputPassDiv">
-        <input id="passCorte" type="password" placeholder="🔒 Contraseña" style="padding:8px;border-radius:8px;border:1px solid #c7d2fe;">
-        <button class="toggle-btn" onclick="verHistorial()">Ver Historial</button>
+  <section class="card" id="historialSection">
+    <h2>historial de ventas </h2>
+    <div class="search-container">
+      <div>
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nombre o código...">
+        <button onclick="buscarHistorial()" class="search-btn">🔍 Buscar</button>
+        <button onclick="limpiarBusqueda()" class="clear-btn">🗑️ Limpiar</button>
       </div>
-
-      <div id="contenedorCortes" class="hidden">
-        <button class="toggle-btn" style="margin-bottom:6px;background:#ef4444;" onclick="salirHistorial()">Salir Historial</button>
-        <div class="table-container">
-          <table id="tablaCortes">
-            <thead>
-              <tr><th>Fecha</th><th>Cajero</th><th>Efectivo</th><th>Tarjeta</th><th>Transferencia</th><th>Proveedor</th><th>Total Neto</th></tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
+    </div>
+    <div class="table-container">
+      <table id="tabla-historial">
+        <thead>
+          <tr>
+            <th>#</th><th>Producto</th><th>Folio Proveedor</th><th>Código Completo</th><th>Cantidad</th><th>Folio</th><th>Doctor</th><th>Cédula</th><th>Dirección</th><th>Receta</th><th>Lote</th><th>Fecha</th><th>Cajero</th><th>Método</th><th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
   </section>
 
-  <!-- Botón desplegable Ventas de Corte -->
-  <section class="card">
-    <button class="toggle-btn" onclick="toggle('ventasCorteSection')">🧾 Mostrar / Ocultar Ventas de Corte</button>
-    <div id="ventasCorteSection" class="hidden" style="margin-top:12px;">
-      <h2>🧾 Ventas de Corte (detalle por producto)</h2>
-      <div class="table-container">
-        <table id="tablaVentasCorte">
-          <thead>
-            <tr>
-              <th>#</th><th>Producto</th><th>Código</th><th>Cantidad</th><th>Folio</th><th>Doctor</th><th>Cédula</th><th>Dirección</th><th>Receta</th><th>Lote</th><th>Fecha</th><th>Cajero</th><th>Método</th><th>Subtotal</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+  <section class="card" id="historialCorteSection">
+    <h2>📋 Historial de Corte</h2>
+    <div class="table-container">
+      <table id="tabla-historial-corte">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Fecha y Hora</th>
+            <th>Cajero</th>
+            <th>Inicio Caja</th>
+            <th>Efectivo</th>
+            <th>Tarjeta</th>
+            <th>Transferencia</th>
+            <th>Proveedores</th>
+            <th>Total contado</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
   </section>
 </main>
 
-<!-- Modal Corte -->
 <div class="modal" id="modalCorte">
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <h3 id="modalTitle">💵 Panel de Corte</h3>
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
-      <label>💵 1000: <input class="billete" data-valor="1000" type="number" value="0"></label>
-      <label>💵 500:  <input class="billete" data-valor="500" type="number" value="0"></label>
-      <label>💵 200:  <input class="billete" data-valor="200" type="number" value="0"></label>
-      <label>💵 100:  <input class="billete" data-valor="100" type="number" value="0"></label>
-      <label>💵 50:   <input class="billete" data-valor="50" type="number" value="0"></label>
-      <label>💵 20:   <input class="billete" data-valor="20" type="number" value="0"></label>
-      <label>🪙 10:   <input class="billete" data-valor="10" type="number" value="0"></label>
-      <label>🪙 5:    <input class="billete" data-valor="5" type="number" value="0"></label>
-      <label>🪙 2:    <input class="billete" data-valor="2" type="number" value="0"></label>
-      <label>🪙 1:    <input class="billete" data-valor="1" type="number" value="0"></label>
-      <label>🪙 0.50: <input class="billete" data-valor="0.5" type="number" value="0"></label>
-    </div>
+    <h3 id="modalTitle">💵 Panel de Corte 💵 </h3>
+    <label style="margin-top:8px;">Cantidad Inicio Caja: <input id="inicioCaja" type="number" value="0" step="0.01" style="padding:6px;border-radius:6px;border:1px solid #c7ddff;"></label>
 
-    <div class="total-row">Total Efectivo: <span id="totalEfectivo">0</span></div>
-    <label style="margin-top:8px;">Tarjeta: <input id="totalTarjeta" type="number" value="0"></label>
-    <label>Transferencia: <input id="totalTransferencia" type="number" value="0"></label>
-    <label>Proveedor: <input id="totalProveedor" type="number" value="0" readonly></label>
-    <div class="total-row">Total General: <span id="totalGeneralCorte">0</span></div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
+      <div class="billetes-container">
+        <label>💵 1000: <input class="billete" data-valor="1000" type="number" value=""><span class="total-billete">= $0.00</span></label>
+        <label>💵 500:  <input class="billete" data-valor="500" type="number" value=""><span class="total-billete">= $0.00</span></label>
+        <label>💵 200:  <input class="billete" data-valor="200" type="number" value=""><span class="total-billete">= $0.00</span></label>
+        <label>💵 100:  <input class="billete" data-valor="100" type="number" value=""><span class="total-billete">= $0.00</span></label>
+        <label>💵 50:   <input class="billete" data-valor="50" type="number" value=""><span class="total-billete">= $0.00</span></label>
+        <label>💵 20:   <input class="billete" data-valor="20" type="number" value=""><span class="total-billete">= $0.00</span></label>
+        <label>🪙 10:   <input class="billete" data-valor="10" type="number" value=""><span class="total-billete">= $0.00</span></label>
+        <label>🪙 5:    <input class="billete" data-valor="5" type="number" value=""><span class="total-billete">= $0.00</span></label>
+        <label>🪙 2:    <input class="billete" data-valor="2" type="number" value=""><span class="total-billete">= $0.00</span></label>
+        <label>🪙 1:    <input class="billete" data-valor="1" type="number" value=""><span class="total-billete">= $0.00</span></label>
+        <label>🪙 0.50: <input class="billete" data-valor="0.5" type="number" value=""><span class="total-billete">= $0.00</span></label>
+      </div>
+
+    </div>
+<div class="total-row">Total Efectivo Contado: <span id="totalEfectivo">$0.00</span></div>
+    <div style="margin-top:12px; padding:10px; background:#f0f9ff; border-radius:8px;">
+      <h4 style="margin:0 0 10px; color:#1e40af; text-align: center; font-weight: bold;">RESUMEN DE METODOS DE PAGO:</h4>
+      <div style="display:flex; flex-wrap:wrap; gap:15px;">
+          <div style="flex:1; min-width:150px;">
+              <p style="margin:5px 0; font-weight:bold;">Inicio Caja: <span id="resumenInicioCaja">$0.00</span></p>
+          </div>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:15px;">
+        <div style="flex:1; min-width:150px;">
+          <p style="margin:5px 0; font-weight:bold;">Efectivo: <span id="resumenEfectivo">$0.00</span></p>
+          <p style="margin:5px 0; font-weight:bold;">Tarjeta: <span id="resumenTarjeta">$0.00</span></p>
+        </div>
+        <div style="flex:1; min-width:150px;">
+          <p style="margin:5px 0; font-weight:bold;">Transferencia: <span id="resumenTransferencia">$0.00</span></p>
+          <p style="margin:5px 0; font-weight:bold;">Provedores: <span id="resumenProveedor">-$0.00</span></p>
+        </div>
+      </div>
+      <h4 style="margin:0 0 10px; color:#1e40af; text-align: center; font-weight: bold;">TOTALES GENERALES:</h4>
+      <div style="display:flex; flex-wrap:wrap; gap:15px; margin-top: 10px;">
+        <div style="flex:1; min-width:150px;">
+          <p style="margin:5px 0; font-weight:bold;">Total General (sin provedor): <span id="resumenTotalGeneral">$0.00</span></p>
+          <p style="margin:5px 0; font-weight:bold;">Total Contador Efectivo: <span id="resumenTotalContador">$0.00</span></p>
+        </div>
+        
+      </div>
+      <h4 style="margin:0 0 10px; color:#1e40af; text-align: center; font-weight: bold;">TOTALES NETOS:</h4>
+      <div style="display:flex; flex-wrap:wrap; gap:15px; margin-top: 10px;">
+        <div style="flex:1; min-width:150px;">
+          <p style="margin:5px 0; font-weight:bold;">Total Neto Efectivo : <span id="resumenTotalNeto">$0.00</span></p>
+          <p style="margin:5px 0; font-weight:bold;">Total Neto Contador : <span id="resumenTotalNetoContador">$0.00</span></p>
+        </div>
+      </div>
+    </div>
 
     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;">
+      <!-- Botón ahora tiene un id y no depende exclusivamente de onclick inline -->
       <button class="btn-primary" onclick="finalizarCorte()">✅ Finalizar Corte</button>
-      <button class="btn-secondary" onclick="cerrarModalCorte()">❌ Cerrar</button>
+      <button class="btn-secondary" id="btnCerrarCorte">❌ Cerrar</button>
     </div>
-    <div class="note">Nota: Al finalizar el corte, todas las ventas locales se moverán a "Ventas de Corte" y ventas actuales se vaciarán.</div>
   </div>
 </div>
 
 <script>
-let usuarioActivo = localStorage.getItem("usuarioActivo");
-if(!usuarioActivo){}
-else{ document.getElementById("cajero").textContent = "👤 Cajero: " + usuarioActivo; }
+/* ---------- CONFIG ---------- */
+const DB_NAME = 'farmalili-db'; 
+const DB_VERSION = 1;
+// Sincronizado con farma2.html
+const STORE_VENTAS_ACTUALES = 'ventasHistorial'; 
+const STORE_VENTAS_CORTE = 'ventas_corte';
+const STORE_CORTES = 'cortes';
+const STORE_HISTORIAL = 'historial'; // Añadido para escuchar reembolsos
+const bc = new BroadcastChannel('farmalili-ventas'); 
 
-function parseJSON(key){ try{ return JSON.parse(localStorage.getItem(key)||"[]"); }catch(e){ return []; } }
-function setJSON(key,val){ localStorage.setItem(key, JSON.stringify(val)); }
-function formatDinero(n){ return "$" + (Number(n||0)).toFixed(2); }
-
-function cargarVentasSincronizadas(){
-  const v1 = parseJSON('ventas');
-  const v2 = parseJSON('ventasFarma1');
-  return [...v1, ...v2];
+/* ---------- DB HELPERS ---------- */
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      // Asegurar que existan todas las tiendas que usamos
+      if(!db.objectStoreNames.contains(STORE_VENTAS_ACTUALES)) {
+        db.createObjectStore(STORE_VENTAS_ACTUALES, { autoIncrement: true });
+      }
+      if(!db.objectStoreNames.contains(STORE_VENTAS_CORTE)) {
+        db.createObjectStore(STORE_VENTAS_CORTE, { autoIncrement: true });
+      }
+      if(!db.objectStoreNames.contains(STORE_CORTES)) {
+        db.createObjectStore(STORE_CORTES, { autoIncrement: true });
+      }
+      // Asegurar que exista la tienda de historial para escuchar reembolsos
+      if(!db.objectStoreNames.contains(STORE_HISTORIAL)) {
+        db.createObjectStore(STORE_HISTORIAL, { autoIncrement: true });
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
 }
 
-function renderVentas(){
-  const ventas = cargarVentasSincronizadas();
+async function idbAdd(storeName, value) {
+  const db = await openDB();
+  return new Promise((res, rej) => {
+    const tx = db.transaction(storeName, 'readwrite');
+    const st = tx.objectStore(storeName);
+    const r = st.add(value);
+    tx.oncomplete = () => res(r.result);
+    tx.onerror = () => rej(tx.error);
+  });
+}
+
+async function idbGetAll(storeName) {
+  const db = await openDB();
+  return new Promise((res, rej) => {
+    const tx = db.transaction(storeName, 'readonly');
+    const st = tx.objectStore(storeName);
+    const req = st.getAll();
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+
+async function idbClear(storeName) {
+  const db = await openDB();
+  return new Promise((res, rej) => {
+    const tx = db.transaction(storeName, 'readwrite');
+    const st = tx.objectStore(storeName);
+    const req = st.clear();
+    req.onsuccess = () => res();
+    req.onerror = () => rej(tx.error);
+  });
+}
+
+
+/* ---------- UTILS ---------- */
+function formatDinero(n){ return "$" + (Number(n||0)).toFixed(2); }
+
+/* ---------- Usuario activo ---------- */
+let usuarioActivo = localStorage.getItem("usuarioActivo") || 'SinUsuario';
+document.getElementById("cajero").textContent = usuarioActivo ? ("👤 Cajero: " + usuarioActivo) : '';
+
+document.getElementById("logout").addEventListener("click", () => {
+  localStorage.removeItem("usuarioActivo");
+  bc.postMessage({type:'logout'});
+  window.location.href = "index.html";
+});
+
+/* ---------- CORE: Cargar y mostrar ventas desde IndexedDB ---------- */
+
+async function cargarVentasActuales(){
+  // Lee de la tienda 'ventasHistorial' (ventas no cortadas todavía)
+  return await idbGetAll(STORE_VENTAS_ACTUALES);
+}
+
+// LÓGICA MODIFICADA: Ahora se leen los datos del cliente desde la venta
+// y se separan los totales de Proveedores y Generales
+async function renderVentas(){
+  const ventas = await cargarVentasActuales();
   const tbodyG = document.querySelector("#tabla-ventas-general tbody");
   const tbodyA = document.querySelector("#tabla-antibioticos tbody");
-  tbodyG.innerHTML = ""; tbodyA.innerHTML = "";
-  let totalG = 0, totalA = 0;
+  tbodyG.innerHTML = "";
+  tbodyA.innerHTML = "";
+  let totalG = 0; // Total General (excluye proveedores)
+  let totalProveedor = 0; // Total Proveedores
+  let totalA = 0; // Total Antibióticos
   let idxG = 1, idxA = 1;
-  ventas.forEach(v=>{
-    (v.items||[]).forEach(item=>{
+
+  ventas.sort((a, b) => (b.folio || 0) - (a.folio || 0));
+
+  for(const v of ventas) {
+    
+    // --- Obtener datos del cliente de la venta ---
+    const cliente = v.cliente || {}; // Asegura que cliente sea un objeto, incluso si es null/undefined
+    const doctor = cliente.nombre || '-';
+    const cedula = cliente.cedula || '-';
+    const direccion = cliente.direccion || '-';
+    const folioReceta = cliente.folioReceta || '-';
+    // --- Fin Obtener datos del cliente ---
+
+    // Otros campos de venta
+    const cajero = v.cajero || 'N/A'; 
+    const metodo = v.metodo || 'Efectivo'; 
+    const folioProveedor = (v.metodo && v.metodo.toString().toLowerCase().includes('proveedor')) ? (v.folioProveedor || '-') : '-';
+
+    for(const item of (v.productos || [])) {
       const subtotal = (Number(item.precio) || 0) * (Number(item.cantidad) || 0);
+      const codigoSimple = item.codigo || '-';
+      // Asumiendo que 'codigoCompleto' podría estar en el item o en la venta, o sea el mismo código
+      const codigoCompleto = item.codigoCompleto || codigoSimple;
+
+      // 1. VENTA GENERAL (SE AÑADEN COLUMNAS DE DOCTOR/RECETA)
       const trG = document.createElement('tr');
       trG.innerHTML = `<td>${idxG++}</td>
         <td>${item.nombre||'-'}</td>
-        <td>${item.codigo||'-'}</td>
+        <td>${folioProveedor}</td>
+        <td>${codigoCompleto}</td>
         <td>${item.cantidad||0}</td>
         <td>${v.folio||'-'}</td>
-        <td>${v.fecha||'-'}</td>
-        <td>${v.cajero||'-'}</td>
-        <td>${v.metodo||'-'}</td>
+        <td>${doctor}</td>
+        <td>${cedula}</td>
+        <td>${folioReceta}</td>
+        <td>${new Date(v.fecha).toLocaleString()||'-'}</td>
+        <td>${cajero}</td>
+        <td>${metodo}</td>
         <td>${formatDinero(subtotal)}</td>`;
       tbodyG.appendChild(trG);
-      totalG += subtotal;
 
-      const codigoStr = String(item.codigo || '').toUpperCase();
-      if(codigoStr.startsWith('A')){
+      // Acumular totales
+      const metodoNorm = (metodo || '').toString().toLowerCase();
+      if (metodoNorm.includes('proveedor') || metodoNorm.includes('proveed')) {
+          totalProveedor += subtotal;
+      } else {
+          totalG += subtotal;
+      }
+
+      // 2. VENTA ANTIBIÓTICO (si tiene datos de cliente)
+      if(doctor !== '-') { // Considera antibiótico si tiene nombre de doctor
         const trA = document.createElement('tr');
         trA.innerHTML = `<td>${idxA++}</td>
           <td>${item.nombre||'-'}</td>
-          <td>${item.codigo||'-'}</td>
-          <td>${item.cantidad||0}</td>
+          <td>${codigoSimple}</td>
+          <td>${codigoCompleto}</td> <td>${item.cantidad||0}</td>
           <td>${v.folio||'-'}</td>
-          <td>${v.doctor?.nombre||'-'}</td>
-          <td>${v.doctor?.cedula||'-'}</td>
-          <td>${v.doctor?.direccion||'-'}</td>
-          <td>${v.doctor?.folioReceta||'-'}</td>
-          <td>${item.lote||'-'}</td>
-          <td>${v.fecha||'-'}</td>
-          <td>${v.cajero||'-'}</td>
-          <td>${v.metodo||'-'}</td>
+          <td>${doctor}</td>
+          <td>${cedula}</td>
+          <td>${direccion}</td>
+          <td>${folioReceta}</td>
+          <td>${item.loteSeleccionado||'-'}</td>
+          <td>${new Date(v.fecha).toLocaleString()||'-'}</td>
+          <td>${cajero}</td>
+          <td>${metodo}</td>
           <td>${formatDinero(subtotal)}</td>`;
         tbodyA.appendChild(trA);
-        totalA += subtotal;
+        totalA += subtotal; // El total de antibióticos incluye todos los métodos
       }
-    });
-  });
+    }
+  }
 
   document.getElementById('total-general').textContent = formatDinero(totalG);
+  document.getElementById('total-proveedores').textContent = formatDinero(totalProveedor);
   document.getElementById('total-antibioticos').textContent = formatDinero(totalA);
 }
 
-function renderCortes(){
-  const cortes = parseJSON('cortes');
-  const tbody = document.querySelector("#tablaCortes tbody");
-  tbody.innerHTML = "";
-  cortes.forEach(c=>{
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${c.fecha}</td><td>${c.cajero||'-'}</td><td>${formatDinero(c.efectivo)}</td><td>${formatDinero(c.tarjeta)}</td><td>${formatDinero(c.transferencia)}</td><td>${formatDinero(c.proveedor)}</td><td>${formatDinero(c.total)}</td>`;
-    tbody.appendChild(tr);
-  });
-}
-
-function renderVentasCorte(){
-  const ventasCorte = parseJSON('ventasCorte');
-  const tbody = document.querySelector("#tablaVentasCorte tbody");
+/* ---------- Historial de Ventas (post-corte) ---------- */
+async function renderHistorialCompleto(){
+  const ventasCorte = await idbGetAll(STORE_VENTAS_CORTE);
+  const tbody = document.querySelector("#tabla-historial tbody");
   tbody.innerHTML = "";
   let idx = 1;
-  ventasCorte.forEach(v=>{
+  ventasCorte.sort((a,b) => (b.folio || 0) - (a.folio || 0));
+  ventasCorte.forEach(item => {
     const tr = document.createElement('tr');
     tr.innerHTML = `<td>${idx++}</td>
-      <td>${v.producto||'-'}</td>
-      <td>${v.codigo||'-'}</td>
-      <td>${v.cantidad||0}</td>
-      <td>${v.folio||'-'}</td>
-      <td>${v.doctor||'-'}</td>
-      <td>${v.cedula||'-'}</td>
-      <td>${v.direccion||'-'}</td>
-      <td>${v.receta||'-'}</td>
-      <td>${v.lote||'-'}</td>
-      <td>${v.fecha||'-'}</td>
-      <td>${v.cajero||'-'}</td>
-      <td>${v.metodo||'-'}</td>
-      <td>${formatDinero(v.subtotal)}</td>`;
+      <td>${item.producto||'-'}</td>
+      <td>${item.folioProveedor||'-'}</td>
+      <td>${item.codigoCompleto||item.codigo||'-'}</td>
+      <td>${item.cantidad||0}</td>
+      <td>${item.folio||'-'}</td>
+      <td>${item.doctor||'-'}</td> 
+      <td>${item.cedula||'-'}</td> 
+      <td>${item.direccion||'-'}</td> 
+      <td>${item.receta||'-'}</td> 
+      <td>${item.lote||'-'}</td>
+      <td>${item.fecha||'-'}</td><td>${item.cajero||'-'}</td><td>${item.metodo||'-'}</td>
+      <td>${formatDinero(item.subtotal)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+async function buscarHistorial(){
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  if(!searchTerm) {
+    renderHistorialCompleto();
+    return;
+  }
+  const ventasCorte = await idbGetAll(STORE_VENTAS_CORTE);
+  const tbody = document.querySelector("#tabla-historial tbody");
+  tbody.innerHTML = "";
+  let idx = 1;
+  const filtrado = ventasCorte.filter(item =>
+    (item.producto || '').toLowerCase().includes(searchTerm) ||
+    (item.codigo || '').toLowerCase().includes(searchTerm) ||
+    (String(item.folio||'')).toLowerCase().includes(searchTerm) ||
+    (item.doctor||'').toLowerCase().includes(searchTerm) ||
+    (item.folioProveedor||'').toLowerCase().includes(searchTerm) ||
+    (item.codigoCompleto||'').toLowerCase().includes(searchTerm)
+  );
+
+  filtrado.forEach(item => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${idx++}</td>
+      <td>${item.producto||'-'}</td>
+      <td>${item.folioProveedor||'-'}</td>
+      <td>${item.codigoCompleto||item.codigo||'-'}</td>
+      <td>${item.cantidad||0}</td>
+      <td>${item.folio||'-'}</td>
+      <td>${item.doctor||'-'}</td> 
+      <td>${item.cedula||'-'}</td> 
+      <td>${item.direccion||'-'}</td> 
+      <td>${item.receta||'-'}</td> 
+      <td>${item.lote||'-'}</td>
+      <td>${item.fecha||'-'}</td><td>${item.cajero||'-'}</td><td>${item.metodo||'-'}</td>
+      <td>${formatDinero(item.subtotal)}</td>`;
     tbody.appendChild(tr);
   });
 }
 
-function toggle(id){document.getElementById(id).classList.toggle('hidden');}
-
-// ---------- Historial con contraseña ----------
-let historialActivo = false;
-const CONTRASENA_HISTORIAL = "1234"; // contraseña fija temporal, puedes ajustar
-
-function verHistorial(){
-  const pass = document.getElementById('passCorte').value;
-  if(pass === CONTRASENA_HISTORIAL){
-    historialActivo = true;
-    document.getElementById('inputPassDiv').classList.add('hidden');
-    document.getElementById('contenedorCortes').classList.remove('hidden');
-    document.getElementById('histPassDiv').textContent = "🔓 Historial desbloqueado";
-    document.getElementById('passCorte').value = "";
-    renderCortes();
-  } else { alert("🔒 Contraseña incorrecta"); }
+/* ---------- Historial Corte (tabla con columnas solicitadas) ---------- */
+async function renderHistorialCorte(){
+  const cortes = await idbGetAll(STORE_CORTES);
+  const tbody = document.querySelector("#tabla-historial-corte tbody");
+  tbody.innerHTML = "";
+  let idx = 1;
+  // ordenar por timestamp si existe, si no, intentar parsear fecha
+  cortes.sort((a, b) => {
+    const ta = a.timestamp || new Date(a.fecha).getTime();
+    const tb = b.timestamp || new Date(b.fecha).getTime();
+    return tb - ta;
+  });
+  cortes.forEach(corte => {
+    const tr = document.createElement('tr');
+    // Columnas: Fecha y Hora, Cajero, Inicio Caja, Efectivo, Tarjeta, Transferencia, Proveedores, Total contado, Subtotal
+    tr.innerHTML = `<td>${idx++}</td>
+      <td>${corte.fecha || (new Date(corte.timestamp).toLocaleString() || '-')}</td>
+      <td>${corte.cajero || '-'}</td>
+      <td>${formatDinero(corte.inicioCaja || 0)}</td>
+      <td>${formatDinero(corte.efectivo || 0)}</td>
+      <td>${formatDinero(corte.tarjeta || 0)}</td>
+      <td>${formatDinero(corte.transferencia || 0)}</td>
+      <td>${formatDinero(corte.proveedor || 0)}</td>
+      <td>${formatDinero(corte.totalContado || corte.total || 0)}</td>
+      <td>${formatDinero(corte.subtotal || corte.totalGeneral || 0)}</td>`; 
+    tbody.appendChild(tr);
+  });
 }
 
-function salirHistorial(){
-  historialActivo = false;
-  document.getElementById('contenedorCortes').classList.add('hidden');
-  document.getElementById('inputPassDiv').classList.remove('hidden');
-  document.getElementById('histPassDiv').textContent = "Ingresa contraseña para visualizar el historial.";
-  document.getElementById('passCorte').value = "";
+/* ---------- Modal de Corte ---------- */
+async function abrirModalCorte(){
+  document.getElementById('modalCorte').style.display = 'flex';
+  // Cargar valor de inicio de caja desde localStorage
+  const inicioCajaGuardado = localStorage.getItem('inicioCajaTemporal') || '0';
+  document.getElementById('inicioCaja').value = inicioCajaGuardado;
+  // Convertir a modo lectura inmediatamente (evita edición accidental aquí)
+  document.getElementById('inicioCaja').readOnly = true;
+
+  await calcularYMostrarTotalesPorMetodo();
+  // Mostrar el inicio de caja en el resumen
+  document.getElementById('resumenInicioCaja').textContent = formatDinero(parseFloat(inicioCajaGuardado) || 0);
+
+  document.querySelectorAll('.billete').forEach(b => b.value = '');
+  calcularTotalEfectivo();
 }
 
-// ---------- Modal Corte ----------
-function abrirModalCorte(){document.getElementById('modalCorte').style.display='flex';}
-function cerrarModalCorte(){document.getElementById('modalCorte').style.display='none';}
+function cerrarModalCorte(){ document.getElementById('modalCorte').style.display = 'none'; }
 
-function finalizarCorte(){
-  const billetes = document.querySelectorAll('.billete');
+async function calcularYMostrarTotalesPorMetodo(){
+  const ventas = await cargarVentasActuales(); 
+  let totalEfectivo = 0, totalTarjeta = 0, totalTransferencia = 0, totalProveedor = 0;
+
+  ventas.forEach(v => {
+    const metodo = (v.metodo || 'Efectivo').toString().toLowerCase();
+    const totalVenta = Number(v.total || v.totalVenta || 0); // v.total si viene de farma2
+    // Si no hay total en la venta, acumular desde productos
+    let totalDesdeProductos = 0;
+    if (!totalVenta) {
+      (v.productos || []).forEach(it => {
+        totalDesdeProductos += (Number(it.precio) || 0) * (Number(it.cantidad) || 0);
+      });
+    }
+    const usedTotal = totalVenta || totalDesdeProductos;
+
+    if (metodo.includes('efectivo')) totalEfectivo += usedTotal;
+    else if (metodo.includes('tarjeta')) totalTarjeta += usedTotal;
+    else if (metodo.includes('transferencia')) totalTransferencia += usedTotal;
+    else if (metodo.includes('proveedor') || metodo.includes('proveed')) totalProveedor += usedTotal;
+  });
+
+  document.getElementById('resumenEfectivo').textContent = formatDinero(totalEfectivo);
+  document.getElementById('resumenTarjeta').textContent = formatDinero(totalTarjeta);
+  document.getElementById('resumenTransferencia').textContent = formatDinero(totalTransferencia);
+  document.getElementById('resumenProveedor').textContent = formatDinero(totalProveedor);
+  
+  // Calcular y mostrar Total General (Excl. Proveedores) en el resumen
+  const totalGeneral = totalEfectivo + totalTarjeta + totalTransferencia; // Suma de métodos excluyendo proveedores
+  document.getElementById('resumenTotalGeneral').textContent = formatDinero(totalGeneral);
+  
+  // Calcular y mostrar Total Contador Efectivo en el resumen
+  const totalContador = parseFloat(document.getElementById('totalEfectivo').textContent.replace('$', '')) || 0;
+  document.getElementById('resumenTotalContador').textContent = formatDinero(totalContador);
+  
+  // Calcular y mostrar Total Neto (Contado - Proveedores - Inicio Caja) en el resumen
+  const inicioCaja = parseFloat(document.getElementById('inicioCaja').value) || 0;
+  const totalNeto = totalContador - totalProveedor - inicioCaja;
+  document.getElementById('resumenTotalNeto').textContent = formatDinero(totalNeto);
+  document.getElementById('resumenTotalNetoContador').textContent = formatDinero(totalNeto); // Mismo valor
+}
+
+function calcularTotalEfectivo() {
   let totalE = 0;
-  billetes.forEach(b=>totalE+=Number(b.value||0)*Number(b.dataset.valor||0));
-  const tarjeta = Number(document.getElementById('totalTarjeta').value||0);
-  const transferencia = Number(document.getElementById('totalTransferencia').value||0);
-  const proveedor = 0;
-  const totalGeneral = totalE + tarjeta + transferencia + proveedor;
+  document.querySelectorAll('.billete').forEach(b => {
+      const valor = parseFloat(b.dataset.valor);
+      const cantidad = parseInt(b.value) || 0;
+      const subtotal = valor * cantidad;
+      totalE += subtotal;
+      b.nextElementSibling.textContent = `= ${formatDinero(subtotal)}`;
+  });
+  document.getElementById('totalEfectivo').textContent = formatDinero(totalE);
+  
+  // Recalcular Totales Generales cuando cambia el efectivo contado
+  calcularYMostrarTotalesPorMetodo();
+}
+document.querySelectorAll('.billete').forEach(b => b.addEventListener('input', calcularTotalEfectivo));
 
-  const cortes = parseJSON('cortes');
-  cortes.push({fecha:new Date().toLocaleString(), cajero:usuarioActivo, efectivo:totalE, tarjeta, transferencia, proveedor, total:totalGeneral});
-  setJSON('cortes', cortes);
+/* ---------- Finalizar Corte (MODIFICADA para guardar en HISTORIAL y cerrar sesión) ---------- */
+async function finalizarCorte(){
+  // Protección para evitar múltiples clicks
+  const btn = document.getElementById('btnFinalizarCorte');
+  try {
+    if(!confirm("¿Está seguro de que desea finalizar el corte? ")) {
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'Procesando...';
 
-  const ventas = cargarVentasSincronizadas();
-  const ventasCorte = parseJSON('ventasCorte');
-  ventas.forEach(v=>ventasCorte.push(...v.items.map(it=>({producto:it.nombre,codigo:it.codigo,cantidad:it.cantidad,folio:v.folio,doctor:v.doctor?.nombre,cedula:v.doctor?.cedula,direccion:v.doctor?.direccion,receta:v.doctor?.folioReceta,lote:it.lote,fecha:v.fecha,cajero:v.cajero,metodo:v.metodo,subtotal:it.cantidad*it.precio}))));
-  setJSON('ventasCorte', ventasCorte);
+    const inicioCaja = parseFloat(document.getElementById('inicioCaja').value) || 0;
+    let totalEfectivoContado = 0;
+    document.querySelectorAll('.billete').forEach(b => totalEfectivoContado += (parseFloat(b.value) || 0) * (parseFloat(b.dataset.valor) || 0));
 
-  localStorage.setItem('ventas', JSON.stringify([]));
-  localStorage.setItem('ventasFarma1', JSON.stringify([]));
+    const totalVentaTarjeta = parseFloat(document.getElementById('resumenTarjeta').textContent.replace('$', '')) || 0;
+    const totalVentaTransferencia = parseFloat(document.getElementById('resumenTransferencia').textContent.replace('$', '')) || 0;
+    const totalVentaProveedor = parseFloat(document.getElementById('resumenProveedor').textContent.replace('$', '')) || 0;
 
-  cerrarModalCorte();
-  renderVentas();
-  renderCortes();
-  renderVentasCorte();
+    // Total contado (efectivo contado + tarjeta + transferencia)
+    const totalContado = totalEfectivoContado + totalVentaTarjeta + totalVentaTransferencia;
+    // Subtotal: definimos subtotal como totalContado - proveedores (antes de restar inicioCaja)
+    const subtotal = totalContado - totalVentaProveedor;
+    // Total neto (para referencia): subtotal - inicioCaja
+    const totalNeto = subtotal - inicioCaja;
+
+    // Total General (opcional) -> suma de métodos excluyendo proveedores
+    const totalGeneralCorte = totalEfectivoContado + totalVentaTarjeta + totalVentaTransferencia - totalVentaProveedor;
+
+    const corte = {
+      fecha: new Date().toLocaleString(),
+      timestamp: Date.now(), // para ordenar seguro
+      cajero: usuarioActivo,
+      inicioCaja: inicioCaja,
+      efectivo: totalEfectivoContado, // Total Contador Efectivo
+      tarjeta: totalVentaTarjeta,
+      transferencia: totalVentaTransferencia,
+      proveedor: totalVentaProveedor,
+      totalContado: totalContado,   // Efectivo + Tarjeta + Transferencia
+      subtotal: subtotal,           // totalContado - proveedores
+      totalNeto: totalNeto,         // subtotal - inicioCaja
+      totalGeneral: totalGeneralCorte // (opcional)
+    };
+
+    // 1) Guardar el corte y obtener su id
+    const corteId = await idbAdd(STORE_CORTES, corte);
+
+    // 2) Mover las ventas a ventas_corte Y guardar también en historial (persistente)
+    const ventas = await cargarVentasActuales(); 
+    
+    for(const v of ventas) {
+      // --- Extraer datos del cliente de la venta actual ---
+      const cliente = v.cliente || {};
+      const doctor = cliente.nombre || '-';
+      const cedula = cliente.cedula || '-';
+      const direccion = cliente.direccion || '-';
+      const receta = cliente.folioReceta || '-';
+      // --- Fin Extraer datos del cliente ---
+      
+      for (const item of (v.productos || [])) {
+          // subtotal seguro
+          const subtotalItem = (Number(item.precio) || 0) * (Number(item.cantidad) || 0);
+
+          // Objeto que se guarda en la tabla ventas_corte
+          const objCorteItem = {
+              producto: item.nombre || '-', 
+              codigo: item.codigo || '-', 
+              codigoCompleto: item.codigoCompleto || item.codigo || '-', // Código Completo
+              folioProveedor: v.folioProveedor || '-', // Folio Proveedor
+              cantidad: item.cantidad || 0, 
+              folio: v.folio || '-',
+              // Datos del Doctor: Se extraen de la venta principal (v.cliente)
+              doctor: doctor, 
+              cedula: cedula, 
+              direccion: direccion,
+              receta: receta, 
+              lote: item.loteSeleccionado || '-', 
+              fecha: new Date(v.fecha).toLocaleString(), 
+              cajero: v.cajero || usuarioActivo, 
+              metodo: v.metodo || 'Efectivo', 
+              subtotal: subtotalItem,
+              corteId: corteId,
+              corteTimestamp: corte.timestamp
+          };
+
+          // Guardar en ventas_corte (histórico del corte)
+          await idbAdd(STORE_VENTAS_CORTE, objCorteItem);
+
+          // Guardar una copia en HISTORIAL (store separada, también persistente y no será borrada aquí)
+          await idbAdd(STORE_HISTORIAL, Object.assign({}, objCorteItem));
+      }
+    }
+
+    // 3) Solo cuando todo se guardó correctamente: limpiar las ventas actuales
+    await idbClear(STORE_VENTAS_ACTUALES); 
+    localStorage.removeItem('inicioCajaTemporal'); // Limpiar al finalizar corte
+
+    // 4) Imprimir ticket y cerrar modal
+    imprimirTicketCorte(corte);
+    cerrarModalCorte();
+
+    // 5) Notificar a otras pestañas que se realizó el corte y que deben actualizarse
+    bc.postMessage({type:'corte_realizado', corte});
+
+    // 6) Cerrar sesión: comportamiento solicitado (elimina usuario activo y redirige al login/index)
+    localStorage.removeItem('usuarioActivo');
+    bc.postMessage({type:'logout'});
+    // Dar un pequeño tiempo para que el browser abra/ejecute la ventana del ticket antes de redirigir
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 700);
+
+  } catch (err) {
+    console.error('Error al realizar el corte:', err);
+    alert('Ocurrió un error al finalizar el corte. Revisa la consola para más detalle.');
+  } finally {
+    if(btn) {
+      btn.disabled = false;
+      btn.textContent = '✅ Finalizar Corte';
+    }
+  }
 }
 
-// ---------- Inicialización ----------
-renderVentas();
-renderVentasCorte();
+/* ---------- Impresión: Ticket térmico simplificado ---------- */
+function imprimirTicketCorte(corte) {
+  // Abrir ventana estilo ticket térmico, lista para imprimir
+  const ventana = window.open("","Ticket","width=320,height=600");
+  const css = `
+    <style>
+      @media print { body { -webkit-print-color-adjust: exact; } }
+      body { font-family: 'Courier New', monospace; margin: 6px; font-size: 12px; }
+      .center { text-align:center; }
+      .sep { border-top: 1px dashed #000; margin:6px 0; }
+      .bold { font-weight:700; }
+      .small { font-size: 11px; color: #444; }
+    </style>
+  `;
+  let html = `<html><head><title>Ticket de Corte</title>${css}</head><body>
+  <div class="center bold">⚕ FarmaciaLili 2.0 ⚕</div>
+  <div class="center">Corte de Caja</div>
+  <div class="sep"></div>
+  <div>Fecha: ${corte.fecha}</div>
+  <div>Cajero: ${corte.cajero}</div>
+  <div class="sep"></div>
+  <div>Inicio Caja: ${formatDinero(corte.inicioCaja)}</div>
+  <div>Total Efectivo Contado: ${formatDinero(corte.efectivo)}</div>
+  <div>Venta Tarjeta: ${formatDinero(corte.tarjeta)}</div>
+  <div>Venta Transferencia: ${formatDinero(corte.transferencia)}</div>
+  <div>Proveedores (resta): ${formatDinero(corte.proveedor)}</div>
+  <div class="sep"></div>
+  <div class="bold">Total contado: ${formatDinero(corte.totalContado)}</div>
+  <div class="bold">Subtotal (contado - proveedores): ${formatDinero(corte.subtotal)}</div>
+  <div class="bold small">Total Neto (subtotal - inicio caja): ${formatDinero(corte.totalNeto)}</div>
+  <div class="sep"></div>
+  <div class="center">Gracias por su confianza</div>
+  </body></html>`;
+  ventana.document.write(html);
+  ventana.document.close();
+  ventana.focus();
+  // Intentar imprimir, con pequeño delay para asegurar render
+  setTimeout(() => {
+    try {
+      ventana.print();
+    } catch (e) {
+      console.warn('No se pudo iniciar impresión automáticamente:', e);
+    }
+    try { ventana.close(); } catch(e) {}
+  }, 500);
+}
+
+
+/* ---------- Sincronización entre Pestañas ---------- */
+bc.addEventListener('message', async (ev) => {
+  const msg = ev.data || {};
+  // Escucha mensajes de venta, corte y reembolso
+  if(msg.type === 'venta' || msg.type === 'corte_realizado' || msg.type === 'reembolso') { 
+    await actualizarVistas();
+  } else if(msg.type === 'logout' && !localStorage.getItem('usuarioActivo')) {
+    location.reload();
+  }
+});
+
+/* ---------- UI Helpers ---------- */
+function toggleHistorial() {
+  const historialSection = document.getElementById('historialSection');
+  const historialCorteSection = document.getElementById('historialCorteSection');
+  if (historialSection.style.display !== 'block') {
+    historialSection.style.display = 'block';
+    historialCorteSection.style.display = 'none';
+    renderHistorialCompleto(); // Actualiza solo esta sección
+  } else {
+    historialSection.style.display = 'none';
+  }
+}
+function toggleHistorialCorte() {
+  const historialSection = document.getElementById('historialSection');
+  const historialCorteSection = document.getElementById('historialCorteSection');
+  if (historialCorteSection.style.display !== 'block') {
+    historialCorteSection.style.display = 'block';
+    historialSection.style.display = 'none';
+    renderHistorialCorte(); // Actualiza solo esta sección
+  } else {
+    historialCorteSection.style.display = 'none';
+  }
+}
+function limpiarBusqueda() {
+  document.getElementById('searchInput').value = '';
+  renderHistorialCompleto();
+}
+
+/* ---------- Inicialización ---------- */
+async function actualizarVistas(){
+  await renderVentas(); // Actualiza Ventas Generales y Antibióticos
+  // Solo renderiza las secciones si están visibles
+  if(document.getElementById('historialSection').style.display === 'block') {
+    await renderHistorialCompleto();
+  }
+  if(document.getElementById('historialCorteSection').style.display === 'block') {
+    await renderHistorialCorte();
+  }
+}
+(async function init(){
+  await openDB();
+  await actualizarVistas();
+  document.getElementById('searchInput').addEventListener('input', buscarHistorial);
+
+  // Registrar listeners de los botones del modal (evita dependencia de handlers inline)
+  const btnFinalizar = document.getElementById('btnFinalizarCorte');
+  if (btnFinalizar) btnFinalizar.addEventListener('click', finalizarCorte);
+
+  const btnCerrar = document.getElementById('btnCerrarCorte');
+  if (btnCerrar) btnCerrar.addEventListener('click', cerrarModalCorte);
+})();
 </script>
 </body>
 </html>
