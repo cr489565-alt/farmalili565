@@ -1,88 +1,164 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>📦 Inventario - FarmaciaLili 2.0 📦 </title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-<style>
-/* --- estilos --- */
-* {box-sizing:border-box;}
-body { font-family: system-ui, sans-serif; background:#f9fafb; color:#1f2937; margin:0; padding:0;}
-header { background:#2563eb; color: white; padding: 30px; font-size: 26px; font-weight: bold; text-align: center; position: relative; box-shadow: 0 2px 10px rgba(0,0,0,0.2);}
-header img { position:absolute; left:10px; top:50%; transform:translateY(-50%); width:150px; height:100px; border-radius:25px; border: 2px solid #e5e7eb;}
-main {padding:16px; display:flex; flex-direction:column; gap:16px;}
-.main-menu { display:flex; gap:12px; background:#ffffff; padding:10px 16px; position:sticky; top:0; z-index:1000; border-bottom:1px solid #e5e7eb; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
-.main-menu .menu-link {color:#1f2937; text-decoration:none; padding:8px 12px; border-radius:8px; font-weight:500; transition:0.2s; border: 1px solid #e5e7eb;}
-.main-menu .menu-link:hover {background:#e5e7eb; color:#111827;}
-.main-menu .menu-link.active {background:#2563eb; color:white; border-color: #2563eb;}
-#logout {background:#dc2626; margin-left:auto; padding:8px 12px; border-radius:8px; color:white; border:none; cursor:pointer; transition:0.2s; font-weight: 500;}
-#logout:hover {background:#b91c1c;}
-#admin {background:#26a9dc; padding:8px 12px; border-radius:8px; color:white; border:none; cursor:pointer; transition:0.2s; font-weight: 500;}
-#admin:hover {background:#2563eb;}
-#searchBar {margin-left:10px; padding:8px; border-radius:6px; border:1px solid #d1d5db; width:200px; background: #f9fafb;}
-#cajero {font-size:14px; margin-left:16px; color:#2563eb; font-weight: 500;}
-input, button, select {padding:9px; border-radius:6px; border:1px solid #d1d5db; margin:4px 0; background: #f9fafb; color: #1f2937;}
-input, select {width:200px; background: #ffffff;}
-button {background:#2563eb; color:white; cursor:pointer; font-weight:bold; border: none;}
-button:hover {background:#1d4ed8;}
-.btn{padding:0.4rem 1rem; border:none; border-radius:8px; cursor:pointer; font-weight:500; transition:0.2s; border: 1px solid transparent;}
-.btn-edit{background:#2563eb; color:#fff;} .btn-edit:hover{background:#1e40af; border-color: #1e40af;}
-.btn-del{background:#dc2626; color:#fff;} .btn-del:hover{background:#991b1b; border-color: #991b1b;}
-.btn-pdf{background:#facc15; color:#000; margin-left:5px;} .btn-pdf:hover{background:#eab308; border-color: #eab308;}
-.oculto{display:none;}
-.panel-admin{background:#ffffff; border:2px solid #2563eb; padding:1rem; border-radius:12px; margin-bottom:1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
-/* Colores dinámicos */
-.stock-verde{background:#16a34a; color:#fff;}
-.stock-amarillo{background:#eab308; color:#000;}
-.stock-rojo{background:#b91c1c; color:#fff;}
-.stockmin-rojo{background:#f6ff00; color:#000;}
-.cad-verde{background:#16a34a; color:#fff;}
-.cad-amarillo{background:#eab308; color:#000;}
-.cad-rojo{background:#b91c1b; color:#fff;}
-.entradas-azul{background:#2563eb; color:#fff;}
-.categoria-farmacia{background:#9d4edd; color:#fff;}
-.categoria-tienda{background:#7c3e12; color:#fff;}
-.categoria-antibiotico{background:#f97316; color:#fff;}
-.categoria-papeleria{background:#ec4899; color:#fff;}
-.categoria-proveedores{background:#f59e0b; color:#fff;}
-.categoria-bebes{background:#22d3ee; color:#000;}
-.categoria-tecnologia{background:#6366f1; color:#fff;}
-.categoria-accesorios{background:#f43f5e; color:#fff;}
-section { text-align: center; width: 95%; background: linear-gradient(120deg,#ffffff 80%,#dbeafe 100%); padding: 24px; border-radius: 15px; box-shadow: 0 8px 28px rgba(0,0,0,.1); margin: 12px auto; border: 1px solid #000000; }
-h2.seccion { display:flex; justify-content:space-between; align-items:center; margin-top:0; color:#000000; background: #067be8; padding: 10px; border-radius: 8px; }
-table {width:100%; border-collapse:collapse; margin-top:12px; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
-th, td {padding:12px; border:1px solid #e5e7eb; text-align:left; font-size: 14px;}
-th {background:#f3f4f6; color: #111827; font-weight: 600;}
-tr:nth-child(even) { background-color: #f9fafb; }
-tr:hover { background-color: #f3f4f6; }
-/* Ajustes para el formulario de login */
-#loginSection input { background: #ffffff; border: 1px solid #d1d5db; }
-#loginSection button { background: #2563eb; color: white; border: none; }
-/* Ajustes para el panel admin */
-#adminSection input, #adminSection select { background: #ffffff; border: 1px solid #d1d5db; }
-#adminSection button { background: #2563eb; color: white; border: none; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>  📦 Inventario - FarmaciaLili 2.0  📦 </title>
+    <style>
+        /* Tus estilos CSS aquí */
+        /* Por ejemplo: */
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0;  }
+        header { background:#ffffff;  color:#000000;  padding: 30px; font-size: 26px; font-weight: bold; text-align: center; position: relative; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        header img { position:absolute; left:10px; top:50%; transform:translateY(-50%); width:150px; height:90px; border-radius:25px; border: 0px solid #e5e7eb; }
+        main { padding:16px; display:flex; flex-direction:column; gap:16px; }
+        .main-menu { display: flex; align-items: center; padding: 10px; background-color: #68af6b; color: white; }
+        .menu-link { color: white; text-decoration: none; margin-right: 15px; }
+        .main-menu .menu-link { color:#1f2937; text-decoration:none; padding:8px 12px; border-radius:8px; font-weight:500; transition:0.2s; border: 1px solid #e5e7eb; }
+        .main-menu .menu-link:hover { background:#ffffff; color:#111827; }
+        .main-menu .menu-link.active { background:#2563eb; color:white; border-color: #2563eb; }
+        #cajero { margin-left:auto; font-weight:bold; color:#000000; }
+        #searchBar { margin-left:10px; padding:8px; border-radius:6px; border:1px solid #d1d5db; width:200px; background: #f9fafb; flex-grow: 1; max-width: 300px; }
+        .menu-container { position: relative; display:inline-block; margin-left:auto; }
+        .menu-button { font-size: 18px; cursor: pointer; color: white; border: none; background: #26a9dc; padding: 8px 12px; border-radius:8px; }
+        .dropdown-menu { display:none; position:absolute; right:0; background:white; box-shadow:0 2px 8px rgba(0,0,0,0.2); border-radius:6px; min-width:220px; z-index:10; }
+        .dropdown-menu a { color:#333; padding:10px 15px; text-decoration:none; display:block; }
+        .dropdown-menu a:hover { background:#f1f1f1; }
+        .active { font-weight: bold; }
+        .section {flex: 1; overflow-y: auto; overflow-x: auto; border: 1px solid #4f5256; border-radius: 5px; background:  linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)), 
+   url('lododoc .png') no-repeat center center; background-size: auto;  background-position: center;  background-attachment:auto ; max-height: 58vh; box-shadow: inset 0 0 8px rgba(0,0,0,0.2);}
+        .table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding:2px; border-bottom: 1px solid #e5e7eb; text-align: left; word-wrap: break-word;}
+        th { background-color:#68af6b;  position: sticky; top: 0; z-index: 2; color: white; text-align: left; padding: 8px;}
+        .btn { padding: 5px 10px; margin: 2px; cursor: pointer; }
+        .btn-edit { background-color: #4CAF50; color: white; border: none; }
+        .btn-del { background-color: #f44336; color: white; border: none; }
+        .btn-detalle { background-color: #008CBA; color: white; border: none; }
+        .oculto { display: none !important; }
+        .stock-rojo { color: red; font-weight: bold; }
+        .stock-amarillo { color: orange; font-weight: bold; }
+        .stock-verde { color: green; font-weight: bold; }
+        .cad-rojo { color: red; font-weight: bold; }
+        .cad-amarillo { color: orange; font-weight: bold; }
+        .cad-verde { color: green; font-weight: bold; }
+        .precio-verde { color: rgb(25, 189, 25); font-weight: bold; }
+        .entradas-azul { color: blue; font-weight: bold; }
+        .stockmin-rojo { color: red; font-weight: bold; }
+        .db-section { margin: 20px; padding: 15px; background-color: #e8f5e8; border-radius: 5px; }
+        .db-stats { display: flex; justify-content: space-around; margin-top: 10px; }
+        .db-stat { text-align: center; }
+        .db-stat-value { font-size: 2em; font-weight: bold; color: #2e7d32; }
+        .db-stat-label { font-size: 0.9em; color: #666; }
+        .upload-container { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 1000; }
+        .progress-container { width: 100%; background-color: #f0f0f0; border-radius: 4px; margin: 10px 0; }
+        .progress-bar { height: 20px; background-color: #4CAF50; width: 0%; border-radius: 4px; transition: width 0.3s; }
+        .status-message { margin-top: 10px; font-weight: bold; }
+        .status-success { color: green; }
+        .status-error { color: red; }
+        .dropdown-menu { display: none; position: absolute; right: 10px; top: 40px; background-color: white; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 100; }
+        .dropdown-menu a { color: black; padding: 12px 16px; text-decoration: none; display: block; }
+        .dropdown-menu a:hover { background-color: #f1f1f1; }
+        input[type="file"] { display: none; }
+        .numeracion { text-align: center; }
+        #loteCadFields { margin-top: 10px; }
+        /* Estilo para la subtabla de lotes */
+        .subtabla-lotes { background-color: #f9f9f9; border: 1px solid #ccc; margin-top: 5px; border-radius: 4px; }
+        .subtabla-lotes th, .subtabla-lotes td { padding: 4px; font-size: 0.9em; }
+
+        /* === INICIO: Estilos Agregados para Detalles y PDF === */
+        #loteDetallesPanel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        #loteDetallesPanel .contenido {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 350px;
+            max-height: 80%;
+            overflow-y: auto;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        #loteDetallesPanel h3 {
+            margin-top: 0;
+            color: #2563eb;
+            text-align: center;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 10px;
+        }
+        #loteDetallesPanel ul {
+            list-style: none;
+            padding: 0;
+        }
+        #loteDetallesPanel li {
+            padding: 8px 0;
+            border-bottom: 1px dotted #eee;
+        }
+        .btn-cerrar {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            display: block;
+            width: 100%;
+        }
+        /* Columna para imprimir: oculta en pantalla */
+        .columna-imprimir {
+            display: none;
+        }
+        /* Columna para imprimir: visible en impresión/PDF */
+        @media print {
+            .columna-imprimir {
+                display: table-cell !important;
+            }
+        }
+        /* === FIN: Estilos Agregados para Detalles y PDF === */
+    </style>
 </head>
 <body>
 <header>
-    <img src="ventas.png" alt="Logo Ventas">
-    📦 Inventario - FarmaciaLili 2.0 📦 
+  <img src="lododoc .png" alt="Logo Ventas">
+  📦 Inventario - FarmaciaLili 2.0  📦
 </header>
 <nav class="main-menu">
-  <a href="farma2.html" class="menu-link ">💳 Ventas</a>
+  <a href="farma2.html" class="menu-link">💳 Ventas</a>
   <a href="inve2.html" class="menu-link active">📦 Inventario</a>
-  <a href="histori2.html" class="menu-link ">📜 Historial</a>
-  <span id="cajero"></span>
-  <button id="admin">🔑 Admin</button>
-  <input type="text" id="searchBar" placeholder="🔎 Buscar...">
-  <button id="btnSubirInventario" class="btn btn-pdf">📊 Subir Inventario</button>
-  <input type="file" id="fileInput" accept=".csv" class="oculto">
-  <button id="logout">Cerrar Sesión</button>
+  <a href="histori2.html" class="menu-link">📜 Historial</a>
+  <input id="searchBar" placeholder="🔎 Buscar por nombre o código...">
+  <div class="menu-container">
+    <span id="cajero" style="margin-left:auto; font-weight:500; color:#000000;"></span>
+    <button class="menu-button">|||</button>
+    <div class="dropdown-menu" id="dropdownMenu">
+      <a href="#" id="abrirAdminBtn">🧑‍💼 Panel Admin</a>
+      <a href="#" onclick="document.getElementById('fileInput').click()">📥 Subir Inventario</a>
+      <a href="#" id="eliminarInventarioBtn">🗑️ Eliminar Inventario</a>
+      <a href="#" id="agregarEntradaBtn">📦 Entradas</a>
+      <a href="#" id="descargarCatBtn">📥 Descargar por Categoría (CSV)</a>
+      <a href="#" id="descargarPdfCatBtn">📥 Descargar por Categoría (PDF)</a>
+      <a href="#" onclick="cerrarSesion()">🚪 Cerrar Sesión</a>
+    </div>
+  </div>
 </nav>
 
-<section id="loginSection" class="oculto">
+<div id="loteDetallesPanel">
+    <div class="contenido">
+        <h3 id="loteDetallesTitulo">Detalles de Lotes</h3>
+        <ul id="loteDetallesLista">
+            </ul>
+        <button class="btn-cerrar" onclick="document.getElementById('loteDetallesPanel').style.display='none'">Cerrar</button>
+    </div>
+</div>
+<section id="loginSection" class="oculto section">
   <h2>👑 PANEL ADMINISTRACIÓN 👑</h2>
   🔐 Ingresa Contraseña
   <form id="loginForm">
@@ -90,7 +166,6 @@ tr:hover { background-color: #f3f4f6; }
     <button type="submit" class="btn btn-edit">Ingresar</button>
   </form>
 </section>
-
 <section id="adminSection" class="oculto panel-admin">
   <h2>⚙️ Panel Administrador</h2>
   <form id="addForm" style="margin-top:1rem;">
@@ -99,285 +174,1268 @@ tr:hover { background-color: #f3f4f6; }
     <input type="text" id="codigo" placeholder="Código" required>
     <input type="number" id="precio" placeholder="Precio">
     <div id="loteCadFields" class="oculto">
-      <input type="text" id="lote" placeholder="Lote (solo antibióticos)">
-      <input type="date" id="caducidad" placeholder="Caducidad (solo antibióticos)">
+      <h4>Lotes y Caducidades</h4>
+      <div id="lotesContainer">
+        <div class="lote-item">
+          <input type="text" class="lote-input" placeholder="Lote" style="width: 120px; margin-right: 5px;">
+          <input type="date" class="caducidad-input" placeholder="Caducidad" style="width: 140px; margin-right: 5px;">
+          <input type="number" class="stock-lote-input" placeholder="Stock" style="width: 80px; margin-right: 5px;">
+          <button type="button" class="btn-del remove-lote">🗑️</button>
+        </div>
+      </div>
+      <button type="button" id="addLoteBtn" class="btn btn-edit">+ Añadir Lote</button>
     </div>
-    <input type="number" id="stock" placeholder="Stock">
+    <input type="number" id="stockTotal" placeholder="Stock " >
     <input type="number" id="stockMin" placeholder="Stock Mínimo">
     <input type="number" id="entradas" placeholder="Entradas">
-    <select id="categoria" required>
-      <option value="Antibiótico">Antibiótico</option>
-      <option value="Papelería">Papelería</option>
-      <option value="Tienda">Tienda</option>
-      <option value="Farmacia">Farmacia</option>
-      <option value="Proveedores">Proveedores</option>
-      <option value="Bebés">Bebés</option>
-      <option value="Tecnología">Tecnología</option>
-      <option value="Accesorios">Accesorios</option>
-    </select>
+    <input type="text" id="categoria" placeholder="Categoría (puedes escribir una nueva)" required>
     <div style="margin-top:10px;">
       <button type="submit" class="btn btn-edit">Guardar</button>
       <button type="button" id="salirAdmin" class="btn btn-del">Salir</button>
     </div>
   </form>
 </section>
-
-<section id="generalSection">
-  <h2 class="seccion">📦 Inventario - General
-    <button class="btn btn-pdf" onclick="imprimirPDF('tablaGeneralCompleta','Inventario General')">📄 General</button>
-    <button class="btn btn-pdf" onclick="imprimirPDF('tablaAntibioticos','Inventario Antibióticos')">💊 Antibióticos</button>
-  </h2>
+<div id="uploadContainer" class="upload-container oculto">
+  <h3>Subiendo archivo de inventario...</h3>
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+  <div id="statusMessage" class="status-message"></div>
+</div>
+<div class="db-section">
+  <h3>📊 Base de Datos del Inventario</h3>
+  <div class="db-stats">
+    <div class="db-stat">
+      <div class="db-stat-value" id="totalProductos">0</div>
+      <div class="db-stat-label">Productos</div>
+    </div>
+    <div class="db-stat">
+      <div class="db-stat-value" id="totalStock">0</div>
+      <div class="db-stat-label">Stock Total</div>
+    </div>
+    <div class="db-stat">
+      <div class="db-stat-value" id="categorias">0</div>
+      <div class="db-stat-label">Categorías</div>
+    </div>
+    <div class="db-stat">
+      <div class="db-stat-value" id="bajoStock">0</div>
+      <div class="db-stat-label">Bajo Stock</div>
+    </div>
+  </div>
+</div> 
+<h2 class="seccion">📦 Inventario - General Antibiótico 📦 </h2>
+<section id="generalSection" class="section">
+ 
   <table id="tablaGeneralCompleta">
     <thead>
       <tr>
-        <th>Nombre</th><th>Código</th><th>Precio</th><th>Lote</th>
-        <th>Stock</th><th>Stock Mínimo</th><th>Entradas</th>
-        <th>Categoría</th><th>Caducidad</th><th>Acciones</th>
-      </tr>
+        <th class="numeracion">#</th>
+        <th>Código</th>
+        <th>Descripción</th>
+        <th class="precio-verde">Precio</th>
+        <th>Lote</th>
+        <th>Stock</th>
+        <th>Mínimo</th>
+        <th>Entradas</th>
+        <th>Categoría</th>
+        <th>Caducidad</th>
+        <th>Detalles</th> <th>Acciones</th>
+        <th class="columna-imprimir">Para Imprimir</th> </tr>
     </thead>
     <tbody></tbody>
   </table>
 </section>
-
-<section id="AntibioticosSection">
-  <h2 class="seccion">💊 Antibióticos</h2>
-  <table id="tablaAntibioticos">
+<section id="entradasSection" class="section oculto">
+  <h2 class="seccion">📦 Registro de Entradas</h2>
+  <div style="background:#f0f9ff;padding:16px;border-radius:8px;margin-bottom:16px;">
+    <h3>➕ Agregar Entrada de Producto</h3>
+    <input type="text" id="codigoEntrada" placeholder="Código del Producto" required>
+    <input type="text" id="loteEntrada" placeholder="Lote (opcional)">
+    <input type="date" id="caducidadEntrada" placeholder="Caducidad (opcional)">
+    <input type="number" id="cantidadEntrada" placeholder="Cantidad de Entrada" required>
+    <button onclick="procesarEntrada()" class="btn btn-edit">Agregar Entrada</button>
+    <button onclick="volverAlInventario()" class="btn btn-del">Volver al Inventario</button>
+  </div>
+  <table id="tablaEntradas">
     <thead>
       <tr>
-        <th>Nombre</th><th>Código</th><th>Precio</th><th>Lote</th>
-        <th>Stock</th><th>Stock Mínimo</th><th>Entradas</th>
-        <th>Categoría</th><th>Caducidad</th><th>Acciones</th>
+        <th class="numeracion">#</th>
+        <th>Código</th>
+        <th>Descripción</th>
+        <th>Stock Anterior</th>
+        <th>Entradas</th>
+        <th>Nuevo Stock</th>
+        <th>Lote</th>
+        <th>Caducidad</th>
+        <th>Cajero</th>
+        <th>Fecha y Hora</th>
       </tr>
     </thead>
     <tbody></tbody>
   </table>
 </section>
-
-<section id="ProveedoresSection">
-  <h2 class="seccion">📦 Proveedores</h2>
-  <table id="tablaProveedores">
-    <thead>
-      <tr>
-        <th>Nombre</th><th>Código</th><th>Categoría</th><th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</section>
-
+<input type="file" id="fileInput" accept=".csv" class="oculto">
 <script>
-let usuarioActivo = localStorage.getItem("usuarioActivo") || "Cajero";
-document.getElementById("cajero").textContent = "👤 Cajero: " + usuarioActivo;
-let userType='cajero';
+/* IndexedDB helper (promisified) */
+const DB_NAME = 'farmalili-db';
+const DB_VERSION = 1;
+const STORE_PRODUCTOS = 'productos';
+const STORE_ENTRADAS = 'entradasHistorial'; // Almacén de objetos para historial de entradas (persistente)
+const STORE_HISTORIAL = 'historial';
+let db = null;
 
-const adminBtn=document.getElementById('admin');
-const loginSection=document.getElementById('loginSection');
-const adminSection=document.getElementById('adminSection');
-const loginForm=document.getElementById('loginForm');
-const addForm=document.getElementById('addForm');
-const categoriaSelect=document.getElementById('categoria');
-const salirAdmin=document.getElementById('salirAdmin');
-const loteCadFields=document.getElementById('loteCadFields');
-const tablaGeneral=document.getElementById('tablaGeneralCompleta').querySelector('tbody');
-const tablaAntibioticos=document.getElementById('tablaAntibioticos').querySelector('tbody');
-const tablaProveedores=document.getElementById('tablaProveedores').querySelector('tbody');
-
-let productosInventario = JSON.parse(localStorage.getItem('inventario')) || [];
-let productoEnEdicion = null;
-
-// Guardar producto
-function guardarProductoLocal(producto){
-  if(productoEnEdicion){
-    const index = productosInventario.findIndex(p=>p.codigo===productoEnEdicion.codigo);
-    productosInventario[index] = producto;
-    productoEnEdicion = null;
-  }else{
-    productosInventario.push(producto);
-  }
-  localStorage.setItem('inventario', JSON.stringify(productosInventario));
-  renderTablasInventario();
-}
-
-// Eliminar producto
-function eliminarProductoLocal(codigo){
-  productosInventario = productosInventario.filter(p=>p.codigo!==codigo);
-  localStorage.setItem('inventario', JSON.stringify(productosInventario));
-  renderTablasInventario();
-}
-
-// Renderizado
-function renderTablasInventario(){
-  tablaGeneral.innerHTML = '';
-  tablaAntibioticos.innerHTML = '';
-  tablaProveedores.innerHTML = '';
-
-  productosInventario.forEach(p=>{
-    if(p.categoria!=='Proveedores'){
-      const row = document.createElement('tr');
-      row.innerHTML=`
-        <td>${p.nombre||"ND"}</td>
-        <td>${p.codigo||"ND"}</td>
-        <td>${p.precio?`$${p.precio}`:"ND"}</td>
-        <td>${p.categoria==='Antibiótico' ? (p.lote||"ND") : "ND"}</td>
-        <td class="${getStockClass(p.stock,p.stockMin)}">${p.stock||"ND"}</td>
-        <td class="stockmin-rojo">${p.stockMin||"ND"}</td>
-        <td class="entradas-azul">${p.entradas||"ND"}</td>
-        <td class="${getCategoriaClass(p.categoria)}">${p.categoria||"ND"}</td>
-        <td class="${p.categoria==='Antibiótico' ? getCaducidadClass(p.caducidad) : ''}">${p.categoria==='Antibiótico' ? (p.caducidad||"ND") : "ND"}</td>
-        <td>${userType==='admin'
-            ?`<button class="btn btn-edit" onclick='editarProducto(${JSON.stringify(p)})'>✏️</button>
-               <button class="btn btn-del" onclick='eliminarProductoLocal("${p.codigo}")'>🗑️</button>` 
-            :''}</td>
-      `;
-      tablaGeneral.appendChild(row);
-      if(p.categoria==='Antibiótico') tablaAntibioticos.appendChild(row.cloneNode(true));
-    } else {
-      const row = document.createElement('tr');
-      row.innerHTML=`
-        <td>${p.nombre||"ND"}</td>
-        <td>${p.codigo||"ND"}</td>
-        <td class="${getCategoriaClass(p.categoria)}">${p.categoria||"ND"}</td>
-        <td>${userType==='admin'
-            ?`<button class="btn btn-edit" onclick='editarProducto(${JSON.stringify(p)})'>✏️</button>
-               <button class="btn btn-del" onclick='eliminarProductoLocal("${p.codigo}")'>🗑️</button>` 
-            :''}</td>
-      `;
-      tablaProveedores.appendChild(row);
-    }
+function openDB() {
+  return new Promise((resolve, reject) => {
+    if (db) return resolve(db);
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = (ev) => {
+      const idb = ev.target.result;
+      if (!idb.objectStoreNames.contains(STORE_PRODUCTOS)) {
+        const prodStore = idb.createObjectStore(STORE_PRODUCTOS, { keyPath: 'codigo' });
+        prodStore.createIndex('nombre', 'nombre', { unique: false });
+        prodStore.createIndex('categoria', 'categoria', { unique: false });
+      }
+      // === CLAVE PARA PERSISTENCIA DE ENTRADAS ===
+      // STORE_ENTRADAS se crea con autoIncrement, asegurando que cada 'put' sea un nuevo registro.
+      if (!idb.objectStoreNames.contains(STORE_ENTRADAS)) {
+        idb.createObjectStore(STORE_ENTRADAS, { autoIncrement: true });
+      }
+      // ===========================================
+      if (!idb.objectStoreNames.contains(STORE_HISTORIAL)) {
+        idb.createObjectStore(STORE_HISTORIAL, { autoIncrement: true });
+      }
+    };
+    req.onsuccess = (ev) => {
+      db = ev.target.result;
+      console.log("IndexedDB abierta correctamente.");
+      resolve(db);
+    };
+    req.onerror = (ev) => {
+        console.error("Error abriendo IndexedDB:", ev.target.error);
+        reject(ev.target.error);
+    };
   });
 }
 
-// --- Clases ---
-function getStockClass(stock, min){if(stock<=min+10) return 'stock-rojo'; if(stock>min+10 && stock<=min+20) return 'stock-amarillo'; return 'stock-verde';}
-function getCaducidadClass(fechaCad){if(!fechaCad) return ''; const hoy=new Date(); const cad=new Date(fechaCad); const diff=(cad-hoy)/(1000*60*60*24); if(diff<=20) return 'cad-rojo'; if(diff>20 && diff<=50) return 'cad-amarillo'; return 'cad-verde';}
-function getCategoriaClass(cat){
-  switch(cat){
-    case 'Farmacia':return 'categoria-farmacia';
-    case 'Tienda':return 'categoria-tienda';
-    case 'Antibiótico':return 'categoria-antibiotico';
-    case 'Papelería':return 'categoria-papeleria';
-    case 'Proveedores':return 'categoria-proveedores';
-    case 'Bebés':return 'categoria-bebes';
-    case 'Tecnología':return 'categoria-tecnologia';
-    case 'Accesorios':return 'categoria-accesorios';
-    default:return '';
+async function idbPut(storeName, value) {
+  const idb = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = idb.transaction(storeName, 'readwrite');
+    const store = tx.objectStore(storeName);
+    const req = store.put(value);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function idbGet(storeName, key) {
+  const idb = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = idb.transaction(storeName, 'readonly');
+    const store = tx.objectStore(storeName);
+    const req = store.get(key);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function idbDelete(storeName, key) {
+  const idb = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = idb.transaction(storeName, 'readwrite');
+    const store = tx.objectStore(storeName);
+    const req = store.delete(key);
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function idbGetAll(storeName) {
+  const idb = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = idb.transaction(storeName, 'readonly');
+    const store = tx.objectStore(storeName);
+    const req = store.getAll();
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+/* BroadcastChannel for sync*/
+const ventasChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('farmalili-ventas') : null;
+
+function broadcastUpdate(type, payload = {}) {
+  const msg = { type, payload, ts: Date.now(), source: 'inventario' }; // Añadimos 'source' para evitar bucles
+  if (ventasChannel) {
+      console.log("Enviando mensaje de sincronización:", msg);
+      ventasChannel.postMessage(msg);
+  }
+  // Fallback: write small token to localStorage to trigger storage event on other tabs/pages
+  try {
+    localStorage.setItem('farmalili_sync', JSON.stringify(msg));
+    // cleanup token quickly
+    setTimeout(() => localStorage.removeItem('farmalili_sync'), 100); // Reducido tiempo de limpieza
+  } catch (e) {
+    console.error("Error al enviar mensaje de sincronización por localStorage:", e);
   }
 }
 
-// Agregar producto
-addForm.addEventListener('submit', e=>{
-    e.preventDefault(); 
-    const p = {
-        nombre: document.getElementById('nombre').value,
-        codigo: document.getElementById('codigo').value,
-        precio: parseFloat(document.getElementById('precio').value)||0,
-        lote: document.getElementById('lote').value,
-        stock: parseInt(document.getElementById('stock').value)||0,
-        stockMin: parseInt(document.getElementById('stockMin').value)||0,
-        entradas: parseInt(document.getElementById('entradas').value)||0,
-        categoria: document.getElementById('categoria').value,
-        caducidad: document.getElementById('caducidad').value
-    };
-    guardarProductoLocal(p);
-    addForm.reset();
+/* UI references and state */
+let usuarioActivo = localStorage.getItem("usuarioActivo") || "Cajero";
+document.getElementById("cajero").textContent = "👤 Cajero: " + usuarioActivo;
+let userType = 'cajero';
+let productoEnEdicion = null;
+
+/* Tables tbody refs */
+const tablaGeneralBody = document.querySelector('#tablaGeneralCompleta tbody');
+// Se eliminaron: const tablaAntibioticosBody = document.querySelector('#tablaAntibioticos tbody');
+// Se eliminaron: const tablaProveedoresBody = document.querySelector('#tablaProveedores tbody');
+const tablaEntradasBody = document.querySelector('#tablaEntradas tbody');
+
+/* Menu toggles */
+document.querySelector('.menu-button').addEventListener('click', () => {
+  const menu = document.getElementById('dropdownMenu');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+});
+window.addEventListener('click', (event) => {
+  if (!event.target.matches('.menu-button')) {
+    document.getElementById('dropdownMenu').style.display = 'none';
+  }
 });
 
-// Editar producto
-function editarProducto(p){
+/* Form controls */
+const loginSection = document.getElementById('loginSection');
+const adminSection = document.getElementById('adminSection');
+const loginForm = document.getElementById('loginForm');
+const addForm = document.getElementById('addForm');
+const categoriaSelect = document.getElementById('categoria');
+const salirAdmin = document.getElementById('salirAdmin');
+const loteCadFields = document.getElementById('loteCadFields');
+const lotesContainer = document.getElementById('lotesContainer');
+const addLoteBtn = document.getElementById('addLoteBtn');
+const stockTotalInput = document.getElementById('stockTotal');
+
+document.getElementById('abrirAdminBtn').addEventListener('click', abrirAdmin);
+document.getElementById('eliminarInventarioBtn').addEventListener('click', eliminarInventario);
+document.getElementById('agregarEntradaBtn').addEventListener('click', agregarEntrada);
+document.getElementById('descargarCatBtn').addEventListener('click', descargarInventarioPorCategoria);
+document.getElementById('descargarPdfCatBtn').addEventListener('click', descargarPDFPorCategoria);
+
+/* Search */
+document.getElementById('searchBar').addEventListener('input', renderTablasInventario);
+
+/* CSV file input */
+document.getElementById('fileInput').addEventListener('change', subirCSV);
+
+/* Utilidades de estilo */
+function getStockClass(stock = 0, min = 0) {
+  if (stock <= min + 10) return 'stock-rojo';
+  if (stock > min + 10 && stock <= min + 20) return 'stock-amarillo';
+  return 'stock-verde';
+}
+function getCaducidadClass(fechaCad) {
+  if (!fechaCad) return '';
+  const hoy = new Date();
+  const cad = new Date(fechaCad);
+  const diff = (cad - hoy) / (1000 * 60 * 60 * 24);
+  if (diff <= 20) return 'cad-rojo';
+  if (diff > 20 && diff <= 50) return 'cad-amarillo';
+  return 'cad-verde';
+}
+function getCategoriaClass(cat) {
+  switch (cat) {
+    case 'categoria': return 'categoria';
+    default: return '';
+  }
+}
+
+/* Funciones para manejo de lotes*/
+function actualizarStockTotal() {
+    const lotes = document.querySelectorAll('.lote-item');
+    let total = 0;
+    lotes.forEach(item => {
+        const stockInput = item.querySelector('.stock-lote-input');
+        const stock = parseInt(stockInput.value) || 0;
+        total += stock;
+    });
+    stockTotalInput.value = total;
+}
+
+function addLoteItem(lote = '', caducidad = '', stock = 0) {
+    const loteItem = document.createElement('div');
+    loteItem.className = 'lote-item';
+    loteItem.innerHTML = `
+        <input type="text" class="lote-input" placeholder="Lote" value="${lote}" style="width: 120px; margin-right: 5px;">
+        <input type="date" class="caducidad-input" placeholder="Caducidad" value="${caducidad}" style="width: 140px; margin-right: 5px;">
+        <input type="number" class="stock-lote-input" placeholder="Stock" value="${stock}" style="width: 80px; margin-right: 5px;">
+        <button type="button" class="btn-del remove-lote">🗑️</button>
+    `;
+    lotesContainer.appendChild(loteItem);
+
+    // Añadir evento para eliminar lote
+    loteItem.querySelector('.remove-lote').addEventListener('click', function() {
+        this.parentElement.remove();
+        actualizarStockTotal();
+    });
+
+    // Añadir evento para recalcular stock total al cambiar stock del lote
+    loteItem.querySelector('.stock-lote-input').addEventListener('input', actualizarStockTotal);
+    // Añadir evento para recalcular stock total al cambiar stock del lote
+    loteItem.querySelector('.stock-lote-input').addEventListener('change', actualizarStockTotal);
+}
+
+/* Eventos para lotes en el formulario*/
+categoriaSelect.addEventListener('change', (e) => {
+  if (e.target.value === 'Antibiótico') {
+      loteCadFields.classList.remove('oculto');
+      // Asegurar que haya al menos un campo de lote
+      if (document.querySelectorAll('.lote-item').length === 0) {
+          addLoteItem();
+      }
+  } else {
+      loteCadFields.classList.add('oculto');
+  }
+});
+
+addLoteBtn.addEventListener('click', () => {
+    addLoteItem();
+});
+
+/* Operaciones sobre productos*/
+async function guardarProductoLocal(producto) {
+  // validación ligera
+  if (!producto || !producto.codigo) {
+      console.error("Producto inválido para guardar:", producto);
+      return;
+  }
+  // En antibióticos, exigir al menos un lote con lote y caducidad
+  if (producto.categoria === 'Antibiótico') {
+    if (!producto.lotes || producto.lotes.length === 0) {
+        alert('❌ Para antibióticos, debes añadir al menos un lote con caducidad.');
+        return;
+    }
+    const tieneLoteInvalido = producto.lotes.some(l => (l.stock > 0) && (!l.lote || !l.caducidad));
+    if (tieneLoteInvalido) {
+        alert('❌ Los lotes con stock deben tener Lote y Caducidad.');
+        return;
+    }
+  }
+  try {
+      await idbPut(STORE_PRODUCTOS, producto);
+      // Registrar en historial como 'producto_actualizado' o 'producto_creado'
+      await idbPut(STORE_HISTORIAL, { accion: 'producto_guardado', producto: producto, usuario: usuarioActivo, fecha: new Date().toISOString() });
+      // Notificar otros tabs/páginas
+      broadcastUpdate('producto_actualizado', { producto: producto });
+      console.log("Producto guardado localmente y sincronizado:", producto.codigo);
+      // Refrescar vistas
+      await renderTablasInventario();
+      await actualizarEstadisticas();
+  } catch (error) {
+      console.error("Error guardando producto:", error);
+      alert("Error al guardar el producto en la base de datos.");
+  }
+}
+
+async function eliminarProductoLocal(codigo) {
+  if (!confirm(`¿Eliminar producto ${codigo}?`)) return;
+  try {
+      await idbDelete(STORE_PRODUCTOS, codigo);
+      await idbPut(STORE_HISTORIAL, { accion: 'producto_eliminado', codigo, usuario: usuarioActivo, fecha: new Date().toISOString() });
+      // Notificar otros tabs/páginas
+      broadcastUpdate('producto_eliminado', { codigo });
+      console.log("Producto eliminado localmente y sincronizado:", codigo);
+      // Refrescar vistas
+      await renderTablasInventario();
+      await actualizarEstadisticas();
+  } catch (error) {
+      console.error("Error eliminando producto:", error);
+      alert("Error al eliminar el producto de la base de datos.");
+  }
+}
+
+async function obtenerProducto(codigo) {
+  return await idbGet(STORE_PRODUCTOS, codigo);
+}
+
+// Función de utilidad para obtener el stock total
+function getStockTotal(producto) {
+    if (producto.lotes) {
+        return producto.lotes.reduce((sum, l) => sum + (l.stock || 0), 0);
+    }
+    return producto.stock || 0;
+}
+
+// NUEVA FUNCIÓN: Muestra detalles de lotes en un modal
+function mostrarDetallesLotes(codigo) {
+    idbGet(STORE_PRODUCTOS, codigo).then(producto => {
+        if (!producto) {
+             alert('Producto no encontrado.');
+             return;
+        }
+        const panel = document.getElementById('loteDetallesPanel');
+        const lista = document.getElementById('loteDetallesLista');
+        const titulo = document.getElementById('loteDetallesTitulo');
+        
+        titulo.textContent = `Lotes de ${producto.nombre} (${producto.codigo})`;
+        lista.innerHTML = '';
+
+        const lotesConStock = (producto.lotes || []).filter(l => (l.stock || 0) > 0);
+
+        if (lotesConStock.length === 0) {
+            lista.innerHTML = '<li>No hay lotes con stock disponible.</li>';
+        } else {
+            // Ordenar lotes: más pronto a caducar primero
+            const lotesOrdenados = lotesConStock.sort((a, b) => new Date(a.caducidad) - new Date(b.caducidad));
+
+            lotesOrdenados.forEach(lote => {
+                const li = document.createElement('li');
+                let status = 'OK';
+                let statusClass = 'color: green;';
+                
+                // Calcular diferencia de días para caducidad
+                if (lote.caducidad) {
+                    const diff = (new Date(lote.caducidad) - new Date()) / (1000 * 60 * 60 * 24);
+
+                    if (diff < 0) {
+                        status = 'CADUCADO';
+                        statusClass = 'color: red; font-weight: bold;';
+                    } else if (diff <= 30) {
+                        status = 'PRÓXIMO A CADUCAR';
+                        statusClass = 'color: orange; font-weight: bold;';
+                    }
+                } else {
+                    status = 'Sin fecha';
+                    statusClass = 'color: #333;';
+                }
+                
+                li.innerHTML = `
+                    <strong>Lote:</strong> ${lote.lote || 'N/A'} <br>
+                    <strong>Stock:</strong> ${lote.stock || 0} <br>
+                    <strong>Caducidad:</strong> ${lote.caducidad || 'N/A'} (<span style="${statusClass}">${status}</span>)
+                `;
+                lista.appendChild(li);
+            });
+        }
+        
+        panel.style.display = 'flex';
+    }).catch(e => {
+        alert('Error al cargar detalles del lote.');
+        console.error(e);
+    });
+}
+window.mostrarDetallesLotes = mostrarDetallesLotes; // Exponer la función globalmente
+
+
+/* Renderizado de tablas*/
+async function renderTablasInventario() {
+  try {
+      // leer todos los productos desde IndexedDB
+      const productos = await idbGetAll(STORE_PRODUCTOS);
+      const searchTerm = document.getElementById('searchBar').value.trim().toLowerCase();
+
+      // filtrar no proveedores para tabla general
+      const productosNoProveedores = productos.filter(p => p.categoria !== 'Proveedores');
+
+      const productosFiltrados = productosNoProveedores.filter(p =>
+        (!searchTerm) ||
+        (p.nombre && p.nombre.toLowerCase().includes(searchTerm)) ||
+        (p.codigo && p.codigo.toLowerCase().includes(searchTerm))
+      );
+
+      // Se eliminaron las lógicas de filtrado para antibioticosFiltrados y proveedoresFiltrados
+
+      // limpiar tablas
+      tablaGeneralBody.innerHTML = '';
+      // Se eliminaron: tablaAntibioticosBody.innerHTML = ''; y tablaProveedoresBody.innerHTML = '';
+
+      // Renderizar General
+      productosFiltrados.forEach((p, idx) => {
+        const tr = document.createElement('tr');
+        const stockTotal = p.lotes ? p.lotes.reduce((sum, l) => sum + (l.stock || 0), 0) : (p.stock || 0);
+        
+        let caducidadMasCercana = 'ND';
+        let loteMasCercano = 'ND';
+        if (p.lotes && p.lotes.length > 0) {
+            const loteCercano = p.lotes.filter(l => (l.stock || 0) > 0).sort((a, b) => new Date(a.caducidad) - new Date(b.caducidad))[0];
+            if (loteCercano) {
+                caducidadMasCercana = loteCercano.caducidad || 'ND';
+                loteMasCercano = loteCercano.lote || 'ND';
+            }
+        } else {
+             caducidadMasCercana = p.caducidad || 'ND';
+             loteMasCercano = p.lote || 'ND';
+        }
+
+
+        tr.innerHTML = `
+          <td class="numeracion">${idx + 1}</td>
+          <td>${p.codigo || 'ND'}</td>
+          <td>${p.nombre || 'ND'}</td>
+          <td class="precio-verde">${p.precio ? '$' + p.precio.toFixed(2) : 'ND'}</td>
+          <td>${loteMasCercano}</td>
+          <td class="${getStockClass(stockTotal, p.stockMin)}">${stockTotal}</td>
+          <td class="stockmin-rojo">${p.stockMin ?? 'ND'}</td>
+          <td class="entradas-azul">${p.entradas ?? 'ND'}</td>
+          <td class="${getCategoriaClass(p.categoria)}">${p.categoria ?? 'ND'}</td>
+          <td class="${getCaducidadClass(caducidadMasCercana)}">${caducidadMasCercana}</td>
+          <td><button class="btn btn-detalle" onclick='mostrarDetallesLotes("${p.codigo}")'>Detalles</button></td> <td>
+            ${userType === 'admin' ? `<button class="btn btn-edit" onclick='editarProducto(${JSON.stringify(p)})'>✏️</button>
+            <button class="btn btn-del" onclick='eliminarProductoLocal("${p.codigo}")'>🗑️</button>` : ''}
+          </td>
+          <td class="columna-imprimir"></td> </tr>
+        `;
+        tablaGeneralBody.appendChild(tr);
+      });
+
+      // Se eliminaron los bloques de Renderizar Antibióticos y Renderizar Proveedores
+  } catch (error) {
+      console.error("Error al renderizar tablas:", error);
+  }
+}
+
+// Función que registra una entrada en la base de datos (clave para la persistencia)
+async function registrarEntrada(codigo, descripcion, stockAnterior, entradas, nuevoStock, lote = null, caducidad = null) {
+  const nuevaEntrada = {
+    codigo,
+    descripcion,
+    stockAnterior,
+    entradas,
+    nuevoStock,
+    lote, // Añadir lote si aplica
+    caducidad, // Añadir caducidad si aplica
+    cajero: usuarioActivo,
+    fechaHora: new Date().toISOString()
+  };
+  // NOTA: idbPut para STORE_ENTRADAS con autoIncrement: true garantiza que TODAS las entradas se guarden sin borrarse.
+  await idbPut(STORE_ENTRADAS, nuevaEntrada); // se guarda con key autoIncrement
+  await idbPut(STORE_HISTORIAL, { accion: 'entrada', entrada: nuevaEntrada, usuario: usuarioActivo, fecha: new Date().toISOString() });
+  broadcastUpdate('entrada', { entrada: nuevaEntrada }); // Enviar objeto de entrada completo
+  await renderTablaEntradas();
+}
+
+// Función que renderiza todas las entradas guardadas
+async function renderTablaEntradas() {
+  try {
+      // Obtener TODAS las entradas del historial
+      const entradas = await idbGetAll(STORE_ENTRADAS);
+      tablaEntradasBody.innerHTML = '';
+      // Mostrar las últimas 100 entradas o todas si son menos
+      const entradasAMostrar = entradas.slice(-100); 
+
+      entradasAMostrar.forEach((entrada, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="numeracion">${entradas.length - entradasAMostrar.length + i + 1}</td>
+          <td>${entrada.codigo}</td>
+          <td>${entrada.descripcion}</td>
+          <td>${entrada.stockAnterior}</td>
+          <td class="entradas-azul">${entrada.entradas}</td>
+          <td>${entrada.nuevoStock}</td>
+          <td>${entrada.lote || 'N/A'}</td>
+          <td>${entrada.caducidad || 'N/A'}</td>
+          <td>${entrada.cajero}</td>
+          <td>${new Date(entrada.fechaHora).toLocaleString()}</td>
+        `;
+        tablaEntradasBody.appendChild(tr);
+      });
+      // Desplazar al final de la tabla para ver las entradas más recientes
+      const entradasSection = document.getElementById('entradasSection');
+      entradasSection.scrollTop = entradasSection.scrollHeight;
+  } catch (error) {
+      console.error("Error al renderizar tabla de entradas:", error);
+  }
+}
+
+/* Actualización de stock por entradas/ventas/reembolsos*/
+async function actualizarStockConEntradas(codigo, cantidad, lote = null, caducidad = null) {
+  if (cantidad <= 0) {
+      alert('La cantidad de entrada debe ser positiva.');
+      return;
+  }
+  const producto = await idbGet(STORE_PRODUCTOS, codigo);
+  if (!producto) { alert('❌ Producto no encontrado. Verifique el código.'); return; }
+
+  const stockAnterior = getStockTotal(producto);
+  let nuevoStock;
+
+  if (producto.categoria === 'Antibiótico') {
+    // Manejar lotes
+    if (lote && caducidad) {
+        // Buscar lote específico
+        if (!producto.lotes) producto.lotes = [];
+        const loteExistente = producto.lotes.find(l => l.lote === lote && l.caducidad === caducidad);
+        if (loteExistente) {
+            loteExistente.stock = (loteExistente.stock || 0) + cantidad;
+        } else {
+            // Crear nuevo lote
+            producto.lotes.push({ lote, caducidad, stock: cantidad });
+        }
+    } else {
+        // Si no se especifica lote/caducidad, sumar al lote más cercano (o crear genérico)
+        if (!producto.lotes || producto.lotes.length === 0) {
+            producto.lotes = [{ lote: 'LoteGenérico', caducidad: '', stock: cantidad }];
+        } else {
+            // Sumar al lote más próximo a caducar o al genérico
+            let loteDestino = producto.lotes.find(l => l.lote === 'LoteGenérico') || 
+                              producto.lotes.sort((a, b) => new Date(a.caducidad) - new Date(b.caducidad))[0];
+            loteDestino.stock = (loteDestino.stock || 0) + cantidad;
+        }
+    }
+    nuevoStock = getStockTotal(producto); // Recalcular stock total después de la adición
+  } else {
+    // Manejar stock simple
+    producto.stock = (producto.stock || 0) + cantidad;
+    nuevoStock = producto.stock;
+  }
+
+  producto.entradas = (producto.entradas || 0) + cantidad;
+  await idbPut(STORE_PRODUCTOS, producto);
+  
+  // === REGISTRO PERSISTENTE EN HISTORIAL DE ENTRADAS ===
+  await registrarEntrada(codigo, producto.nombre, stockAnterior, cantidad, nuevoStock, lote, caducidad);
+  // ====================================================
+  
+  await renderTablasInventario();
+  await actualizarEstadisticas();
+  console.log("Stock actualizado por entrada:", codigo, "Cantidad:", cantidad, "Lote:", lote, "Caducidad:", caducidad);
+}
+
+// Función para actualizar stock basado en venta (disminuye)
+async function actualizarStockConVentas(ventaData) {
+  console.log("Recibida actualización de stock por venta:", ventaData);
+  // ventaData.productos = [{ codigo, cantidad }, ...]
+  const actualizaciones = [];
+  for (const item of ventaData.productos) {
+    const producto = await idbGet(STORE_PRODUCTOS, item.codigo);
+    if (producto) {
+      let cantidadPendiente = item.cantidad;
+      
+      // Siempre priorizar el lote más antiguo (FIFO - First In, First Out)
+      if (producto.lotes && producto.lotes.length > 0) {
+          // Ordenar por caducidad (más cercana primero)
+          producto.lotes.sort((a, b) => {
+             const dateA = new Date(a.caducidad);
+             const dateB = new Date(b.caducidad);
+             // Si una no tiene fecha, ponerla al final
+             if (!a.caducidad) return 1;
+             if (!b.caducidad) return -1;
+             return dateA - dateB;
+          });
+
+          for (const lote of producto.lotes) {
+              if (cantidadPendiente <= 0) break;
+              const cantidadAEliminar = Math.min(cantidadPendiente, lote.stock || 0);
+              if (cantidadAEliminar > 0) {
+                  lote.stock = lote.stock - cantidadAEliminar;
+                  cantidadPendiente -= cantidadAEliminar;
+              }
+          }
+      } else {
+          // Disminuir stock simple
+          const cantidadAEliminar = Math.min(cantidadPendiente, producto.stock || 0);
+          if (cantidadAEliminar > 0) {
+              producto.stock = producto.stock - cantidadAEliminar;
+              cantidadPendiente -= cantidadAEliminar;
+          }
+      }
+
+      if (cantidadPendiente > 0) {
+          console.warn(`No se pudo vender la cantidad completa de ${item.codigo}. Faltaron: ${cantidadPendiente}`);
+      }
+      
+      // Limpiar lotes con stock 0
+      if (producto.lotes) {
+          producto.lotes = producto.lotes.filter(l => (l.stock || 0) > 0);
+      }
+
+      actualizaciones.push({ codigo: item.codigo, productoActualizado: producto });
+    }
+  }
+
+  // Aplicar todas las actualizaciones
+  for (const update of actualizaciones) {
+    await idbPut(STORE_PRODUCTOS, update.productoActualizado);
+  }
+
+  if (actualizaciones.length > 0) {
+    await idbPut(STORE_HISTORIAL, { accion: 'venta', venta: ventaData, usuario: ventaData.usuario || 'venta', fecha: new Date().toISOString() });
+    broadcastUpdate('venta_aplicada', ventaData); // Confirmar que se aplicó
+    console.log("Stock actualizado por venta y sincronizado.");
+    await renderTablasInventario();
+    await actualizarEstadisticas();
+  }
+}
+
+// Función para actualizar stock basado en reembolso (aumenta)
+async function actualizarStockConReembolsos(reembolsoData) {
+  console.log("Recibida actualización de stock por reembolso:", reembolsoData);
+  const codigos = reembolsoData.codigos || [];
+  const cantidades = reembolsoData.cantidades || [];
+
+  if (codigos.length !== cantidades.length) {
+      console.error("Datos de reembolso inconsistentes: longitudes diferentes.");
+      return;
+  }
+
+  const actualizaciones = [];
+  for (let i = 0; i < codigos.length; i++) {
+    const codigo = codigos[i];
+    const cantidad = cantidades[i];
+    if (cantidad <= 0) continue; 
+
+    const producto = await idbGet(STORE_PRODUCTOS, codigo);
+    if (producto) {
+      // Para reembolso, sumamos al stock total, no necesariamente al mismo lote vendido.
+      // Si tiene lotes, sumamos al lote con la fecha de caducidad más lejana o a uno genérico si existe.
+      if (producto.categoria === 'Antibiótico') {
+           if (!producto.lotes) producto.lotes = [];
+
+           // Buscar el lote con la caducidad más lejana (LIFO) o un lote genérico
+           let loteDestino = producto.lotes.find(l => l.lote === 'LoteGenérico') || 
+                             producto.lotes.sort((a, b) => new Date(b.caducidad) - new Date(a.caducidad))[0];
+
+           if (!loteDestino) {
+               // Si no existe, crear un lote genérico (o con fecha de hoy + 1 año)
+               const caducidadGenerica = new Date();
+               caducidadGenerica.setFullYear(caducidadGenerica.getFullYear() + 1);
+               loteDestino = { lote: 'LoteGenérico', caducidad: caducidadGenerica.toISOString().split('T')[0], stock: 0 };
+               producto.lotes.push(loteDestino);
+           }
+           
+           loteDestino.stock = (loteDestino.stock || 0) + cantidad;
+      } else {
+          producto.stock = (producto.stock || 0) + cantidad;
+      }
+      actualizaciones.push({ codigo, productoActualizado: producto });
+    }
+  }
+
+  // Aplicar todas las actualizaciones
+  for (const update of actualizaciones) {
+    await idbPut(STORE_PRODUCTOS, update.productoActualizado);
+  }
+
+  if (actualizaciones.length > 0) {
+    await idbPut(STORE_HISTORIAL, { accion: 'reembolso', codigos, cantidades, usuario: reembolsoData.usuario || 'reembolso', fecha: new Date().toISOString() });
+    broadcastUpdate('reembolso_aplicado', reembolsoData); 
+    console.log("Stock actualizado por reembolso y sincronizado.");
+    await renderTablasInventario();
+    await actualizarEstadisticas();
+  }
+}
+
+
+/*CSV upload (robusta)*/
+async function subirCSV(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  document.getElementById('uploadContainer').classList.remove('oculto');
+  document.getElementById('progressBar').style.width = '0%';
+  document.getElementById('statusMessage').style.display = 'none';
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    // progreso simulado
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += 10;
+      document.getElementById('progressBar').style.width = progress + '%';
+      if (progress >= 100) clearInterval(interval);
+    }, 150);
+
+    setTimeout(async () => {
+      try {
+        const raw = e.target.result;
+        const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+        if (lines.length === 0) throw new Error('Archivo vacío');
+
+        // detect headers (lógica simplificada para encontrar columnas)
+        const first = lines[0].split(',').map(h => h.toLowerCase().trim());
+        const known = ['codigo','código','nombre','descripcion','descripción','precio','lote','stock','stockmin','stock mínimo','entradas','categoria','categoría','caducidad','fecha','fecha de caducidad'];
+        const hasHeaders = first.some(h => known.includes(h));
+
+        const headerMap = {};
+        if (hasHeaders) {
+          first.forEach((h, idx) => {
+            const clean = h.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+            if (clean.includes('codigo')) headerMap.codigo = idx;
+            else if (clean.includes('nombre') || clean.includes('descripcion')) headerMap.nombre = idx;
+            else if (clean.includes('precio')) headerMap.precio = idx;
+            else if (clean.includes('lote')) headerMap.lote = idx;
+            else if (clean.includes('stock') && clean.includes('min')===false) headerMap.stock = idx;
+            else if (clean.includes('minimo') || clean.includes('min')) headerMap.stockMin = idx;
+            else if (clean.includes('entradas')) headerMap.entradas = idx;
+            else if (clean.includes('categoria')) headerMap.categoria = idx;
+            else if (clean.includes('caducidad') || clean.includes('fecha')) headerMap.caducidad = idx;
+          });
+        }
+
+        const start = hasHeaders ? 1 : 0;
+        let cambios = 0;
+        for (let i = start; i < lines.length; i++) {
+          const parts = lines[i].split(',');
+          // ensure length
+          while (parts.length < 9) parts.push('');
+          const producto = {
+            codigo: headerMap.codigo !== undefined ? parts[headerMap.codigo].trim() : (parts[0]||'').trim(),
+            nombre: headerMap.nombre !== undefined ? parts[headerMap.nombre].trim() : (parts[1]||'').trim(),
+            precio: headerMap.precio !== undefined ? parseFloat(parts[headerMap.precio]) || 0 : parseFloat(parts[2]) || 0,
+            lote: headerMap.lote !== undefined ? parts[headerMap.lote].trim() : (parts[3]||'').trim(), // Antiguo formato
+            stock: headerMap.stock !== undefined ? parseInt(parts[headerMap.stock]) || 0 : parseInt(parts[4]) || 0, // Antiguo formato
+            stockMin: headerMap.stockMin !== undefined ? parseInt(parts[headerMap.stockMin]) || 0 : parseInt(parts[5]) || 0,
+            entradas: headerMap.entradas !== undefined ? parseInt(parts[headerMap.entradas]) || 0 : parseInt(parts[6]) || 0,
+            categoria: headerMap.categoria !== undefined ? parts[headerMap.categoria].trim() : (parts[7]||'').trim(),
+            caducidad: headerMap.caducidad !== undefined ? parts[headerMap.caducidad].trim() : (parts[8]||'').trim() // Antiguo formato
+          };
+
+          // Conversión al nuevo formato para antibióticos (manejo de lotes)
+          if (producto.categoria === 'Antibiótico' && producto.lote && producto.caducidad) {
+              producto.lotes = [{ lote: producto.lote, caducidad: producto.caducidad, stock: producto.stock }];
+              delete producto.lote;
+              delete producto.caducidad;
+              delete producto.stock; // El stock se maneja por lotes
+          }
+
+          if (!producto.codigo) continue; // saltar filas sin código
+          await idbPut(STORE_PRODUCTOS, producto);
+          cambios++;
+        }
+
+        await idbPut(STORE_HISTORIAL, { accion: 'import_csv', cantidad: cambios, usuario: usuarioActivo, fecha: new Date().toISOString() });
+        broadcastUpdate('import_csv', { cambios });
+
+        document.getElementById('statusMessage').textContent = `✅ Inventario cargado correctamente (${cambios} filas)`;
+        document.getElementById('statusMessage').className = 'status-message status-success';
+        document.getElementById('statusMessage').style.display = 'block';
+
+        await renderTablasInventario();
+        await actualizarEstadisticas();
+      } catch (err) {
+        console.error(err);
+        document.getElementById('statusMessage').textContent = '❌ Error cargando CSV: ' + (err.message || err);
+        document.getElementById('statusMessage').className = 'status-message status-error';
+        document.getElementById('statusMessage').style.display = 'block';
+      } finally {
+        setTimeout(()=> document.getElementById('uploadContainer').classList.add('oculto'), 2000);
+      }
+    }, 800);
+  };
+  reader.readAsText(file);
+}
+
+/*Eliminar todo inventario(vacía objetos stores)*/
+async function eliminarInventario() {
+  if (!confirm('⚠️ ¿Seguro que quieres eliminar TODO el inventario, entradas y historial?')) return;
+  // Re-crear la base para limpiar
+  const req = indexedDB.deleteDatabase(DB_NAME);
+  req.onsuccess = async () => {
+    db = null;
+    await openDB(); // Reabrir la base de datos vacía
+    await idbPut(STORE_HISTORIAL, { accion: 'eliminar_inventario_total', usuario: usuarioActivo, fecha: new Date().toISOString() });
+    broadcastUpdate('eliminar_inventario_total', {});
+    await renderTablasInventario();
+    await renderTablaEntradas();
+    await actualizarEstadisticas();
+    alert('🗑️ Inventario eliminado');
+  };
+  req.onerror = (e) => alert('Error al eliminar DB: ' + e.target.error);
+}
+
+/*Exportar CSV / PDF por categoría*/
+async function descargarInventarioPorCategoria() {
+  const categorias =  ['escribe la caregoria'];
+  const categoria = prompt(`Ingrese la categoría a descargar:\n${categorias.join('\n')}`);
+  if (!categoria) return;
+  const productos = await idbGetAll(STORE_PRODUCTOS);
+  let seleccion = [];
+  if (categoria.toLowerCase() === 'general') seleccion = productos;
+  else seleccion = productos.filter(p => (p.categoria || '').toLowerCase() === categoria.toLowerCase());
+  if (!seleccion.length) return alert('❌ No hay productos en esa categoría.');
+
+  let csv = 'Código,Nombre,Precio,Stock,StockMin,Entradas,Categoría,Caducidad,Lote\n';
+  seleccion.forEach(i => {
+    // Para antibióticos, exportar cada lote como una fila
+    if (i.categoria === 'Antibiótico' && i.lotes) {
+        i.lotes.forEach(l => {
+            csv += `${i.codigo || ''},${i.nombre || ''},${i.precio || 0},${l.stock || 0},${i.stockMin || 0},${i.entradas || 0},${i.categoria || ''},${l.caducidad || ''},${l.lote || ''}\n`;
+        });
+    } else {
+        // Para otros productos, exportar como antes
+        csv += `${i.codigo || ''},${i.nombre || ''},${i.precio || 0},${i.stock || 0},${i.stockMin || 0},${i.entradas || 0},${i.categoria || ''},${i.caducidad || ''},${i.lote || ''}\n`;
+    }
+  });
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `inventario_${categoria}.csv`;
+  link.click();
+}
+
+async function descargarPDFPorCategoria() {
+  const categorias = ['escribe la caregoria'];
+  const categoria = prompt(`Ingrese la categoría para descargar PDF:\n${categorias.join('\n')}`);
+  if (!categoria) return;
+  const productos = await idbGetAll(STORE_PRODUCTOS);
+  let seleccion = [];
+  if (categoria.toLowerCase() === 'general') seleccion = productos;
+  else seleccion = productos.filter(p => (p.categoria || '').toLowerCase() === categoria.toLowerCase());
+  if (!seleccion.length) return alert('❌ No hay productos en esa categoría.');
+
+  // Requiere la librería jspdf y jspdf-autotable (asumo que están cargadas en otra parte del proyecto)
+  // Si no tienes las librerías cargadas, el PDF se generará como una ventana de impresión simple (print.html)
+
+  const ventana = window.open("", "Inventario", "width=800,height=600");
+    ventana.document.write(`
+        <html>
+        <head>
+            <title>Inventario ${categoria}</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; font-size: 10px; }
+                h1 { text-align: center; }
+                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                th, td { border: 1px solid #000; padding: 5px; text-align: left; }
+                th { background-color: #f2f2f2; }
+                /* Asegurar que la columna vacía se muestre en impresión */
+                .columna-imprimir {
+                    display: table-cell !important;
+                    width: 80px; /* Ancho fijo para la columna de impresión */
+                }
+            </style>
+        </head>
+        <body>
+            <h1>Inventario - FarmaciaLili (${categoria})</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Stock</th>
+                        <th>Caducidad (Próx)</th>
+                        <th>Lote (Próx)</th>
+                        <th class="columna-imprimir">Para Imprimir</th> </tr>
+                </thead>
+                <tbody>
+    `);
+
+    seleccion.forEach(prod => {
+        let stockTotal = getStockTotal(prod);
+        let caducidadProx = 'N/A';
+        let loteProx = 'N/A';
+
+        if (prod.lotes && prod.lotes.length > 0) {
+            // Obtener el lote más antiguo (próximo a caducar)
+            const loteAntiguo = prod.lotes
+                .filter(l => (l.stock || 0) > 0)
+                .sort((a, b) => new Date(a.caducidad) - new Date(b.caducidad))[0];
+
+            if (loteAntiguo) {
+                caducidadProx = loteAntiguo.caducidad || 'N/A';
+                loteProx = loteAntiguo.lote || 'N/A';
+            }
+        } else if (prod.stock > 0) {
+            caducidadProx = prod.caducidad || 'N/A';
+            loteProx = prod.lote || 'N/A';
+        }
+
+        ventana.document.write(`
+            <tr>
+                <td>${prod.codigo}</td>
+                <td>${prod.nombre}</td>
+                <td>${stockTotal}</td>
+                <td>${caducidadProx}</td>
+                <td>${loteProx}</td>
+                <td class="columna-imprimir"></td> </tr>
+        `);
+    });
+
+    ventana.document.write(`
+                </tbody>
+            </table>
+            <p>Generado el: ${new Date().toLocaleString()}</p>
+        </body>
+        </html>
+    `);
+
+    ventana.document.close();
+    ventana.focus();
+    ventana.print();
+    // ventana.close(); // Comentar o borrar si quieres que el usuario cierre manualmente después de imprimir
+}
+
+
+/* Estadísticas */
+async function actualizarEstadisticas() {
+  try {
+      const productos = await idbGetAll(STORE_PRODUCTOS);
+      const totalProductos = productos.length;
+      const totalStock = productos.reduce((sum, p) => {
+          if (p.lotes) {
+              return sum + p.lotes.reduce((loteSum, l) => loteSum + (l.stock || 0), 0);
+          } else {
+              return sum + (p.stock || 0);
+          }
+      }, 0);
+      const categorias = [...new Set(productos.map(p => p.categoria || 'N/A'))].length;
+      const bajoStock = productos.filter(p => {
+          const stockTotal = p.lotes ? p.lotes.reduce((sum, l) => sum + (l.stock || 0), 0) : (p.stock || 0);
+          return stockTotal <= (p.stockMin || 0);
+      }).length;
+
+      document.getElementById('totalProductos').textContent = totalProductos;
+      document.getElementById('totalStock').textContent = totalStock;
+      document.getElementById('categorias').textContent = categorias;
+      document.getElementById('bajoStock').textContent = bajoStock;
+  } catch (error) {
+      console.error("Error al actualizar estadísticas:", error);
+  }
+}
+
+/* Formularios y eventos UI*/
+addForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const nombre = document.getElementById('nombre').value.trim();
+  const codigo = document.getElementById('codigo').value.trim();
+  const precio = parseFloat(document.getElementById('precio').value) || 0;
+  const stockMin = parseInt(document.getElementById('stockMin').value) || 0;
+  const entradas = parseInt(document.getElementById('entradas').value) || 0;
+  const categoria = document.getElementById('categoria').value;
+  
+  // Si estamos en modo edición, mantenemos la lógica de sobrescribir el producto
+  const productoExistente = productoEnEdicion ? await obtenerProducto(productoEnEdicion.codigo) : null;
+  
+  let producto = {
+    nombre,
+    codigo,
+    precio,
+    stockMin,
+    entradas,
+    categoria,
+    // Mantener campos existentes si no se modifican, por ejemplo:
+    ...productoExistente
+  };
+
+  if (categoria === 'Antibiótico') {
+      const lotes = [];
+      const loteItems = document.querySelectorAll('.lote-item');
+      loteItems.forEach(item => {
+          const lote = item.querySelector('.lote-input').value.trim();
+          const caducidad = item.querySelector('.caducidad-input').value;
+          const stock = parseInt(item.querySelector('.stock-lote-input').value) || 0;
+          if (lote || caducidad || stock > 0) { // Incluir lotes con al menos un dato
+              lotes.push({ lote, caducidad, stock });
+          }
+      });
+      producto.lotes = lotes.filter(l => (l.stock || 0) > 0 || l.lote || l.caducidad); // Limpiar lotes vacíos
+      delete producto.stock; // El stock se maneja por lotes
+  } else {
+      const stock = parseInt(stockTotalInput.value) || 0; // Usar el total calculado o 0
+      producto.stock = stock;
+      delete producto.lotes; // No usar lotes para otros productos
+  }
+
+  await guardarProductoLocal(producto);
+  addForm.reset();
+  loteCadFields.classList.add('oculto');
+  lotesContainer.innerHTML = ''; // Limpiar campos de lotes
+  stockTotalInput.value = '';
+  productoEnEdicion = null; // Resetear modo edición
+});
+
+function editarProducto(p) {
+  // Ahora recibe directamente el objeto JSON
+  try {
     productoEnEdicion = p;
-    document.getElementById('nombre').value = p.nombre;
-    document.getElementById('codigo').value = p.codigo;
-    document.getElementById('precio').value = p.precio;
-    document.getElementById('lote').value = p.lote;
-    document.getElementById('stock').value = p.stock;
-    document.getElementById('stockMin').value = p.stockMin;
-    document.getElementById('entradas').value = p.entradas;
-    document.getElementById('categoria').value = p.categoria;
-    document.getElementById('caducidad').value = p.caducidad;
+    document.getElementById('nombre').value = p.nombre || '';
+    document.getElementById('codigo').value = p.codigo || '';
+    document.getElementById('precio').value = p.precio || '';
+    document.getElementById('stockMin').value = p.stockMin || '';
+    document.getElementById('entradas').value = p.entradas || '';
+    document.getElementById('categoria').value = p.categoria || '';
+
+    // Limpiar lotes anteriores
+    lotesContainer.innerHTML = '';
+
+    if (p.categoria === 'Antibiótico') {
+        loteCadFields.classList.remove('oculto');
+        if (p.lotes && p.lotes.length > 0) {
+            p.lotes.forEach(l => {
+                addLoteItem(l.lote, l.caducidad, l.stock);
+            });
+        } else {
+            // Asegurar al menos un campo vacío si no hay lotes
+            addLoteItem();
+        }
+        // Calcular stock total inicial
+        actualizarStockTotal();
+    } else {
+        loteCadFields.classList.add('oculto');
+        // Mostrar stock simple
+        const stockTotal = getStockTotal(p);
+        stockTotalInput.value = stockTotal;
+    }
+
     adminSection.classList.remove('oculto');
     loginSection.classList.add('oculto');
-    userType='admin';
+    userType = 'admin';
+    renderTablasInventario(); // Refrescar las tablas
+  } catch (err) {
+    console.error(err);
+  }
 }
 
-// Login admin
-adminBtn.addEventListener('click', ()=>{
-    loginSection.classList.remove('oculto');
-});
-loginForm.addEventListener('submit', e=>{
-    e.preventDefault();
-    const pass = document.getElementById('adminPass').value;
-    if(pass==='12345'){ // contraseña fija
-        loginSection.classList.add('oculto');
-        adminSection.classList.remove('oculto');
-        userType='admin';
-        renderTablasInventario();
-    } else alert('❌ Contraseña incorrecta');
-});
-salirAdmin.addEventListener('click', ()=>{
-    adminSection.classList.add('oculto');
+function abrirAdmin() {
+  loginSection.classList.remove('oculto');
+}
+
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const pass = document.getElementById('adminPass').value;
+  if (pass === 'Mariposa2026') {
     loginSection.classList.add('oculto');
-    userType='cajero';
+    adminSection.classList.remove('oculto');
+    userType = 'admin';
     renderTablasInventario();
+    document.getElementById('adminPass').value = ''; // Limpiar contraseña
+  } else alert('❌ Contraseña incorrecta');
 });
 
-// Buscar productos
-document.getElementById('searchBar').addEventListener('input', e=>{
-    const term=e.target.value.toLowerCase();
-    productosInventario.forEach(p=>{
-        p.visible = p.nombre.toLowerCase().includes(term) || p.codigo.toLowerCase().includes(term);
-    });
-    renderTablasInventario();
+salirAdmin.addEventListener('click', () => {
+  adminSection.classList.add('oculto');
+  loginSection.classList.add('oculto');
+  userType = 'cajero';
+  addForm.reset();
+  loteCadFields.classList.add('oculto');
+  lotesContainer.innerHTML = '';
+  stockTotalInput.value = '';
+  productoEnEdicion = null;
+  renderTablasInventario();
 });
 
-// Subir CSV
-const btnSubirInventario = document.getElementById('btnSubirInventario');
-const fileInput = document.getElementById('fileInput');
-
-btnSubirInventario.addEventListener('click', ()=> fileInput.click());
-
-fileInput.addEventListener('change', e=>{
-    const file = e.target.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = evt=>{
-        procesarCSV(evt.target.result);
-        fileInput.value="";
-    };
-    reader.readAsText(file);
-});
-
-function procesarCSV(csvText){
-    const lines = csvText.split(/\r?\n/).filter(l=>l.trim()!=="");
-    lines.forEach((line,index)=>{
-        if(index===0) return; // encabezado
-        const [nombre, codigo, precio, lote, stock, stockMin, entradas, categoria, caducidad] = line.split(",");
-        const p = {
-            nombre: nombre||"ND",
-            codigo: codigo||"ND",
-            precio: parseFloat(precio)||0,
-            lote: lote||"",
-            stock: parseInt(stock)||0,
-            stockMin: parseInt(stockMin)||0,
-            entradas: parseInt(entradas)||0,
-            categoria: categoria||"ND",
-            caducidad: caducidad||""
-        };
-        guardarProductoLocal(p);
-    });
-    alert("✅ Inventario cargado correctamente");
+function agregarEntrada() {
+  document.getElementById('entradasSection').classList.remove('oculto');
+  document.getElementById('generalSection').classList.add('oculto');
+  // Se eliminaron: document.getElementById('AntibioticosSection').classList.add('oculto');
+  // Se eliminaron: document.getElementById('proveedoresSection').classList.add('oculto');
+  renderTablaEntradas();
 }
 
-// PDF
-function imprimirPDF(tablaId, titulo){
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    doc.text(titulo, 14, 15);
-    doc.autoTable({ html: '#'+tablaId, startY: 20 });
-    doc.save(`${titulo}.pdf`);
+function volverAlInventario() {
+  document.getElementById('entradasSection').classList.add('oculto');
+  document.getElementById('generalSection').classList.remove('oculto');
+  // Se eliminaron las referencias a AntibioticosSection y proveedoresSection
+  renderTablasInventario();
 }
 
-// Inicial render
-renderTablasInventario();
+/* Procesar entrada desde formulario */
+async function procesarEntrada() {
+  const codigo = document.getElementById('codigoEntrada').value.trim();
+  const lote = document.getElementById('loteEntrada').value.trim();
+  const caducidad = document.getElementById('caducidadEntrada').value;
+  const cantidad = parseInt(document.getElementById('cantidadEntrada').value);
+  if (!codigo || !cantidad || cantidad <= 0) { alert('❌ Por favor ingrese un código y una cantidad positiva'); return; }
+  await actualizarStockConEntradas(codigo, cantidad, lote, caducidad);
+  document.getElementById('codigoEntrada').value = '';
+  document.getElementById('loteEntrada').value = '';
+  document.getElementById('caducidadEntrada').value = '';
+  document.getElementById('cantidadEntrada').value = '';
+}
+
+/* Cerrar sesión */
+function cerrarSesion() {
+  alert('🚪 Sesión cerrada correctamente');
+  window.location.href = "index.html";
+}
+
+/*Escucha mensajes de BroadcastChannel / localStorage
+   (para sincronizar con ven1.html / histori1.html)*/
+if (ventasChannel) {
+  ventasChannel.onmessage = async (ev) => {
+    console.log("Mensaje recibido por BroadcastChannel:", ev.data);
+    const msg = ev.data;
+    // Evitar bucles si el mensaje proviene de esta misma página
+    if (msg.source === 'inventario') return;
+    await handleExternalMessage(msg);
+  };
+}
+
+// storage fallback (cuando otras páginas usan localStorage)
+window.addEventListener('storage', async (ev) => {
+  if (ev.key === 'farmalili_sync' && ev.newValue && ev.newValue !== ev.oldValue) { // Asegurar que haya cambio
+    console.log("Mensaje recibido por localStorage:", ev.newValue);
+    try {
+      const msg = JSON.parse(ev.newValue);
+      // Evitar bucles si el mensaje proviene de esta misma página
+      if (msg.source === 'inventario') return;
+      await handleExternalMessage(msg);
+    } catch (e) {
+        console.error("Error al parsear mensaje de localStorage:", e);
+    }
+  }
+});
+
+async function handleExternalMessage(msg) {
+  if (!msg || !msg.type) return;
+  console.log("Procesando mensaje externo:", msg);
+
+  try {
+    switch (msg.type) {
+      case 'venta':
+        // msg.payload = { productos:[{codigo,cantidad}], usuario }
+        await actualizarStockConVentas(msg.payload);
+        break;
+      case 'reembolso':
+        // payload: { codigos, cantidades }
+        await actualizarStockConReembolsos(msg.payload);
+        break;
+      case 'producto_actualizado':
+      case 'producto_eliminado':
+      case 'entrada':
+      case 'import_csv':
+      case 'eliminar_inventario_total':
+      case 'venta_aplicada':
+      case 'reembolso_aplicado':
+        // Simplemente refrescar tablas/estadísticas ante cualquier evento de sincronización
+        await renderTablasInventario();
+        await renderTablaEntradas();
+        await actualizarEstadisticas();
+        break;
+      default:
+        console.log("Mensaje externo desconocido:", msg.type);
+        break;
+    }
+  } catch (err) {
+    console.error('Error al manejar mensaje externo', err);
+  }
+}
+
+/*Inicialización*/
+(async function init() {
+  try {
+    await openDB();
+    // render inicial
+    await renderTablasInventario();
+    await renderTablaEntradas();
+    await actualizarEstadisticas();
+    console.log("Aplicación de inventario inicializada.");
+  } catch (error) {
+    console.error("Error inicializando la aplicación:", error);
+    alert("Hubo un error al inicializar la aplicación. Por favor, recargue la página.");
+  }
+})();
+
+/* Al final: expose algunas funciones al scope global
+   (para botones dentro de innerHTML)*/
+window.editarProducto = editarProducto;
+window.eliminarProductoLocal = eliminarProductoLocal;
+window.procesarEntrada = procesarEntrada;
+window.subirCSV = subirCSV;
+window.renderTablasInventario = renderTablasInventario;
+window.actualizarEstadisticas = actualizarEstadisticas;
+window.renderTablaEntradas = renderTablaEntradas;
+window.actualizarStockConVentas = actualizarStockConVentas;
+window.actualizarStockConReembolsos = actualizarStockConReembolsos;
+window.descargarInventarioPorCategoria = descargarInventarioPorCategoria;
+window.descargarPDFPorCategoria = descargarPDFPorCategoria;
+window.mostrarDetallesLotes = mostrarDetallesLotes;
 </script>
 </body>
 </html>
