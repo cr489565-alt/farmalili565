@@ -3,142 +3,812 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>📜 Historial - Farmacia Lili 📜</title>
+<title>📜 Historial - FarmaciaLili 3.0 📜</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{
-  font-family:system-ui,sans-serif;
-  background:#66696d;
-  color:#50545e;
-  line-height:1.6;
-  padding-bottom:40px;
-}
-header{
-  background:linear-gradient(90deg,#2563eb,#1e40af);
-  color:white;
-  padding:22px;
-  font-size:24px;
-  font-weight:700;
-  text-align:center;
-  position:relative;
-  box-shadow:0 4px 18px rgba(15,23,42,0.12);
-}
-header img{
-  position:absolute; left:12px; top:50%; transform:translateY(-50%);
-  width:120px; height:80px; border-radius:12px; border:2px solid rgba(255,255,255,0.2);
-}
-nav.main-menu{
-  display:flex;align-items:center;gap:12px;
-  background:#eef6ff;padding:10px 16px;border-bottom:1px solid #dbeafe;
-  position:sticky; top:0; z-index:50;
-}
-.main-menu .menu-link{
-  text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:600;color:#0f172a;border:1px solid #2563eb;
-}
-.main-menu .menu-link.active{background:#2563eb; color:white; border-color: #2563eb;}
-#cajero{margin-left:auto;font-weight:700;color:#1e40af;}
-#logout{background:#ef4444;color:white;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;}
-main{padding:18px;display:flex;flex-direction:column;gap:18px;max-width:1200px;margin:0 auto;}
-section.card{background:white;padding:14px;border-radius:12px;box-shadow:0 6px 24px rgba(15,23,42,0.06);border:1px solid rgba(2,6,23,0.03);}
+body { font-family: system-ui, sans-serif; background:whit; color:#000000; margin:0; padding:0; }
+header {background:#fff;color:#000;padding:34px;font-size:26px;font-weight:bold;text-align:center;position:relative;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
+header img{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:250px;height:100px;border-radius:25px;border:0px solid #e5e7eb;}
+.main-menu {display:flex;align-items:center;padding:10px;background-color:#68af6b;color:white;}
+.menu-link {color:white;text-decoration:none;margin-right:15px;}
+.main-menu .menu-link {color:#1f2937;text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:500;transition:0.2s;border:1px solid #e5e7eb;}
+.main-menu .menu-link:hover {background:#fff;color:#111827;}
+.main-menu .menu-link.active {background:#2563eb;color:white;border-color:#2563eb;}
+#cajero {margin-left:auto;font-weight:bold;color:#000;}
+#logout {background:#dc2626;color:#fff;border:none;border-radius:8px;padding:8px 12px;margin-left:12px;cursor:pointer;font-weight:bold;transition:0.2s;}
+#logout:hover {background:#b91c1c; dding:8px 12px;border-radius:8px;cursor:pointer;}
+main{padding:1px;display:flex;flex-direction:column;gap:18px;max-width:1200px;margin:0 auto;}
 h2{color:#1e3a8a;margin-bottom:8px;}
-.table-container{width:100%;overflow:auto;margin-top:8px;border-radius:8px;}
 table{width:100%;border-collapse:collapse;font-size:0.95rem;}
 th,td{padding:8px;border-bottom:1px solid #e6eef8;text-align:left;}
-th{background:#1e40af;color:white;position:sticky;top:0;}
+th{background:#68af6b; color:white; position:sticky; top:0;}
 tfoot td{font-weight:700;background:#f1f8ff;text-align:right;}
 .small-muted{font-size:0.9rem;color:#64748b;}
 .toggle-btn{background:#0ea5e9;color:white;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;margin-top:6px;}
 .toggle-btn:hover{opacity:0.95;}
 .hidden{display:none;}
-.modal{display:none;position:fixed;inset:0;background:rgba(2,6,23,0.45);display:flex;align-items:center;justify-content:center;z-index:200;}
-.modal-card{width:520px;background:linear-gradient(180deg,#ffffff,#f0f9ff);border-radius:14px;padding:18px;box-shadow:0 8px 40px rgba(2,6,23,0.3);border:1px solid rgba(30,64,175,0.08);}
-.modal-card h3{margin-bottom:10px;color:#1e40af;text-align:center;}
-.modal-card label{display:flex;justify-content:space-between;align-items:center;margin:6px 0;}
-.modal-card input[type="number"]{width:110px;padding:6px;border-radius:6px;border:1px solid #c7ddff;}
-.modal-card .total-row{margin-top:12px;font-weight:700;color:#0f172a;text-align:right;}
+.modal {display:none;position:fixed;inset:0;background:rgba(2,6,23,0.45);align-items:center;justify-content:center;z-index:1000;}
+.modal-card {width:800px;max-width:300%;height:800px;border-radius:14px;padding:10px;box-shadow:0 8px 40px rgba(2,6,23,0.3);border:1px solid rgba(30,64,175,0.08);background-image:linear-gradient(180deg,rgba(255,255,255,0.85),rgba(240,249,255,0.85)),url("lododoc .png");background-size:cover;background-position:center;background-repeat:no-repeat;display:flex;flex-direction:column;overflow-y:auto;}
+.modal-card h3 {margin-bottom:15px;color:#1e40af;text-align:center;text-shadow:0 1px 2px rgba(255,255,255,0.6);}
+.modal-card label {display:flex;justify-content:space-between;align-items:center;margin:10px 0;gap:10px;}
+.modal-card input[type="number"] {width:120px;padding:8px;border-radius:6px;background-color:rgba(255,255,255,0.9);border:1px solid #ccc;}
+.modal-card .total-row {margin-top:15px;font-weight:700;color:#000;text-align:right;}
 .btn-primary{background:#16a34a;color:white;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;margin-top:10px;}
 .btn-secondary{background:#ef4444;color:white;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;margin-left:8px;}
 .note{font-size:0.9rem;color:#475569;margin-top:8px;}
-@media (max-width:720px){
-  header img{display:none;}
-  .modal-ca
-      <td>${v.codigo||'-'}</td>
-      <td>${v.cantidad||0}</td>
-      <td>${v.folio||'-'}</td>
-      <td>${v.doctor||'-'}</td>
-      <td>${v.cedula||'-'}</td>
-      <td>${v.direccion||'-'}</td>
-      <td>${v.receta||'-'}</td>
-      <td>${v.lote||'-'}</td>
-      <td>${v.fecha||'-'}</td>
-      <td>${v.cajero||'-'}</td>
-      <td>${v.metodo||'-'}</td>
-      <td>${formatDinero(v.subtotal)}</td>`;
-    tbody.appendChild(tr);
-  });
+@media (max-width:720px){ header img{display:none;} .modal-card{width:100%;} th,td{font-size:0.85rem;padding:6px;}}
+section.card { flex: 1;  overflow-y: auto; overflow-x: auto;   border: 1px solid #4f5256;   border-radius: 5px; background:  linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)), url('lododoc .png') no-repeat center center;   background-size: auto;  background-position: center; background-attachment:auto ; max-height: 58vh;  box-shadow: inset 0 0 8px rgba(0,0,0,0.2); padding-top: 30px; }
+.table-container{width:100%;overflow:auto;margin-top:1px;border-radius:8px; max-height: calc(58vh - 40px - 50px); }
+#tabla-historial th, #tabla-historial td { padding: 8px; border-bottom: 1px solid #e6eef8; text-align: left; min-width: 100px; }
+#tabla-historial th{ background:#65fd00; color:white;  position: sticky;  top: 0;  z-index: 10;}
+.dropdown { position: relative; display: inline-block;}.dropdown-content { display: none;position: absolute; right: 0; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; border-radius: 8px; overflow: hidden;}
+.dropdown-content a { color: black; padding: 12px 16px; text-decoration: none; display: block;}
+.dropdown-content a:hover { background-color: #f1f1f1;}
+.dropdown:hover .dropdown-content { display: block;}
+.dropdown:hover .toggle-btn { background-color: #0d95d1;}
+.search-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 10px;}
+.search-input { padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.95rem; width: 250px; min-width: 200px;}
+.search-btn { background: #1e40af; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-left: 8px;}
+.search-btn:hover { background: #1e3a8a;}
+.clear-btn { background: #64748b; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; margin-left: 8px;}
+.clear-btn:hover { background: #475569;}
+#historialSection,#historialCorteSection { display: none;}
+.action-row {  text-align:center;  padding: 10px 0; display: flex;  justify-content: flex-end; align-items: center; gap: 15px;flex-wrap: wrap;  background: inherit;}
+.action-row label {  margin: 0;  padding: 0;}
+.action-row input { width: 100px; padding: 6px 8px; border-radius: 6px; border: 1px solid #9ca3af; font-size: 0.9rem;}
+</style>
+</head>
+<body>
+<header>
+  <img src="lododoc .png" alt="Logo Ventas">
+  📜 Historial - FarmaciaLili 3.0 📜 
+</header>
+
+<nav class="main-menu">
+<a href="farma3.html" class="menu-link ">💳 Ventas</a>
+ <a href="inve3.html" class="menu-link">📦 Inventario</a>
+ <a href="histori3.html" class="menu-link active">📜 Historial</a>
+  
+  <div class="dropdown">
+    <button class="toggle-btn">📋 Opciones</button>
+    <div class="dropdown-content">
+      <a href="#" onclick="toggleHistorial()">📂 Historial de ventas 📂</a>
+      <a href="#" onclick="toggleHistorialCorte()">📋 Historial de Corte 📋</a>
+    </div>
+  </div>
+  
+  <span id="cajero"></span>
+  <button id="logout">Cerrar Sesión</button>
+</nav>
+
+<main>
+  <section class="card">
+    <h2>💵 Ventas Generales </h2>
+    <div class="small-muted"> <code></code>  <code></code>.</div>
+        <div class="table-container">
+      <table id="tabla-ventas-general">
+        <thead>
+          <tr><th>#</th><th>Código</th><th>Producto</th><th>Cantidad</th><th>Categoría</th><th>Folio Tiket</th><th>Folio Proveedor</th><th>Doctor</th><th>Cédula</th><th>Folio Receta</th><th>Fecha y Hora</th><th>Cajero</th><th>Método de Pago</th><th>Subtotal</th></tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+            <tr>
+                <td colspan="12" style="text-align: left; padding: 8px;">
+                    <div class="action-row" style="justify-content: flex-start; padding: 0;">
+                    </div>
+                </td>
+                <td style="text-align: right; font-weight: bold;">Total General</td>
+                <td id="total-general" style="text-align: right; font-weight: bold;">$0.00</td>
+            </tr>
+            <tr>
+                <td colspan="12"></td>
+                <td style="text-align: right; font-weight: bold;">Total sin Proveedor</td>
+                <td id="total-sin-proveedor" style="text-align: right; font-weight: bold;">$0.00</td>
+            </tr>
+            <tr>
+                <td colspan="12"></td>
+                <td style="text-align: right; font-weight: bold;">Total Proveedor</td>
+                <td id="total-proveedor" style="text-align: right; font-weight: bold;">$0.00</td>
+            </tr>
+            <tr>
+                <td colspan="14" style="text-align: center; padding: 10px 0;">
+                    <button class="btn-primary" onclick="abrirModalCorte()">💰 Realizar Corte</button>
+                </td>
+            </tr>
+        </tfoot>
+      </table>
+    </div>
+  </section>
+
+    <section class="card" id="historialSection">
+    <h2>📂 Historial de Ventas Completas 📂</h2>
+    <div class="search-container">
+      <div>
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar por Folio, Producto, Código, Doctor, etc...">
+        <button onclick="buscarHistorial()" class="search-btn">🔍 Buscar</button>
+        <button onclick="descargarpdf()" class="clear-btn">descargarPDF</button>
+      </div>
+    </div>
+        <div class="table-container">
+      <table id="tabla-historial">
+        <thead>
+          <tr><th>#</th><th>Código</th><th>Producto</th><th>Cantidad</th><th>Categoría</th><th>Folio Tiket</th><th>Folio Proveedor</th><th>Doctor</th><th>Cédula</th><th>Folio Receta</th><th>Fecha y Hora</th><th>Cajero</th><th>Método de Pago</th><th>Subtotal</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" id="historialCorteSection">
+    <h2>📋 Historial de Corte de Caja Ajustado 📋</h2>
+        <div class="table-container">
+      <table id="tabla-historial-corte">
+        <thead>
+          <tr>
+            <th>#</th>
+             <th>Fecha y Hora</th>
+             <th>Cajero</th>
+             <th>Inicio Caja</th>
+             <th>Total G. Efectivo</th>
+             <th>Total G. Tarjeta</th>
+             <th>Total G. Transferencia</th>
+             <th>Total G. Proveedor</th>
+             <th>Efectivo Neto</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<div class="modal" id="modalCorte">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h3 id="modalTitle">💵 Panel de Corte</h3>
+    <label style="margin-top:8px;">Cantidad Inicio Caja: <input id="inicioCaja" type="number" value="0" step="0.01" readonly style="padding:6px;border-radius:6px;border:1px solid #c7ddff; background-color: #e2e8f0;"></label>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
+      <label>💵 1000: <input class="billete" data-valor="1000" type="number" value="0"></label>
+      <label>💵 500:  <input class="billete" data-valor="500" type="number" value="0"></label>
+      <label>💵 200:  <input class="billete" data-valor="200" type="number" value="0"></label>
+      <label>💵 100:  <input class="billete" data-valor="100" type="number" value="0"></label>
+      <label>💵 50:   <input class="billete" data-valor="50" type="number" value="0"></label>
+      <label>💵 20:   <input class="billete" data-valor="20" type="number" value="0"></label>
+      <label>🪙 10:   <input class="billete" data-valor="10" type="number" value="0"></label>
+      <label>🪙 5:    <input class="billete" data-valor="5" type="number" value="0"></label>
+      <label>🪙 2:    <input class="billete" data-valor="2" type="number" value="0"></label>
+      <label>🪙 1:    <input class="billete" data-valor="1" type="number" value="0"></label>
+      <label>🪙 0.50: <input class="billete" data-valor="0.5" type="number" value="0"></label>
+    </div>
+
+    <div class="total-row">Total Contado (Efectivo en Caja): <span id="totalEfectivoContado">$0.00</span></div>
+    
+    <div style="margin-top:15px; padding:10px; background:#f0f9ff; border-radius:8px;">
+      <h4 style="margin:0 0 10px; color:#1e40af; text-align: center; font-weight: bold;">📊 Resumen de Ventas por Método de Pago:</h4>
+      <div style="display:flex; flex-wrap:wrap; gap:15px;">
+        <div style="flex:1; min-width:150px;">
+            <p style="margin:5px 0; font-weight:bold;">Inicio Caja: <span id="resumenInicioCaja">$0.00</span></p>
+          <p style="margin:5px 0; font-weight:bold;">Ventas Efectivo: <span id="resumenEfectivo">$0.00</span></p>
+          <p style="margin:5px 0; font-weight:bold;">Ventas Tarjeta: <span id="resumenTarjeta">$0.00</span></p>
+        </div>
+        <div style="flex:1; min-width:150px;">
+          <p style="margin:5px 0; font-weight:bold;">Ventas Transferencia: <span id="resumenTransferencia">$0.00</span></p>
+          <p style="margin:5px 0; font-weight:bold;">Ventas Proveedores: <span id="resumenProveedor">$0.00</span></p>
+        </div>
+      </div>
+      
+      <hr style="border:0; border-top:1px dashed #c7ddff; margin: 10px 0;">
+
+      <h4 style="margin:0 0 10px; color:#1e40af; text-align: center; font-weight: bold;">💰 Totales Generales Calculados:</h4>
+      <div style="display:flex; flex-wrap:wrap; gap:15px; background:#e0f2fe; padding:8px; border-radius:6px;">
+        <div style="flex:1; min-width:150px;">
+          <p style="margin:5px 0; font-weight:bold; color:#0369a1;">TOTAL GENERAL EFECTIVO (V.Efectivo - V.Proveedor): <span id="totalGeneralEfectivo">$0.00</span></p>
+          <p style="margin:5px 0; font-weight:bold;">TOTAL GENERAL TARJETA: <span id="totalGeneralTarjeta">$0.00</span></p>
+        </div>
+        <div style="flex:1; min-width:150px;">
+          <p style="margin:5px 0; font-weight:bold;">TOTAL GENERAL TRANSFERENCIA: <span id="totalGeneralTransferencia">$0.00</span></p>
+          <p style="margin:5px 0; font-weight:bold;">TOTAL GENERAL PROVEEDOR: <span id="totalGeneralProveedor">$0.00</span></p>
+        </div>
+      </div>
+
+      <hr style="border:0; border-top:2px solid #0369a1; margin: 15px 0;">
+
+      <div class="total-row" style="font-size:1.1rem; color:#b91c1c;">
+        EFECTIVO NETO (Contado - Inicio Caja): <span id="efectivoNeto">$0.00</span>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;">
+      <button class="btn-primary" onclick="finalizarCorte()">✅ Finalizar Corte e Imprimir</button>
+      <button class="btn-secondary" onclick="cerrarModalCorte()">❌ Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let usuarioActivo = localStorage.getItem("usuarioActivo");
+if(usuarioActivo){
+  document.getElementById("cajero").textContent = "👤 Cajero: " + usuarioActivo;
 }
 
-function toggle(id){document.getElementById(id).classList.toggle('hidden');}
+// Contraseña para el historial de corte (Pista: 1234)
+const CONTRASENA_CORTE = "1234"; 
 
-// ---------- Historial con contraseña ----------
-let historialActivo = false;
-const CONTRASENA_HISTORIAL = "1234"; // contraseña fija temporal, puedes ajustar
-
-function verHistorial(){
-  const pass = document.getElementById('passCorte').value;
-  if(pass === CONTRASENA_HISTORIAL){
-    historialActivo = true;
-    document.getElementById('inputPassDiv').classList.add('hidden');
-    document.getElementById('contenedorCortes').classList.remove('hidden');
-    document.getElementById('histPassDiv').textContent = "🔓 Historial desbloqueado";
-    document.getElementById('passCorte').value = "";
-    renderCortes();
-  } else { alert("🔒 Contraseña incorrecta"); }
+function parseJSON(key){ 
+  try{ 
+    return JSON.parse(localStorage.getItem(key)||"[]"); 
+  }catch(e){ 
+    console.warn(`Error al parsear ${key}:`, e);
+    return []; 
+  } 
 }
 
-function salirHistorial(){
-  historialActivo = false;
-  document.getElementById('contenedorCortes').classList.add('hidden');
-  document.getElementById('inputPassDiv').classList.remove('hidden');
-  document.getElementById('histPassDiv').textContent = "Ingresa contraseña para visualizar el historial.";
-  document.getElementById('passCorte').value = "";
+function setJSON(key,val){ 
+  localStorage.setItem(key, JSON.stringify(val)); 
+}
+
+function formatDinero(n){ 
+  return "$" + (Number(n||0)).toFixed(2); 
+}
+
+// Función para cerrar sesión
+function cerrarSesion() {
+  localStorage.removeItem("usuarioActivo");
+  window.location.href = "index.html";
+}
+
+// Evento para el botón de cerrar sesión
+document.getElementById("logout").addEventListener("click", cerrarSesion);
+
+// Función para cargar las ventas no cortadas (simplificada)
+function cargarTodasLasVentas(){
+  const ventas = parseJSON('ventas');
+  return ventas.filter(venta => venta.productos && venta.productos.length > 0);
+}
+
+function renderVentas(){
+  const ventas = cargarTodasLasVentas();
+  const tbodyG = document.querySelector("#tabla-ventas-general tbody");
+  tbodyG.innerHTML = ""; 
+  let totalG = 0;
+    let totalSinProveedor = 0; 
+    let totalProveedor = 0; 
+  let idxG = 1;
+  
+  ventas.forEach(v=>{
+    (v.productos||[]).forEach(item=>{
+      const subtotal = (Number(item.precio) || 0) * (Number(item.cantidad) || 0);
+      
+      // Llenar tabla Ventas Generales
+      const trG = document.createElement('tr');
+      trG.innerHTML = `<td>${idxG++}</td>
+        <td>${item.codigo||'-'}</td>
+        <td>${item.nombre||'-'}</td>
+        <td>${item.cantidad||0}</td>
+        <td>${item.categoria||'-'}</td>
+        <td>${v.folio||'-'}</td>
+        <td>${v.folioProveedor||'-'}</td>
+        <td>${v.clienteNombre||'-'}</td>
+        <td>${v.clienteCedula||'-'}</td>
+        <td>${v.folioReceta||'-'}</td>
+        <td>${v.fecha||'-'}</td>
+        <td>${v.cajero||'-'}</td>
+        <td>${v.metodoPago||'-'}</td>
+        <td style="text-align: right;">${formatDinero(subtotal)}</td>`;
+      tbodyG.appendChild(trG);
+      totalG += subtotal;
+
+      // Cálculo de nuevos totales (Proveedores y Sin Proveedor)
+      if (v.metodoPago === 'Proveedores') {
+          totalProveedor += subtotal;
+      } else {
+          totalSinProveedor += subtotal;
+      }
+    });
+  });
+
+  document.getElementById('total-general').textContent = formatDinero(totalG);
+    document.getElementById('total-sin-proveedor').textContent = formatDinero(totalSinProveedor);
+    document.getElementById('total-proveedor').textContent = formatDinero(totalProveedor);
+    
+    // Cargar Inicio de Caja temporal en el input de Ventas Generales
+    const inicioGuardado = localStorage.getItem('inicioCajaTemporal');
+    const inputInicioTemp = document.getElementById('inicioCajaTemp');
+    const btnFijar = document.querySelector('.btn-save-temp');
+    
+    if(inicioGuardado !== null && !isNaN(parseFloat(inicioGuardado))) {
+        inputInicioTemp.value = parseFloat(inicioGuardado).toFixed(2);
+        inputInicioTemp.readOnly = true;
+        inputInicioTemp.style.backgroundColor = '#d1fae5';
+        btnFijar.textContent = '✅ Fijado';
+        btnFijar.disabled = true;
+    } else {
+        inputInicioTemp.value = '0.00';
+        inputInicioTemp.readOnly = false;
+        inputInicioTemp.style.backgroundColor = '';
+        btnFijar.textContent = '💾 Fijar';
+        btnFijar.disabled = false;
+    }
+}
+
+function guardarInicioCajaTemporal() {
+    const inputInicioTemp = document.getElementById('inicioCajaTemp');
+    const btnFijar = document.querySelector('.btn-save-temp');
+    const valor = parseFloat(inputInicioTemp.value) || 0;
+    
+    // Validar y guardar el valor
+    localStorage.setItem('inicioCajaTemporal', valor.toFixed(2));
+    
+    // Fijar la apariencia
+    inputInicioTemp.readOnly = true;
+    inputInicioTemp.style.backgroundColor = '#d1fae5';
+    btnFijar.textContent = '✅ Fijado';
+    btnFijar.disabled = true;
+    
+    alert(`Inicio de Caja ($${valor.toFixed(2)}) guardado y fijado para el corte.`);
+}
+
+function handleInicioCajaKey(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        guardarInicioCajaTemporal();
+    }
+}
+
+
+function renderHistorialCompleto() {
+  const ventasCorte = parseJSON('ventasCorte');
+  const tbody = document.querySelector("#tabla-historial tbody");
+  tbody.innerHTML = "";
+  let idx = 1;
+  
+  ventasCorte.forEach(item => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${idx++}</td>
+      <td>${item.codigo||'-'}</td>
+      <td>${item.producto||'-'}</td>
+      <td>${item.cantidad||0}</td>
+      <td>${item.categoria||'-'}</td>
+      <td>${item.folio||'-'}</td>
+      <td>${item.folioProveedor||'-'}</td>
+        <td>${item.doctor||'-'}</td>
+        <td>${item.cedula||'-'}</td>
+        <td>${item.receta||'-'}</td>
+        <td>${item.fecha||'-'}</td>
+        <td>${item.cajero||'-'}</td>
+        <td>${item.metodo||'-'}</td>
+        <td style="text-align: right;">${formatDinero(item.subtotal)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function buscarHistorial() {
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  const ventasCorte = parseJSON('ventasCorte');
+  const tbody = document.querySelector("#tabla-historial tbody");
+  tbody.innerHTML = "";
+  let idx = 1;
+  
+  ventasCorte.forEach(item => {
+    const searchableString = [
+      item.producto, item.codigo, item.categoria, item.folio, item.folioProveedor, 
+      item.doctor, item.cedula, item.receta, item.fecha, item.cajero, item.metodo,
+    ].join(' ').toLowerCase();
+    
+    if (searchableString.includes(searchTerm)) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${idx++}</td>
+        <td>${item.codigo||'-'}</td>
+        <td>${item.producto||'-'}</td>
+        <td>${item.cantidad||0}</td>
+        <td>${item.categoria||'-'}</td>
+        <td>${item.folio||'-'}</td>
+        <td>${item.folioProveedor||'-'}</td>
+        <td>${item.doctor||'-'}</td>
+        <td>${item.cedula||'-'}</td>
+        <td>${item.receta||'-'}</td>
+        <td>${item.fecha||'-'}</td>
+        <td>${item.cajero||'-'}</td>
+        <td>${item.metodo||'-'}</td>
+        <td style="text-align: right;">${formatDinero(item.subtotal)}</td>`;
+      tbody.appendChild(tr);
+    }
+  });
+  
+  if (tbody.children.length === 0) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="14" style="text-align:center; padding:20px;">No se encontraron resultados para "${searchTerm}"</td>`;
+    tbody.appendChild(tr);
+  }
+}
+
+function limpiarBusqueda() {
+  document.getElementById('searchInput').value = '';
+  renderHistorialCompleto();
+}
+
+function toggleHistorial() {
+  const historialSection = document.getElementById('historialSection');
+  const historialCorteSection = document.getElementById('historialCorteSection');
+  
+  if (historialSection.style.display === 'none' || historialSection.style.display === '') {
+    historialSection.style.display = 'block';
+    historialCorteSection.style.display = 'none';
+    renderHistorialCompleto();
+  } else {
+    historialSection.style.display = 'none';
+  }
+}
+
+// FUNCIÓN CLAVE: Muestra el panel de contraseña y luego el historial de corte
+function toggleHistorialCorte() {
+    const historialSection = document.getElementById('historialSection');
+    const historialCorteSection = document.getElementById('historialCorteSection');
+    
+    // Si la sección ya está visible, la ocultamos sin pedir contraseña
+    if (historialCorteSection.style.display === 'block') {
+        historialCorteSection.style.display = 'none';
+        return;
+    }
+
+    // Pedir contraseña
+    const password = prompt("Ingrese la contraseña para ver el Historial de Corte (Pista: 1234)");
+
+    if (password === CONTRASENA_CORTE) {
+        historialCorteSection.style.display = 'block';
+        historialSection.style.display = 'none';
+        renderHistorialCorte();
+    } else {
+        alert("Contraseña incorrecta. Acceso denegado.");
+        historialCorteSection.style.display = 'none';
+    }
+}
+
+function renderHistorialCorte() {
+  const cortes = parseJSON('cortes');
+  const tbody = document.querySelector("#tabla-historial-corte tbody");
+  tbody.innerHTML = "";
+  let idx = 1;
+  
+  cortes.forEach(corte => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${idx++}</td>
+      <td>${corte.fecha||'-'}</td>
+      <td>${corte.cajero||'-'}</td>
+      <td>${formatDinero(corte.inicioCaja||0)}</td>
+      <td>${formatDinero(corte.totalGeneralEfectivo||0)}</td>
+      <td>${formatDinero(corte.tarjeta||0)}</td>
+      <td>${formatDinero(corte.transferencia||0)}</td>
+      <td>${formatDinero(corte.proveedor||0)}</td>
+      <td style="text-align: right;">${formatDinero(corte.efectivoNeto||0)}</td>`;
+    tbody.appendChild(tr);
+  });
 }
 
 // ---------- Modal Corte ----------
-function abrirModalCorte(){document.getElementById('modalCorte').style.display='flex';}
-function cerrarModalCorte(){document.getElementById('modalCorte').style.display='none';}
 
-function finalizarCorte(){
-  const billetes = document.querySelectorAll('.billete');
-  let totalE = 0;
-  billetes.forEach(b=>totalE+=Number(b.value||0)*Number(b.dataset.valor||0));
-  const tarjeta = Number(document.getElementById('totalTarjeta').value||0);
-  const transferencia = Number(document.getElementById('totalTransferencia').value||0);
-  const proveedor = 0;
-  const totalGeneral = totalE + tarjeta + transferencia + proveedor;
-
-  const cortes = parseJSON('cortes');
-  cortes.push({fecha:new Date().toLocaleString(), cajero:usuarioActivo, efectivo:totalE, tarjeta, transferencia, proveedor, total:totalGeneral});
-  setJSON('cortes', cortes);
-
-  const ventas = cargarVentasSincronizadas();
-  const ventasCorte = parseJSON('ventasCorte');
-  ventas.forEach(v=>ventasCorte.push(...v.items.map(it=>({producto:it.nombre,codigo:it.codigo,cantidad:it.cantidad,folio:v.folio,doctor:v.doctor?.nombre,cedula:v.doctor?.cedula,direccion:v.doctor?.direccion,receta:v.doctor?.folioReceta,lote:it.lote,fecha:v.fecha,cajero:v.cajero,metodo:v.metodo,subtotal:it.cantidad*it.precio}))));
-  setJSON('ventasCorte', ventasCorte);
-
-  localStorage.setItem('ventas', JSON.stringify([]));
-  localStorage.setItem('ventasFarma1', JSON.stringify([]));
-
-  cerrarModalCorte();
-  renderVentas();
-  renderCortes();
-  renderVentasCorte();
+function abrirModalCorte(){
+  document.getElementById('modalCorte').style.display = 'flex';
+  
+  // 1. Cargar valor guardado de inicio de caja (del input 'inicioCajaTemp' fijado)
+  const inicioGuardado = localStorage.getItem('inicioCajaTemporal');
+  const inputInicioModal = document.getElementById('inicioCaja');
+  
+  if(inicioGuardado !== null && !isNaN(parseFloat(inicioGuardado))) {
+    inputInicioModal.value = parseFloat(inicioGuardado).toFixed(2);
+  } else {
+    inputInicioModal.value = '0.00';
+  }
+  
+  // 2. Calcular y mostrar los totales por método de pago INMEDIATAMENTE
+  calcularTotalesMetodosPago();
+  
+  // 3. Reiniciar los campos de billetes
+  document.querySelectorAll('.billete').forEach(b => b.value = '0');
+  document.getElementById('totalEfectivoContado').textContent = '$0.00';
+  document.getElementById('efectivoNeto').textContent = '$0.00'; 
 }
 
-// ---------- Inicialización ----------
+function cerrarModalCorte(){
+  document.getElementById('modalCorte').style.display = 'none';
+}
+
+function calcularTotalesMetodosPago(){
+  const ventas = cargarTodasLasVentas();
+  
+  let totalEfectivo = 0;
+  let totalTarjeta = 0;
+  let totalTransferencia = 0;
+  let totalProveedor = 0;
+  
+  ventas.forEach(v => {
+    const metodo = v.metodoPago || 'Efectivo';
+    const subtotal = (v.productos || []).reduce((sum, item) => sum + (Number(item.precio || 0) * Number(item.cantidad || 0)), 0);
+    
+    switch(metodo) {
+      case 'Efectivo':
+        totalEfectivo += subtotal;
+        break;
+      case 'Tarjeta':
+        totalTarjeta += subtotal;
+        break;
+      case 'Transferencia':
+        totalTransferencia += subtotal;
+        break;
+      case 'Proveedores':
+        totalProveedor += subtotal;
+        break;
+      default:
+        totalEfectivo += subtotal;
+    }
+  });
+  
+    // Obtener el valor de Inicio de Caja
+    const inicioCaja = parseFloat(document.getElementById('inicioCaja').value) || 0;
+
+    // Mostrar Resumen
+    document.getElementById('resumenInicioCaja').textContent = formatDinero(inicioCaja); 
+    document.getElementById('resumenEfectivo').textContent = formatDinero(totalEfectivo);
+    document.getElementById('resumenTarjeta').textContent = formatDinero(totalTarjeta);
+    document.getElementById('resumenTransferencia').textContent = formatDinero(totalTransferencia);
+    document.getElementById('resumenProveedor').textContent = formatDinero(totalProveedor);
+
+    // Totales Generales Calculados
+    const totalGeneralEfectivo = totalEfectivo - totalProveedor;
+
+    document.getElementById('totalGeneralEfectivo').textContent = formatDinero(totalGeneralEfectivo);
+    document.getElementById('totalGeneralTarjeta').textContent = formatDinero(totalTarjeta);
+    document.getElementById('totalGeneralTransferencia').textContent = formatDinero(totalTransferencia);
+    document.getElementById('totalGeneralProveedor').textContent = formatDinero(totalProveedor);
+
+    // Recalcular Efectivo Neto (Contado - Inicio Caja)
+    calcularTotalEfectivo(true);
+}
+
+function calcularTotalEfectivo(skipUpdateMetodosPago = false) {
+  const billetes = document.querySelectorAll('.billete');
+  let totalEContado = 0;
+  billetes.forEach(b => {
+    totalEContado += Number(b.value || 0) * Number(b.dataset.valor || 0);
+  });
+  document.getElementById('totalEfectivoContado').textContent = formatDinero(totalEContado);
+
+  // Calcular Efectivo Neto
+  const inicioCaja = parseFloat(document.getElementById('inicioCaja').value) || 0;
+  const efectivoNeto = totalEContado - inicioCaja;
+  document.getElementById('efectivoNeto').textContent = formatDinero(efectivoNeto);
+}
+
+// Eventos para los inputs en el modal
+document.querySelectorAll('.billete').forEach(b => {
+  b.addEventListener('input', () => calcularTotalEfectivo(false)); 
+});
+
+function finalizarCorte(){
+  // 1. Valores de entrada y conteo
+  const inicioCaja = parseFloat(document.getElementById('inicioCaja').value) || 0;
+  const billetes = document.querySelectorAll('.billete');
+  let efectivoContado = 0;
+  billetes.forEach(b => efectivoContado += Number(b.value || 0) * Number(b.dataset.valor || 0));
+  
+  // 2. Totales de Ventas (Tomados del resumen)
+  const efectivoVentas = parseFloat(document.getElementById('resumenEfectivo').textContent.replace('$', '')) || 0;
+  const tarjeta = parseFloat(document.getElementById('resumenTarjeta').textContent.replace('$', '')) || 0;
+  const transferencia = parseFloat(document.getElementById('resumenTransferencia').textContent.replace('$', '')) || 0;
+  const proveedor = parseFloat(document.getElementById('resumenProveedor').textContent.replace('$', '')) || 0;
+  
+  // 3. Totales Generales Calculados
+  const totalGeneralEfectivo = efectivoVentas - proveedor;
+  const efectivoNeto = efectivoContado - inicioCaja; 
+  const totalGeneral = totalGeneralEfectivo + tarjeta + transferencia;
+
+  // Guardar el corte
+  const cortes = parseJSON('cortes');
+  cortes.push({
+    fecha: new Date().toLocaleString(), 
+    cajero: usuarioActivo, 
+    inicioCaja: inicioCaja,
+    efectivoContado: efectivoContado, 
+    efectivoVentas: efectivoVentas, 
+    tarjeta: tarjeta, 
+    transferencia: transferencia, 
+    proveedor: proveedor, 
+    totalGeneralEfectivo: totalGeneralEfectivo, 
+    efectivoNeto: efectivoNeto, 
+    total: totalGeneral
+  });
+  setJSON('cortes', cortes);
+
+  const ventas = cargarTodasLasVentas(); 
+  const ventasCorte = parseJSON('ventasCorte');
+  
+  // Mover las ventas activas al historial
+  ventas.forEach(v => {
+    v.productos.forEach(item => {
+      ventasCorte.push({
+        producto: item.nombre,
+        codigo: item.codigo,
+        cantidad: item.cantidad,
+        categoria: item.categoria || '', 
+        folio: v.folio, 
+        folioProveedor: v.folioProveedor || '', 
+        doctor: v.clienteNombre || '', 
+        cedula: v.clienteCedula || '', 
+        receta: v.folioReceta || '', 
+        fecha: v.fecha, 
+        cajero: v.cajero,
+        metodo: v.metodoPago, 
+        subtotal: (item.precio * item.cantidad) 
+      });
+    });
+  });
+  
+  setJSON('ventasCorte', ventasCorte);
+
+  // Vaciar solo la clave de ventas activas 'ventas'
+  localStorage.setItem('ventas', JSON.stringify([]));
+
+  // Limpiar inicio de caja temporal y el input de la página (resetear el estado de fijado)
+  localStorage.removeItem('inicioCajaTemporal');
+  document.getElementById('inicioCajaTemp').value = '0.00';
+  document.getElementById('inicioCajaTemp').readOnly = false;
+  document.getElementById('inicioCajaTemp').style.backgroundColor = '';
+  document.querySelector('.btn-save-temp').textContent = '💾 Fijar';
+  document.querySelector('.btn-save-temp').disabled = false;
+
+
+  // Imprimir ticket
+  imprimirTicketCorte(
+    inicioCaja, 
+    efectivoContado, 
+    tarjeta, 
+    transferencia, 
+    proveedor, 
+    totalGeneral,
+    efectivoVentas, 
+    totalGeneralEfectivo, 
+    efectivoNeto 
+  );
+
+  cerrarModalCorte();
+  
+  // Actualizar la vista de la tabla de ventas (vacía)
+  renderVentas();
+  
+  // Cerrar sesión
+  cerrarSesion();
+}
+
+function imprimirTicketCorte(inicioCaja, efectivo, tarjeta, transferencia, proveedor, totalGeneral) {
+  const ventana = window.open("","Ticket","width=300,height=600");
+  const fecha = new Date().toLocaleString();
+  
+  let html = `<html><head><title>Ticket de Corte</title>
+  <style>
+    body { 
+      font-family: 'Courier New', monospace; 
+      margin: 0; 
+      padding: 10px; 
+      background-color: #fff; 
+      color: #000;
+      font-size: 10px;
+      line-height: 1.2;
+      width: 2.2in;
+      margin: 0 auto;
+    }
+    .ticket-header {
+      text-align: center;
+      padding: 5px 0;
+      border-bottom: 1px solid #000;
+      margin-bottom: 10px;
+    }
+    .ticket-header h2 {
+      margin: 3px 0;
+      font-size: 14px;
+      color: #000;
+    }
+    .ticket-header p {
+      margin: 2px 0;
+      font-size: 9px;
+    }
+    .info-container {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0;
+      font-size: 10px;
+    }
+    .info-container div {
+      margin: 2px 0;
+    }
+    .info-container strong {
+      color: #000;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+      font-size: 10px;
+    }
+    th, td {
+      padding: 4px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f0f0f0;
+      color: #000;
+    }
+    .total-row {
+      font-weight: bold;
+      background-color: #f0f0f0;
+    }
+    .resumen-row {
+      font-weight: bold;
+      margin: 5px 0;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 15px;
+      padding-top: 10px;
+      border-top: 1px dashed #000;
+      font-style: italic;
+      color: #000;
+      font-size: 9px;
+    }
+    .center { text-align: center; }
+    .right { text-align: right; }
+    .bold { font-weight: bold; }
+  </style>
+  </head><body>
+  <div class="ticket-header">
+    <h2>💊 FarmaciaLili - Corte 💊</h2>
+    <p>Farmacia Copias, Manzana 012</p>
+    <p>56589 Zoquiapan, Méx</p>
+    <p>Tel: 55 7883 6807</p>
+  </div>
+  
+  <div class="info-container">
+    <div>
+      <div><strong>Fecha:</strong> ${fecha}</div>
+    </div>
+    <div>
+      <div><strong>Cajero:</strong> ${usuarioActivo}</div>
+    </div>
+  </div>
+  
+  <div class="resumen-row">
+    <p><strong>Inicio Caja:</strong> ${formatDinero(inicioCaja)}</p>
+    <p><strong>Efectivo:</strong> ${formatDinero(efectivo)}</p>
+    <p><strong>Tarjeta:</strong> ${formatDinero(tarjeta)}</p>
+    <p><strong>Transferencia:</strong> ${formatDinero(transferencia)}</p>
+    <p><strong>Proveedores:</strong> ${formatDinero(proveedor)}</p>
+    <p><strong>Total Neto:</strong> ${formatDinero(totalGeneral)}</p>
+  </div>
+  <br>
+  <div class="footer">
+    FIRRNA JEFE 
+    <p> ✅ Corte Finalizado ✅ </p>
+    <p> 🩺 Gracias por su confianza 🩺 </p>
+  </div>
+  </body></html>`;
+  
+  ventana.document.write(html);
+  ventana.print();
+  ventana.close();
+}
+
+// Inicialización
 renderVentas();
-renderVentasCorte();
+
+// Asegurar que el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+  // Evento para búsqueda en tiempo real
+  document.getElementById('searchInput').addEventListener('input', function() {
+    if (this.value.trim() === '') {
+      renderHistorialCompleto();
+    } else {
+      buscarHistorial();
+    }
+  });
+});
 </script>
 </body>
 </html>
-
