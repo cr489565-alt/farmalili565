@@ -1,817 +1,1183 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>📜 Historial - FarmaciaLili 2.0 📜</title>
+<title>📦 Inventario - FarmaciaLili 3.0 📦</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 <style>
- body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
-        header { background:#ffffff;  color:#000000;  padding: 30px; font-size: 26px; font-weight: bold; text-align: center; position: relative; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        header img { position:absolute; left:10px; top:50%; transform:translateY(-50%); width:150px; height:90px; border-radius:25px; border: 0px solid #e5e7eb; }
-        main { padding:16px; display:flex; flex-direction:column; gap:16px; }
-        .main-menu { display: flex; align-items: center; padding: 10px; background-color: #68af6b; color: white; }
-        .menu-link { color: white; text-decoration: none; margin-right: 15px; }
-        .main-menu .menu-link { color:#1f2937; text-decoration:none; padding:8px 12px; border-radius:8px; font-weight:500; transition:0.2s; border: 1px solid #e5e7eb; }
-        .main-menu .menu-link:hover { background:#ffffff; color:#111827; }
-        .main-menu .menu-link.active { background:#2563eb; color:white; border-color: #2563eb; }
-#cajero { margin-left:auto; font-weight:bold; color:#000000; }
-#logout{background:#ef4444;color:white;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;}
-main{padding:1px;display:flex;flex-direction:column;gap:18px;max-width:1200px;margin:0 auto;}
-section.card { width: 100%; background:rgb(255, 255, 255);padding:5px;border-radius:12px;box-shadow:0 6px 24px rgba(15,23,42,0.06);border:1px solid rgba(2,6,23,0.03);}
-h2{color:#1e3a8a;margin-bottom:8px;}
-.table-container{width:100%;overflow:auto;margin-top:1px;border-radius:8px;}
-table{width:100%;border-collapse:collapse;font-size:0.95rem;}
-th,td{padding:8px;border-bottom:1px solid #e6eef8;text-align:left;}
-th{background:#68af6b;color:white;position:sticky;top:0;}
-tfoot td{font-weight:700;background:#f1f8ff;text-align:right;}
-.small-muted{font-size:0.9rem;color:#64748b;}
-.toggle-btn{background:#0ea5e9;color:white;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;margin-top:6px;}
-.toggle-btn:hover{opacity:0.95;}
-.hidden{display:none;}
-.modal {  display: none;  position: fixed; inset: 0; background: rgba(2, 6, 23, 0.45); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-.modal-card { width: 800px; max-width: 300%;        height: 800px; border-radius: 14px; padding: 10px; box-shadow: 0 8px 40px rgba(2, 6, 23, 0.3); border: 1px solid rgba(30, 64, 175, 0.08); background-image:   linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(240, 249, 255, 0.85)),  url("lododoc .png");  background-size: cover; background-position: center; background-repeat: no-repeat; display: flex; flex-direction: column;  overflow-y: auto;}
-.modal-card h3 { margin-bottom: 15px; color: #1e40af; text-align: center; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);}
-.modal-card label { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; gap: 10px; }
-.modal-card input[type="number"] { width: 120px; padding: 8px;  border-radius: 6px; background-color: rgba(255, 255, 255, 0.9); border: 1px solid #ccc;}
-.modal-card .total-row { margin-top: 15px; font-weight: 700; color: #000000; text-align: right;}
-.btn-primary { background: #16a34a; color: white;  padding: 10px 14px; border-radius: 10px;  border: none;  cursor: pointer;  margin-top: 10px; width: 100%; }
-.btn-secondary {  background: #ef4444;  color: white; padding: 10px 14px;  border-radius: 10px;  border: none; cursor: pointer; margin-top: 10px; width: 100%; }
-.note { font-size: 0.9rem; color: #475569; margin-top: 8px;}
-@media (max-width: 720px) { header img {display: none;}
-.modal-card { width: 95%; height: auto; padding: 15px;}
-th, td { font-size: 0.85rem; padding: 6px;}
-.modal-card label {flex-direction: column; align-items: flex-start;}.modal-card input[type="number"] { width: 100%;}
-.btn-primary, .btn-secondary { margin-left: 0;}}
-.dropdown { position: relative; display: inline-block;}
-.dropdown-content { display: none; position: absolute; right: 0; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; border-radius: 8px; overflow: hidden;}
-.dropdown-content a { color: black; padding: 12px 16px; text-decoration: none; display: block;}
-.dropdown-content a:hover { background-color: #f1f1f1;}
-.dropdown:hover .dropdown-content { display: block;}
-.dropdown:hover .toggle-btn { background-color: #0d95d1;}
-.search-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 10px;}
-.search-input { padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.95rem; width: 250px; min-width: 200px;}
-.search-btn { background: #1e40af; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-left: 8px;}
-.search-btn:hover { background: #1e3a8a;}
-.clear-btn { background: #64748b; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; margin-left: 8px;}
-.clear-btn:hover { background: #475569;}
-#historialSection, #historialCorteSection { display: none;}
+
+body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+header {background:#fff;color:#000;padding:34px;font-size:26px;font-weight:bold;text-align:center;position:relative;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
+header img{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:250px;height:100px;border-radius:25px;border:0px solid #e5e7eb;}
+.main-menu {display:flex;align-items:center;padding:10px;background-color:#68af6b;color:white; }
+.menu-link {color:white;text-decoration:none;margin-right:15px;}
+.main-menu .menu-link {color:#1f2937;text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:500;transition:0.2s;border:1px solid #e5e7eb;}
+.main-menu .menu-link:hover {background:#fff;color:#111827;}
+.main-menu .menu-link.active {background:#2563eb;color:white;border-color:#2563eb;}
+#cajero {margin-left:auto;font-weight:bold;color:#000;}
+#logout {background:#dc2626;color:#fff;border:none;border-radius:8px;padding:8px 12px;margin-left:12px;cursor:pointer;font-weight:bold;transition:0.2s;}
+#logout:hover {background:#b91c1c; padding: 8px 12px;border-radius:8px;cursor:pointer;} 
+
+#searchBar { margin-left:10px; padding:8px; border-radius:6px;  }
+input,button,select{padding:9px;border-radius:6px;border:1px solid #d1d5db;margin:4px 0;background:#f9fafb;color:#1f2937;}
+input,select{width:200px;background:#ffffff;}
+button{background:#2563eb;color:white;cursor:pointer;font-weight:bold;border:none;}
+button:hover{background:#1d4ed8;}
+.btn{padding:0.4rem 1rem;border:none;border-radius:8px;cursor:pointer;font-weight:500;transition:0.2s;border:1px solid transparent;}
+.btn-edit{background:#2563eb;color:#fff;}
+.btn-edit:hover{background:#1e40af;}
+.btn-del{background:#dc2626;color:#fff;}
+.btn-del:hover{background:#991b1b;}
+.btn-pdf{background:#facc15;color:#000;margin-left:5px;}
+.btn-pdf:hover{background:#eab308;}
+.oculto{display:none;}
+.panel-admin{background:#ffffff;border:2px solid #2563eb;padding:1rem;border-radius:12px;margin-bottom:1rem;box-shadow:0 4px 6px rgba(0,0,0,0.05);}
+.numeracion { width:40px; text-align:center; font-weight:bold; color:#2563eb; }
+.precio-verde { background:#68af6b;color:rgb(0, 0, 0); padding:6px; border-radius:0px;  }
+.stock-verde{background:#16a34a;color:#fff;padding:6px;border-radius:6px}
+.stock-amarillo{background:#eab308;color:#000;padding:6px;border-radius:6px}
+.stock-rojo{background:#b91c1c;color:#fff;padding:6px;border-radius:6px}
+.stockmin-rojo{background:#f6ff00;color:#000;padding:6px;border-radius:6px}
+.entradas-azul{background:#2563eb;color:#fff;padding:6px;border-radius:6px}
+#tablaEntradasContainer {  flex-grow: 1;  overflow-y: relative;  max-height: 100%;}
+
+  
+ .section { text-align:center; width:95%; background:linear-gradient(120deg,#ffffff 80%,#dbeafe 100%); padding:24px; border-radius:15px; box-shadow:0 8px 28px rgba(0,0,0,.1); margin:12px auto; }
+   .table  { width: 100%; border-collapse: collapse; margin-top: 0px; table-layout: fixed; min-height: 100%;}
+
+th, td { padding:1px; border-bottom: 1px solid #e5e7eb; text-align: left; word-wrap: break-word;}
+th {  background-color:#68af6b;  position: sticky; top: 0; z-index: 2; color: rgb(0, 0, 0); text-align: left; padding: 0px;
+}
+
+h2.seccion { display:flex; justify-content:space-between; align-items:center; margin-top:0; color:#000000; background:#067be8; padding:10px; border-radius:8px; }
+table { width:100%; border-collapse:collapse; margin-top:12px; background:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05); }
+tr:nth-child(even) { background-color:#f9fafb; }
+tr:hover { background-color: rgb(174, 207, 205);}
+
+.menu-dropdown{position:relative;display:inline-block;margin-left:10px;}
+.menu-btn{background:#2563eb;color:white;padding:8px 12px;border:none;border-radius:8px;cursor:pointer;font-weight:500;}
+.menu-btn:hover{background:#1e40af;}
+.dropdown-content{display:none;position:absolute;right:0;background-color:white;min-width:220px;box-shadow:0 4px 10px rgba(0,0,0,0.2);border-radius:8px;z-index:10;}
+.dropdown-content button{width:100%;text-align:left;padding:10px;border:none;background:none;color:#111827;cursor:pointer;border-bottom:1px solid #e5e7eb;}
+.dropdown-content button:hover{background:#f3f4f6;}
+.menu-dropdown.show .dropdown-content{display:block;}
+
+#modalDetalles { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:9999;}
+.modal-contenido { background:#fff; padding:20px; border-radius:10px; width:90%; max-width:500px; box-shadow:0 5px 15px rgba(0,0,0,0.3); text-align:left;}
+.modal-contenido h3 { margin-top:0; color:#2563eb; }
+.modal-contenido p { font-size:15px; margin:6px 0; }
+.modal-footer { text-align:right; margin-top:10px; }
+
+/* Estilos para campos de Entradas Dinámicos */
+#loteCadEntradas {
+    background: #eef2ff;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+    border: 1px dashed #2563eb;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+#loteCadEntradas input, #loteCadEntradas select {
+    width: 150px;
+}
+#loteCadEntradas label {
+    font-weight: bold;
+    color: #1f2937;
+}
 </style>
 </head>
 <body>
 <header>
   <img src="lododoc .png" alt="Logo Ventas">
-  📜 Historial -  FarmaciaLili 2.0 📜
+  📦 Inventario - FarmaciaLili 1.0 📦
 </header>
 
 <nav class="main-menu">
-  <a href="farma2.html" class="menu-link">💳 Ventas</a>
-  <a href="inve2.html" class="menu-link">📦 Inventario</a>
-  <a href="histori2.html" class="menu-link active">📜 Historial</a>
+  <a href="farma3.html" class="menu-link">💳 Ventas</a>
+  <a href="inve3.html" class="menu-link active">📦 Inventario</a>
+  <a href="histori3.html" class="menu-link">📜 Historial</a>
+  <input type="text" id="searchBar" placeholder="🔎 Buscar...">
+  <span id="cajero"></span>
 
-  <div class="dropdown">
-    <button class="toggle-btn">📋 Opciones</button>
+  <div class="menu-dropdown" id="menuOpciones">
+    <button class="menu-btn">☰ Menú</button>
     <div class="dropdown-content">
-      <a href="#" onclick="toggleHistorial()">📂 Historial de ventas 📂</a>
-      <a href="#" onclick="toggleHistorialCorte()">📋 Historial de Corte 📋</a>
+      <button id="btnAdminPanel">⚙️ Panel Admin</button>
+      <button id="btnSubirInventario">📊 Subir Inventario</button>
+      <button id="btnEliminarInventario">❌ Eliminar Inventario</button>
+      <button id="btnEntradas">➕ Entradas</button>
+      <button id="btnDescargarCSV">📂 DESCARGAR CATEGORIAS CSV</button>
+      <button id="btnDescargarPDF">📄 DESCARGAR CATEGORIAS  PDF</button>
+      <button id="btnDescargarCSVCompleto">📁 INVENTARIO COMPLETO CSV</button>
+      <button id="btnDescargarPDFCompleto">📑 INVENTARIO COMPLETO PDF</button>
+      <button id="logout">🚪 Cerrar Sesión</button>
     </div>
   </div>
-
-  <span id="cajero"></span>
-  <button id="logout">Cerrar Sesión</button>
 </nav>
 
 <main>
-  <section class="card">
-    <h2>💵 Ventas Generales </h2>
-    <div class="table-container">
-      <table id="tabla-ventas-general">
-        <thead>
-          <tr>
-            <th>#</th><th>Producto</th><th>Folio Proveedor</th><th>Código Completo</th><th>Cantidad</th><th>Folio</th>
-            <th>Doctor</th><th>Cédula</th><th>Folio Receta</th>
-            <th>Fecha</th><th>Cajero</th><th>Método</th><th>Subtotal</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-        <tfoot>
-            <tr><td colspan="12">Total General (sin Proveedores)</td><td id="total-general">$0.00</td></tr>
-            <tr><td colspan="12">Total Proveedores</td><td id="total-proveedores">$0.00</td></tr>
-        </tfoot>
-      </table>
-    </div>
-  </section>
+<section id="loginSection" class="oculto">
+  <h2>👑 PANEL ADMINISTRACIÓN 👑</h2>
+  🔐 Ingresa Contraseña
+  <form id="loginForm">
+    <input type="password" id="adminPass" placeholder="Contraseña" required>
+    <button type="submit" class="btn btn-edit">Ingresar</button>
+  </form>
+</section>
 
-  <section class="card">
-    <h2>💊 Ventas Antibióticos</h2>
-    <div class="table-container">
-      <table id="tabla-antibioticos">
-        <thead>
-          <tr>
-            <th>#</th><th>Producto</th><th>Código</th><th>Código Completo</th><th>Cantidad</th><th>Folio</th><th>Doctor</th><th>Cédula</th><th>Dirección</th><th>Receta</th><th>Lote</th><th>Fecha</th><th>Cajero</th><th>Método</th><th>Subtotal</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-        <tfoot>
-          <tr><td colspan="14">Total Antibióticos</td><td id="total-antibioticos">$0.00</td></tr>
-          <tr><td colspan="15" style="text-align:center;">
-            <button class="btn-primary" onclick="abrirModalCorte()">💾 Realizar Corte</button>
-          </td></tr>
-        </tfoot>
-      </table>
+<section id="adminSection" class="oculto panel-admin">
+  <h2>⚙️ Panel Administrador</h2>
+  <form id="addForm" style="margin-top:1rem;">
+    <h3>➕ Agregar / Editar Producto</h3>
+    <input type="text" id="nombre" placeholder="Nombre" required>
+    <input type="text" id="codigo" placeholder="Código" required>
+    <input type="number" id="precio" placeholder="Precio" step="0.01" required>
+    
+    <div id="loteCadFields">
+        <h4>🧪 Lotes</h4>
+        <div id="lotesContainer">
+            </div>
+        <button type="button" id="agregarLoteBtn" class="btn btn-pdf">➕ Añadir Lote</button>
     </div>
-  </section>
-
-  <section class="card" id="historialSection">
-    <h2>historial de ventas </h2>
-    <div class="search-container">
-      <div>
-        <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nombre o código...">
-        <button onclick="buscarHistorial()" class="search-btn">🔍 Buscar</button>
-        <button onclick="limpiarBusqueda()" class="clear-btn">🗑️ Limpiar</button>
-      </div>
+    
+    <input type="number" id="stock" placeholder="Stock Total (Cantidad)" min="0" class="oculto" value="0">
+    
+    <input type="number" id="stockMin" placeholder="Mínimo" min="0">
+    <input type="number" id="entradas" placeholder="Entradas" class="oculto">
+    
+    <input type="text" id="categoria" placeholder="Categoría (Ej: Antibiótico)" value="Antibiótico" required>
+    
+    <div style="margin-top:10px;">
+        <button type="submit" class="btn btn-edit">Guardar</button>
+        <button type="button" id="salirAdmin" class="btn btn-del">Cancelar</button>
+        <button type="button" id="deleteProductBtn" class="btn btn-del oculto">🗑️ Eliminar Producto</button>
     </div>
-    <div class="table-container">
-      <table id="tabla-historial">
-        <thead>
-          <tr>
-            <th>#</th><th>Producto</th><th>Folio Proveedor</th><th>Código Completo</th><th>Cantidad</th><th>Folio</th><th>Doctor</th><th>Cédula</th><th>Dirección</th><th>Receta</th><th>Lote</th><th>Fecha</th><th>Cajero</th><th>Método</th><th>Subtotal</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </section>
+  </form>
+</section>
 
-  <section class="card" id="historialCorteSection">
-    <h2>📋 Historial de Corte</h2>
-    <div class="table-container">
-      <table id="tabla-historial-corte">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Fecha y Hora</th>
-            <th>Cajero</th>
-            <th>Inicio Caja</th>
-            <th>Efectivo</th>
-            <th>Tarjeta</th>
-            <th>Transferencia</th>
-            <th>Proveedores</th>
-            <th>Total contado</th>
-            <th>Subtotal</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </section>
-</main>
-
-<div class="modal" id="modalCorte">
-  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <h3 id="modalTitle">💵 Panel de Corte 💵 </h3>
-    <label style="margin-top:8px;">Cantidad Inicio Caja: <input id="inicioCaja" type="number" value="0" step="0.01" style="padding:6px;border-radius:6px;border:1px solid #c7ddff;"></label>
-
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
-      <div class="billetes-container">
-        <label>💵 1000: <input class="billete" data-valor="1000" type="number" value=""><span class="total-billete">= $0.00</span></label>
-        <label>💵 500:  <input class="billete" data-valor="500" type="number" value=""><span class="total-billete">= $0.00</span></label>
-        <label>💵 200:  <input class="billete" data-valor="200" type="number" value=""><span class="total-billete">= $0.00</span></label>
-        <label>💵 100:  <input class="billete" data-valor="100" type="number" value=""><span class="total-billete">= $0.00</span></label>
-        <label>💵 50:   <input class="billete" data-valor="50" type="number" value=""><span class="total-billete">= $0.00</span></label>
-        <label>💵 20:   <input class="billete" data-valor="20" type="number" value=""><span class="total-billete">= $0.00</span></label>
-        <label>🪙 10:   <input class="billete" data-valor="10" type="number" value=""><span class="total-billete">= $0.00</span></label>
-        <label>🪙 5:    <input class="billete" data-valor="5" type="number" value=""><span class="total-billete">= $0.00</span></label>
-        <label>🪙 2:    <input class="billete" data-valor="2" type="number" value=""><span class="total-billete">= $0.00</span></label>
-        <label>🪙 1:    <input class="billete" data-valor="1" type="number" value=""><span class="total-billete">= $0.00</span></label>
-        <label>🪙 0.50: <input class="billete" data-valor="0.5" type="number" value=""><span class="total-billete">= $0.00</span></label>
-      </div>
-
-    </div>
-<div class="total-row">Total Efectivo Contado: <span id="totalEfectivo">$0.00</span></div>
-    <div style="margin-top:12px; padding:10px; background:#f0f9ff; border-radius:8px;">
-      <h4 style="margin:0 0 10px; color:#1e40af; text-align: center; font-weight: bold;">RESUMEN DE METODOS DE PAGO:</h4>
-      <div style="display:flex; flex-wrap:wrap; gap:15px;">
-          <div style="flex:1; min-width:150px;">
-              <p style="margin:5px 0; font-weight:bold;">Inicio Caja: <span id="resumenInicioCaja">$0.00</span></p>
-          </div>
-      </div>
-      <div style="display:flex; flex-wrap:wrap; gap:15px;">
-        <div style="flex:1; min-width:150px;">
-          <p style="margin:5px 0; font-weight:bold;">Efectivo: <span id="resumenEfectivo">$0.00</span></p>
-          <p style="margin:5px 0; font-weight:bold;">Tarjeta: <span id="resumenTarjeta">$0.00</span></p>
-        </div>
-        <div style="flex:1; min-width:150px;">
-          <p style="margin:5px 0; font-weight:bold;">Transferencia: <span id="resumenTransferencia">$0.00</span></p>
-          <p style="margin:5px 0; font-weight:bold;">Provedores: <span id="resumenProveedor">-$0.00</span></p>
-        </div>
-      </div>
-      <h4 style="margin:0 0 10px; color:#1e40af; text-align: center; font-weight: bold;">TOTALES GENERALES:</h4>
-      <div style="display:flex; flex-wrap:wrap; gap:15px; margin-top: 10px;">
-        <div style="flex:1; min-width:150px;">
-          <p style="margin:5px 0; font-weight:bold;">Total General (sin provedor): <span id="resumenTotalGeneral">$0.00</span></p>
-          <p style="margin:5px 0; font-weight:bold;">Total Contador Efectivo: <span id="resumenTotalContador">$0.00</span></p>
+<section id="entradasSection" class="oculto panel-admin">
+    <h2>➕ Registro de Entradas (Existencias Físicas)</h2>
+    <form id="formEntradas">
+        <input type="text" id="codigoEntrada" placeholder="Código del Producto" required>
+        <input type="number" id="cantidadEntrada" placeholder="Cantidad a sumar" min="1" required>
+        
+        <div id="loteCadEntradas" class="oculto">
+             <label for="loteEntrada">Lote:</label>
+             <input type="text" id="loteEntrada" placeholder="ID del Lote">
+             <label for="caducidadEntrada">Caducidad:</label>
+             <input type="date" id="caducidadEntrada">
         </div>
         
-      </div>
-      <h4 style="margin:0 0 10px; color:#1e40af; text-align: center; font-weight: bold;">TOTALES NETOS:</h4>
-      <div style="display:flex; flex-wrap:wrap; gap:15px; margin-top: 10px;">
-        <div style="flex:1; min-width:150px;">
-          <p style="margin:5px 0; font-weight:bold;">Total Neto Efectivo : <span id="resumenTotalNeto">$0.00</span></p>
-          <p style="margin:5px 0; font-weight:bold;">Total Neto Contador : <span id="resumenTotalNetoContador">$0.00</span></p>
+        <button type="submit" class="btn entradas-azul">Registrar Entrada</button>
+        <button type="button" id="salirEntradas" class="btn btn-del">Cancelar</button>
+    </form>
+    
+    <div style="margin-top: 15px;">
+        <h3>Historial de Entradas (Últimas 50)</h3>
+        <div class="section">
+            <div id="tablaEntradasContainer">
+                <table id="tablaEntradas" class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Código</th>
+                            <th>Descripción</th>
+                            <th>Stock Anterior</th>
+                            <th>Entradas</th>
+                            <th>Nuevo Stock</th>
+                            <th>Cajero</th>
+                            <th>Fecha/Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
-      </div>
     </div>
+</section>
 
-    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;">
-      <!-- Botón ahora tiene un id y no depende exclusivamente de onclick inline -->
-      <button class="btn-primary" onclick="finalizarCorte()">✅ Finalizar Corte</button>
-      <button class="btn-secondary" id="btnCerrarCorte">❌ Cerrar</button>
+<section class="section">
+📦 Inventario - General
+    <table id="inventarioTable" class="table">
+        <thead>
+            <tr>
+                 <th class="numeracion">#</th>
+                <th>Código</th>
+                <th>Producto</th>
+                 <th class ="precio-verde">Precio </th>
+                <th>Stock Total</th>
+                <th>Mínimo</th>
+                <th>Entradas</th>
+                <th>Categoría</th>
+                <th>Lotes / Caducidad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+</section>
+</main>
+
+<div id="modalDetalles">
+  <div class="modal-contenido">
+    <h3>Detalles del Producto</h3>
+    <div id="detallesContenido">
+      </div>
+    <div class="modal-footer">
+      <button id="cerrarDetalles" class="btn btn-edit">Cerrar</button>
     </div>
   </div>
 </div>
 
 <script>
-/* ---------- CONFIG ---------- */
-const DB_NAME = 'farmalili-db'; 
-const DB_VERSION = 1;
-// Sincronizado con farma2.html
-const STORE_VENTAS_ACTUALES = 'ventasHistorial'; 
-const STORE_VENTAS_CORTE = 'ventas_corte';
-const STORE_CORTES = 'cortes';
-const STORE_HISTORIAL = 'historial'; // Añadido para escuchar reembolsos
-const bc = new BroadcastChannel('farmalili-ventas'); 
+// ---------------------------------------------------------------------------------------------------
+// 🔹 LÓGICA DE LA APLICACIÓN FARMACIALILI 3.0 (INVENTARIO) 🔹
+// ---------------------------------------------------------------------------------------------------
 
-/* ---------- DB HELPERS ---------- */
-function openDB() {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onupgradeneeded = (e) => {
-      const db = e.target.result;
-      // Asegurar que existan todas las tiendas que usamos
-      if(!db.objectStoreNames.contains(STORE_VENTAS_ACTUALES)) {
-        db.createObjectStore(STORE_VENTAS_ACTUALES, { autoIncrement: true });
-      }
-      if(!db.objectStoreNames.contains(STORE_VENTAS_CORTE)) {
-        db.createObjectStore(STORE_VENTAS_CORTE, { autoIncrement: true });
-      }
-      if(!db.objectStoreNames.contains(STORE_CORTES)) {
-        db.createObjectStore(STORE_CORTES, { autoIncrement: true });
-      }
-      // Asegurar que exista la tienda de historial para escuchar reembolsos
-      if(!db.objectStoreNames.contains(STORE_HISTORIAL)) {
-        db.createObjectStore(STORE_HISTORIAL, { autoIncrement: true });
-      }
-    };
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
+// 🔑 Autenticación y Carga Inicial
+let usuarioActivo = localStorage.getItem("usuarioActivo");
+if(!usuarioActivo){
+    window.location.href="index.html";
+} else {
+    document.getElementById("cajero").textContent = "👤 Cajero: "+usuarioActivo;
 }
 
-async function idbAdd(storeName, value) {
-  const db = await openDB();
-  return new Promise((res, rej) => {
-    const tx = db.transaction(storeName, 'readwrite');
-    const st = tx.objectStore(storeName);
-    const r = st.add(value);
-    tx.oncomplete = () => res(r.result);
-    tx.onerror = () => rej(tx.error);
-  });
+// 🆕 ESTADO DE SESIÓN DE ADMINISTRADOR
+let isAdminLoggedIn = false; 
+
+// 📦 Datos de la Aplicación (LocalStorage)
+function parseJSON(key){
+    try{
+        return JSON.parse(localStorage.getItem(key)||"[]");
+    }catch(e){
+        console.warn(`Error al parsear ${key}:`, e);
+        return [];
+    }
+}
+function setJSON(key,val){
+    localStorage.setItem(key, JSON.stringify(val));
 }
 
-async function idbGetAll(storeName) {
-  const db = await openDB();
-  return new Promise((res, rej) => {
-    const tx = db.transaction(storeName, 'readonly');
-    const st = tx.objectStore(storeName);
-    const req = st.getAll();
-    req.onsuccess = () => res(req.result);
-    req.onerror = () => rej(req.error);
-  });
+let inventario = parseJSON('inventario');
+let adminConfig = parseJSON('adminConfig'); 
+let entradasHistorial = parseJSON('entradasHistorial');
+
+if (adminConfig.length === 0) {
+    adminConfig.push({ password: 'Mariposa' }); // Contraseña por defecto
+    setJSON('adminConfig', adminConfig);
 }
 
-async function idbClear(storeName) {
-  const db = await openDB();
-  return new Promise((res, rej) => {
-    const tx = db.transaction(storeName, 'readwrite');
-    const st = tx.objectStore(storeName);
-    const req = st.clear();
-    req.onsuccess = () => res();
-    req.onerror = () => rej(tx.error);
-  });
+function guardarInventario(){
+    setJSON('inventario', inventario);
+    renderInventario(inventario);
+}
+function guardarEntradasHistorial() {
+    // Limitar a 50 entradas
+    while (entradasHistorial.length > 50) {
+        entradasHistorial.shift(); 
+    }
+    setJSON('entradasHistorial', entradasHistorial);
+    renderEntradasHistorial();
 }
 
+// ---------------------------------------------------------------------------------------------------
+// 🖼️ Renderizado de Inventario
+// ---------------------------------------------------------------------------------------------------
 
-/* ---------- UTILS ---------- */
-function formatDinero(n){ return "$" + (Number(n||0)).toFixed(2); }
+/**
+ * Calcula el stock total para un producto.
+ * @param {object} producto - El objeto producto.
+ * @returns {number} El stock total.
+ */
+function calcularStockTotal(producto) {
+    // Si tiene lotes (debe ser Antibiótico), suma los stocks de los lotes
+    if (producto.categoria.toLowerCase() === 'antibiótico' && producto.lotes && producto.lotes.length > 0) {
+        return producto.lotes.reduce((sum, lote) => sum + (lote.stock || 0), 0);
+    }
+    // Si no tiene lotes (otras categorías), usa el campo stock simple
+    return producto.stock || 0; 
+}
 
-/* ---------- Usuario activo ---------- */
-let usuarioActivo = localStorage.getItem("usuarioActivo") || 'SinUsuario';
-document.getElementById("cajero").textContent = usuarioActivo ? ("👤 Cajero: " + usuarioActivo) : '';
+/**
+ * Renderiza la tabla de inventario.
+ * @param {Array<object>} productos - Lista de productos a mostrar.
+ */
+function renderInventario(productos) {
+    const tbody = document.getElementById('inventarioTable').getElementsByTagName('tbody')[0];
+    tbody.innerHTML = '';
 
-document.getElementById("logout").addEventListener("click", () => {
-  localStorage.removeItem("usuarioActivo");
-  bc.postMessage({type:'logout'});
-  window.location.href = "index.html";
+    productos.forEach((producto, index) => {
+        const stockTotal = calcularStockTotal(producto);
+        const row = tbody.insertRow();
+        
+        let stockClass = '';
+        if (stockTotal <= 0) {
+            stockClass = 'stock-rojo'; // Agotado
+        } else if (stockTotal <= producto.stockMin) {
+            stockClass = 'stock-amarillo'; // Mínimo
+        } else {
+            stockClass = 'stock-verde'; // Stock Ok
+        }
+
+        row.insertCell(0).textContent = index + 1;
+        row.insertCell(1).textContent = producto.codigo;
+        row.insertCell(2).textContent = producto.nombre;
+        
+        const precioCell = row.insertCell(3);
+      precioCell.textContent = '$' + (Number(producto.precio) || 0).toFixed(2);
+        const stockCell = row.insertCell(4);
+        stockCell.textContent = stockTotal;
+        stockCell.className = stockClass;
+
+        row.insertCell(5).textContent = producto.stockMin;
+        row.insertCell(6).textContent = producto.entradas || 0;
+        row.insertCell(7).textContent = producto.categoria;
+        
+        const lotesCell = row.insertCell(8);
+        const esAntibiotico = producto.categoria.toLowerCase() === 'antibiótico';
+
+        if (esAntibiotico && producto.lotes && producto.lotes.length > 0) {
+            const lotesActivos = producto.lotes.filter(l => (l.stock || 0) > 0);
+            if (lotesActivos.length > 0) {
+                 // Mostrar caducidad más próxima
+                const caducidadMasProxima = lotesActivos.sort((a, b) => new Date(a.caducidad) - new Date(b.caducidad))[0];
+                lotesCell.textContent = `Cad. Prox: ${new Date(caducidadMasProxima.caducidad).toLocaleDateString()} (${lotesActivos.length} lotes)`;
+            } else {
+                 lotesCell.textContent = 'Lotes Registrados (Stock 0)';
+            }
+        } else {
+            lotesCell.textContent = 'N/A';
+        }
+
+        // Acciones
+        const actionsCell = row.insertCell(9);
+        
+        // 👁️ Botón Detalles: Solo para Antibióticos
+        if (esAntibiotico) {
+            const btnDetalles = document.createElement('button');
+            btnDetalles.textContent = '👁️ Detalles';
+            btnDetalles.className = 'btn';
+            btnDetalles.onclick = () => mostrarDetalles(producto);
+            actionsCell.appendChild(btnDetalles);
+        }
+        
+        // 🆕 BOTÓN EDITAR: Solo visible si el administrador ha iniciado sesión
+        if (isAdminLoggedIn) {
+            const btnEditar = document.createElement('button');
+            btnEditar.textContent = '✍️';
+            btnEditar.className = 'btn btn-edit';
+            btnEditar.onclick = () => editarProducto(producto.codigo);
+            actionsCell.appendChild(btnEditar);
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderInventario(inventario);
+    renderEntradasHistorial();
+    // Inicializar la visibilidad de lotes/stock en el panel admin al cargar
+    toggleLoteFields(); 
+    
+    // **NUEVO** Listener para el campo de código de entradas
+    document.getElementById('codigoEntrada').addEventListener('input', toggleLoteCadEntradas);
 });
 
-/* ---------- CORE: Cargar y mostrar ventas desde IndexedDB ---------- */
-
-async function cargarVentasActuales(){
-  // Lee de la tienda 'ventasHistorial' (ventas no cortadas todavía)
-  return await idbGetAll(STORE_VENTAS_ACTUALES);
-}
-
-// LÓGICA MODIFICADA: Ahora se leen los datos del cliente desde la venta
-// y se separan los totales de Proveedores y Generales
-async function renderVentas(){
-  const ventas = await cargarVentasActuales();
-  const tbodyG = document.querySelector("#tabla-ventas-general tbody");
-  const tbodyA = document.querySelector("#tabla-antibioticos tbody");
-  tbodyG.innerHTML = "";
-  tbodyA.innerHTML = "";
-  let totalG = 0; // Total General (excluye proveedores)
-  let totalProveedor = 0; // Total Proveedores
-  let totalA = 0; // Total Antibióticos
-  let idxG = 1, idxA = 1;
-
-  ventas.sort((a, b) => (b.folio || 0) - (a.folio || 0));
-
-  for(const v of ventas) {
+// ---------------------------------------------------------------------------------------------------
+// 🔍 Búsqueda en Inventario
+// ---------------------------------------------------------------------------------------------------
+document.getElementById('searchBar').addEventListener('input', function() {
+    const query = this.value.trim().toLowerCase();
     
-    // --- Obtener datos del cliente de la venta ---
-    const cliente = v.cliente || {}; // Asegura que cliente sea un objeto, incluso si es null/undefined
-    const doctor = cliente.nombre || '-';
-    const cedula = cliente.cedula || '-';
-    const direccion = cliente.direccion || '-';
-    const folioReceta = cliente.folioReceta || '-';
-    // --- Fin Obtener datos del cliente ---
-
-    // Otros campos de venta
-    const cajero = v.cajero || 'N/A'; 
-    const metodo = v.metodo || 'Efectivo'; 
-    const folioProveedor = (v.metodo && v.metodo.toString().toLowerCase().includes('proveedor')) ? (v.folioProveedor || '-') : '-';
-
-    for(const item of (v.productos || [])) {
-      const subtotal = (Number(item.precio) || 0) * (Number(item.cantidad) || 0);
-      const codigoSimple = item.codigo || '-';
-      // Asumiendo que 'codigoCompleto' podría estar en el item o en la venta, o sea el mismo código
-      const codigoCompleto = item.codigoCompleto || codigoSimple;
-
-      // 1. VENTA GENERAL (SE AÑADEN COLUMNAS DE DOCTOR/RECETA)
-      const trG = document.createElement('tr');
-      trG.innerHTML = `<td>${idxG++}</td>
-        <td>${item.nombre||'-'}</td>
-        <td>${folioProveedor}</td>
-        <td>${codigoCompleto}</td>
-        <td>${item.cantidad||0}</td>
-        <td>${v.folio||'-'}</td>
-        <td>${doctor}</td>
-        <td>${cedula}</td>
-        <td>${folioReceta}</td>
-        <td>${new Date(v.fecha).toLocaleString()||'-'}</td>
-        <td>${cajero}</td>
-        <td>${metodo}</td>
-        <td>${formatDinero(subtotal)}</td>`;
-      tbodyG.appendChild(trG);
-
-      // Acumular totales
-      const metodoNorm = (metodo || '').toString().toLowerCase();
-      if (metodoNorm.includes('proveedor') || metodoNorm.includes('proveed')) {
-          totalProveedor += subtotal;
-      } else {
-          totalG += subtotal;
-      }
-
-      // 2. VENTA ANTIBIÓTICO (si tiene datos de cliente)
-      if(doctor !== '-') { // Considera antibiótico si tiene nombre de doctor
-        const trA = document.createElement('tr');
-        trA.innerHTML = `<td>${idxA++}</td>
-          <td>${item.nombre||'-'}</td>
-          <td>${codigoSimple}</td>
-          <td>${codigoCompleto}</td> <td>${item.cantidad||0}</td>
-          <td>${v.folio||'-'}</td>
-          <td>${doctor}</td>
-          <td>${cedula}</td>
-          <td>${direccion}</td>
-          <td>${folioReceta}</td>
-          <td>${item.loteSeleccionado||'-'}</td>
-          <td>${new Date(v.fecha).toLocaleString()||'-'}</td>
-          <td>${cajero}</td>
-          <td>${metodo}</td>
-          <td>${formatDinero(subtotal)}</td>`;
-        tbodyA.appendChild(trA);
-        totalA += subtotal; // El total de antibióticos incluye todos los métodos
-      }
-    }
-  }
-
-  document.getElementById('total-general').textContent = formatDinero(totalG);
-  document.getElementById('total-proveedores').textContent = formatDinero(totalProveedor);
-  document.getElementById('total-antibioticos').textContent = formatDinero(totalA);
-}
-
-/* ---------- Historial de Ventas (post-corte) ---------- */
-async function renderHistorialCompleto(){
-  const ventasCorte = await idbGetAll(STORE_VENTAS_CORTE);
-  const tbody = document.querySelector("#tabla-historial tbody");
-  tbody.innerHTML = "";
-  let idx = 1;
-  ventasCorte.sort((a,b) => (b.folio || 0) - (a.folio || 0));
-  ventasCorte.forEach(item => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${idx++}</td>
-      <td>${item.producto||'-'}</td>
-      <td>${item.folioProveedor||'-'}</td>
-      <td>${item.codigoCompleto||item.codigo||'-'}</td>
-      <td>${item.cantidad||0}</td>
-      <td>${item.folio||'-'}</td>
-      <td>${item.doctor||'-'}</td> 
-      <td>${item.cedula||'-'}</td> 
-      <td>${item.direccion||'-'}</td> 
-      <td>${item.receta||'-'}</td> 
-      <td>${item.lote||'-'}</td>
-      <td>${item.fecha||'-'}</td><td>${item.cajero||'-'}</td><td>${item.metodo||'-'}</td>
-      <td>${formatDinero(item.subtotal)}</td>`;
-    tbody.appendChild(tr);
-  });
-}
-async function buscarHistorial(){
-  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  if(!searchTerm) {
-    renderHistorialCompleto();
-    return;
-  }
-  const ventasCorte = await idbGetAll(STORE_VENTAS_CORTE);
-  const tbody = document.querySelector("#tabla-historial tbody");
-  tbody.innerHTML = "";
-  let idx = 1;
-  const filtrado = ventasCorte.filter(item =>
-    (item.producto || '').toLowerCase().includes(searchTerm) ||
-    (item.codigo || '').toLowerCase().includes(searchTerm) ||
-    (String(item.folio||'')).toLowerCase().includes(searchTerm) ||
-    (item.doctor||'').toLowerCase().includes(searchTerm) ||
-    (item.folioProveedor||'').toLowerCase().includes(searchTerm) ||
-    (item.codigoCompleto||'').toLowerCase().includes(searchTerm)
-  );
-
-  filtrado.forEach(item => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${idx++}</td>
-      <td>${item.producto||'-'}</td>
-      <td>${item.folioProveedor||'-'}</td>
-      <td>${item.codigoCompleto||item.codigo||'-'}</td>
-      <td>${item.cantidad||0}</td>
-      <td>${item.folio||'-'}</td>
-      <td>${item.doctor||'-'}</td> 
-      <td>${item.cedula||'-'}</td> 
-      <td>${item.direccion||'-'}</td> 
-      <td>${item.receta||'-'}</td> 
-      <td>${item.lote||'-'}</td>
-      <td>${item.fecha||'-'}</td><td>${item.cajero||'-'}</td><td>${item.metodo||'-'}</td>
-      <td>${formatDinero(item.subtotal)}</td>`;
-    tbody.appendChild(tr);
-  });
-}
-
-/* ---------- Historial Corte (tabla con columnas solicitadas) ---------- */
-async function renderHistorialCorte(){
-  const cortes = await idbGetAll(STORE_CORTES);
-  const tbody = document.querySelector("#tabla-historial-corte tbody");
-  tbody.innerHTML = "";
-  let idx = 1;
-  // ordenar por timestamp si existe, si no, intentar parsear fecha
-  cortes.sort((a, b) => {
-    const ta = a.timestamp || new Date(a.fecha).getTime();
-    const tb = b.timestamp || new Date(b.fecha).getTime();
-    return tb - ta;
-  });
-  cortes.forEach(corte => {
-    const tr = document.createElement('tr');
-    // Columnas: Fecha y Hora, Cajero, Inicio Caja, Efectivo, Tarjeta, Transferencia, Proveedores, Total contado, Subtotal
-    tr.innerHTML = `<td>${idx++}</td>
-      <td>${corte.fecha || (new Date(corte.timestamp).toLocaleString() || '-')}</td>
-      <td>${corte.cajero || '-'}</td>
-      <td>${formatDinero(corte.inicioCaja || 0)}</td>
-      <td>${formatDinero(corte.efectivo || 0)}</td>
-      <td>${formatDinero(corte.tarjeta || 0)}</td>
-      <td>${formatDinero(corte.transferencia || 0)}</td>
-      <td>${formatDinero(corte.proveedor || 0)}</td>
-      <td>${formatDinero(corte.totalContado || corte.total || 0)}</td>
-      <td>${formatDinero(corte.subtotal || corte.totalGeneral || 0)}</td>`; 
-    tbody.appendChild(tr);
-  });
-}
-
-/* ---------- Modal de Corte ---------- */
-async function abrirModalCorte(){
-  document.getElementById('modalCorte').style.display = 'flex';
-  // Cargar valor de inicio de caja desde localStorage
-  const inicioCajaGuardado = localStorage.getItem('inicioCajaTemporal') || '0';
-  document.getElementById('inicioCaja').value = inicioCajaGuardado;
-  // Convertir a modo lectura inmediatamente (evita edición accidental aquí)
-  document.getElementById('inicioCaja').readOnly = true;
-
-  await calcularYMostrarTotalesPorMetodo();
-  // Mostrar el inicio de caja en el resumen
-  document.getElementById('resumenInicioCaja').textContent = formatDinero(parseFloat(inicioCajaGuardado) || 0);
-
-  document.querySelectorAll('.billete').forEach(b => b.value = '');
-  calcularTotalEfectivo();
-}
-
-function cerrarModalCorte(){ document.getElementById('modalCorte').style.display = 'none'; }
-
-async function calcularYMostrarTotalesPorMetodo(){
-  const ventas = await cargarVentasActuales(); 
-  let totalEfectivo = 0, totalTarjeta = 0, totalTransferencia = 0, totalProveedor = 0;
-
-  ventas.forEach(v => {
-    const metodo = (v.metodo || 'Efectivo').toString().toLowerCase();
-    const totalVenta = Number(v.total || v.totalVenta || 0); // v.total si viene de farma2
-    // Si no hay total en la venta, acumular desde productos
-    let totalDesdeProductos = 0;
-    if (!totalVenta) {
-      (v.productos || []).forEach(it => {
-        totalDesdeProductos += (Number(it.precio) || 0) * (Number(it.cantidad) || 0);
-      });
-    }
-    const usedTotal = totalVenta || totalDesdeProductos;
-
-    if (metodo.includes('efectivo')) totalEfectivo += usedTotal;
-    else if (metodo.includes('tarjeta')) totalTarjeta += usedTotal;
-    else if (metodo.includes('transferencia')) totalTransferencia += usedTotal;
-    else if (metodo.includes('proveedor') || metodo.includes('proveed')) totalProveedor += usedTotal;
-  });
-
-  document.getElementById('resumenEfectivo').textContent = formatDinero(totalEfectivo);
-  document.getElementById('resumenTarjeta').textContent = formatDinero(totalTarjeta);
-  document.getElementById('resumenTransferencia').textContent = formatDinero(totalTransferencia);
-  document.getElementById('resumenProveedor').textContent = formatDinero(totalProveedor);
-  
-  // Calcular y mostrar Total General (Excl. Proveedores) en el resumen
-  const totalGeneral = totalEfectivo + totalTarjeta + totalTransferencia; // Suma de métodos excluyendo proveedores
-  document.getElementById('resumenTotalGeneral').textContent = formatDinero(totalGeneral);
-  
-  // Calcular y mostrar Total Contador Efectivo en el resumen
-  const totalContador = parseFloat(document.getElementById('totalEfectivo').textContent.replace('$', '')) || 0;
-  document.getElementById('resumenTotalContador').textContent = formatDinero(totalContador);
-  
-  // Calcular y mostrar Total Neto (Contado - Proveedores - Inicio Caja) en el resumen
-  const inicioCaja = parseFloat(document.getElementById('inicioCaja').value) || 0;
-  const totalNeto = totalContador - totalProveedor - inicioCaja;
-  document.getElementById('resumenTotalNeto').textContent = formatDinero(totalNeto);
-  document.getElementById('resumenTotalNetoContador').textContent = formatDinero(totalNeto); // Mismo valor
-}
-
-function calcularTotalEfectivo() {
-  let totalE = 0;
-  document.querySelectorAll('.billete').forEach(b => {
-      const valor = parseFloat(b.dataset.valor);
-      const cantidad = parseInt(b.value) || 0;
-      const subtotal = valor * cantidad;
-      totalE += subtotal;
-      b.nextElementSibling.textContent = `= ${formatDinero(subtotal)}`;
-  });
-  document.getElementById('totalEfectivo').textContent = formatDinero(totalE);
-  
-  // Recalcular Totales Generales cuando cambia el efectivo contado
-  calcularYMostrarTotalesPorMetodo();
-}
-document.querySelectorAll('.billete').forEach(b => b.addEventListener('input', calcularTotalEfectivo));
-
-/* ---------- Finalizar Corte (MODIFICADA para guardar en HISTORIAL y cerrar sesión) ---------- */
-async function finalizarCorte(){
-  // Protección para evitar múltiples clicks
-  const btn = document.getElementById('btnFinalizarCorte');
-  try {
-    if(!confirm("¿Está seguro de que desea finalizar el corte? ")) {
-      return;
-    }
-    btn.disabled = true;
-    btn.textContent = 'Procesando...';
-
-    const inicioCaja = parseFloat(document.getElementById('inicioCaja').value) || 0;
-    let totalEfectivoContado = 0;
-    document.querySelectorAll('.billete').forEach(b => totalEfectivoContado += (parseFloat(b.value) || 0) * (parseFloat(b.dataset.valor) || 0));
-
-    const totalVentaTarjeta = parseFloat(document.getElementById('resumenTarjeta').textContent.replace('$', '')) || 0;
-    const totalVentaTransferencia = parseFloat(document.getElementById('resumenTransferencia').textContent.replace('$', '')) || 0;
-    const totalVentaProveedor = parseFloat(document.getElementById('resumenProveedor').textContent.replace('$', '')) || 0;
-
-    // Total contado (efectivo contado + tarjeta + transferencia)
-    const totalContado = totalEfectivoContado + totalVentaTarjeta + totalVentaTransferencia;
-    // Subtotal: definimos subtotal como totalContado - proveedores (antes de restar inicioCaja)
-    const subtotal = totalContado - totalVentaProveedor;
-    // Total neto (para referencia): subtotal - inicioCaja
-    const totalNeto = subtotal - inicioCaja;
-
-    // Total General (opcional) -> suma de métodos excluyendo proveedores
-    const totalGeneralCorte = totalEfectivoContado + totalVentaTarjeta + totalVentaTransferencia - totalVentaProveedor;
-
-    const corte = {
-      fecha: new Date().toLocaleString(),
-      timestamp: Date.now(), // para ordenar seguro
-      cajero: usuarioActivo,
-      inicioCaja: inicioCaja,
-      efectivo: totalEfectivoContado, // Total Contador Efectivo
-      tarjeta: totalVentaTarjeta,
-      transferencia: totalVentaTransferencia,
-      proveedor: totalVentaProveedor,
-      totalContado: totalContado,   // Efectivo + Tarjeta + Transferencia
-      subtotal: subtotal,           // totalContado - proveedores
-      totalNeto: totalNeto,         // subtotal - inicioCaja
-      totalGeneral: totalGeneralCorte // (opcional)
-    };
-
-    // 1) Guardar el corte y obtener su id
-    const corteId = await idbAdd(STORE_CORTES, corte);
-
-    // 2) Mover las ventas a ventas_corte Y guardar también en historial (persistente)
-    const ventas = await cargarVentasActuales(); 
-    
-    for(const v of ventas) {
-      // --- Extraer datos del cliente de la venta actual ---
-      const cliente = v.cliente || {};
-      const doctor = cliente.nombre || '-';
-      const cedula = cliente.cedula || '-';
-      const direccion = cliente.direccion || '-';
-      const receta = cliente.folioReceta || '-';
-      // --- Fin Extraer datos del cliente ---
-      
-      for (const item of (v.productos || [])) {
-          // subtotal seguro
-          const subtotalItem = (Number(item.precio) || 0) * (Number(item.cantidad) || 0);
-
-          // Objeto que se guarda en la tabla ventas_corte
-          const objCorteItem = {
-              producto: item.nombre || '-', 
-              codigo: item.codigo || '-', 
-              codigoCompleto: item.codigoCompleto || item.codigo || '-', // Código Completo
-              folioProveedor: v.folioProveedor || '-', // Folio Proveedor
-              cantidad: item.cantidad || 0, 
-              folio: v.folio || '-',
-              // Datos del Doctor: Se extraen de la venta principal (v.cliente)
-              doctor: doctor, 
-              cedula: cedula, 
-              direccion: direccion,
-              receta: receta, 
-              lote: item.loteSeleccionado || '-', 
-              fecha: new Date(v.fecha).toLocaleString(), 
-              cajero: v.cajero || usuarioActivo, 
-              metodo: v.metodo || 'Efectivo', 
-              subtotal: subtotalItem,
-              corteId: corteId,
-              corteTimestamp: corte.timestamp
-          };
-
-          // Guardar en ventas_corte (histórico del corte)
-          await idbAdd(STORE_VENTAS_CORTE, objCorteItem);
-
-          // Guardar una copia en HISTORIAL (store separada, también persistente y no será borrada aquí)
-          await idbAdd(STORE_HISTORIAL, Object.assign({}, objCorteItem));
-      }
+    if (query === '') {
+        renderInventario(inventario);
+        return;
     }
 
-    // 3) Solo cuando todo se guardó correctamente: limpiar las ventas actuales
-    await idbClear(STORE_VENTAS_ACTUALES); 
-    localStorage.removeItem('inicioCajaTemporal'); // Limpiar al finalizar corte
+    const resultados = inventario.filter(p => 
+        p.codigo.toLowerCase().includes(query) || 
+        p.nombre.toLowerCase().includes(query) ||
+        p.categoria.toLowerCase().includes(query)
+    );
 
-    // 4) Imprimir ticket y cerrar modal
-    imprimirTicketCorte(corte);
-    cerrarModalCorte();
-
-    // 5) Notificar a otras pestañas que se realizó el corte y que deben actualizarse
-    bc.postMessage({type:'corte_realizado', corte});
-
-    // 6) Cerrar sesión: comportamiento solicitado (elimina usuario activo y redirige al login/index)
-    localStorage.removeItem('usuarioActivo');
-    bc.postMessage({type:'logout'});
-    // Dar un pequeño tiempo para que el browser abra/ejecute la ventana del ticket antes de redirigir
-    setTimeout(() => {
-      window.location.href = "index.html";
-    }, 700);
-
-  } catch (err) {
-    console.error('Error al realizar el corte:', err);
-    alert('Ocurrió un error al finalizar el corte. Revisa la consola para más detalle.');
-  } finally {
-    if(btn) {
-      btn.disabled = false;
-      btn.textContent = '✅ Finalizar Corte';
-    }
-  }
-}
-
-/* ---------- Impresión: Ticket térmico simplificado ---------- */
-function imprimirTicketCorte(corte) {
-  // Abrir ventana estilo ticket térmico, lista para imprimir
-  const ventana = window.open("","Ticket","width=320,height=600");
-  const css = `
-    <style>
-      @media print { body { -webkit-print-color-adjust: exact; } }
-      body { font-family: 'Courier New', monospace; margin: 6px; font-size: 12px; }
-      .center { text-align:center; }
-      .sep { border-top: 1px dashed #000; margin:6px 0; }
-      .bold { font-weight:700; }
-      .small { font-size: 11px; color: #444; }
-    </style>
-  `;
-  let html = `<html><head><title>Ticket de Corte</title>${css}</head><body>
-  <div class="center bold">⚕ FarmaciaLili 2.0 ⚕</div>
-  <div class="center">Corte de Caja</div>
-  <div class="sep"></div>
-  <div>Fecha: ${corte.fecha}</div>
-  <div>Cajero: ${corte.cajero}</div>
-  <div class="sep"></div>
-  <div>Inicio Caja: ${formatDinero(corte.inicioCaja)}</div>
-  <div>Total Efectivo Contado: ${formatDinero(corte.efectivo)}</div>
-  <div>Venta Tarjeta: ${formatDinero(corte.tarjeta)}</div>
-  <div>Venta Transferencia: ${formatDinero(corte.transferencia)}</div>
-  <div>Proveedores (resta): ${formatDinero(corte.proveedor)}</div>
-  <div class="sep"></div>
-  <div class="bold">Total contado: ${formatDinero(corte.totalContado)}</div>
-  <div class="bold">Subtotal (contado - proveedores): ${formatDinero(corte.subtotal)}</div>
-  <div class="bold small">Total Neto (subtotal - inicio caja): ${formatDinero(corte.totalNeto)}</div>
-  <div class="sep"></div>
-  <div class="center">Gracias por su confianza</div>
-  </body></html>`;
-  ventana.document.write(html);
-  ventana.document.close();
-  ventana.focus();
-  // Intentar imprimir, con pequeño delay para asegurar render
-  setTimeout(() => {
-    try {
-      ventana.print();
-    } catch (e) {
-      console.warn('No se pudo iniciar impresión automáticamente:', e);
-    }
-    try { ventana.close(); } catch(e) {}
-  }, 500);
-}
-
-
-/* ---------- Sincronización entre Pestañas ---------- */
-bc.addEventListener('message', async (ev) => {
-  const msg = ev.data || {};
-  // Escucha mensajes de venta, corte y reembolso
-  if(msg.type === 'venta' || msg.type === 'corte_realizado' || msg.type === 'reembolso') { 
-    await actualizarVistas();
-  } else if(msg.type === 'logout' && !localStorage.getItem('usuarioActivo')) {
-    location.reload();
-  }
+    renderInventario(resultados);
 });
 
-/* ---------- UI Helpers ---------- */
-function toggleHistorial() {
-  const historialSection = document.getElementById('historialSection');
-  const historialCorteSection = document.getElementById('historialCorteSection');
-  if (historialSection.style.display !== 'block') {
-    historialSection.style.display = 'block';
-    historialCorteSection.style.display = 'none';
-    renderHistorialCompleto(); // Actualiza solo esta sección
-  } else {
-    historialSection.style.display = 'none';
-  }
-}
-function toggleHistorialCorte() {
-  const historialSection = document.getElementById('historialSection');
-  const historialCorteSection = document.getElementById('historialCorteSection');
-  if (historialCorteSection.style.display !== 'block') {
-    historialCorteSection.style.display = 'block';
-    historialSection.style.display = 'none';
-    renderHistorialCorte(); // Actualiza solo esta sección
-  } else {
-    historialCorteSection.style.display = 'none';
-  }
-}
-function limpiarBusqueda() {
-  document.getElementById('searchInput').value = '';
-  renderHistorialCompleto();
+// ---------------------------------------------------------------------------------------------------
+// 👁️ Modal de Detalles de Producto
+// ---------------------------------------------------------------------------------------------------
+const modalDetalles = document.getElementById('modalDetalles');
+
+function mostrarDetalles(producto) {
+    // Solo se muestra para Antibióticos (lógica en renderInventario)
+
+    const detallesContenido = document.getElementById('detallesContenido');
+    detallesContenido.innerHTML = `
+        <p><strong>Nombre:</strong> ${producto.nombre}</p>
+        <p><strong>Código:</strong> ${producto.codigo}</p>
+        <p><strong>Precio:</strong> $${producto.precio.toFixed(2)}</p>
+        <p><strong>Stock Total:</strong> ${calcularStockTotal(producto)}</p>
+        <p><strong>Stock Mínimo:</strong> ${producto.stockMin}</p>
+        <p><strong>Categoría:</strong> ${producto.categoria}</p>
+        <h4>🧪 Lotes Activos (Stock > 0)</h4>
+    `;
+
+    // Ordenar lotes por caducidad (más cercano primero)
+    const lotesActivos = producto.lotes 
+        ? producto.lotes.filter(l => (l.stock || 0) > 0).sort((a, b) => new Date(a.caducidad) - new Date(b.caducidad)) 
+        : [];
+        
+    if (lotesActivos.length > 0) {
+        lotesActivos.forEach(lote => {
+            detallesContenido.innerHTML += `
+                <p style="margin-left: 10px;">
+                    - Lote: <strong>${lote.lote}</strong> | Stock: ${lote.stock} | Caduca: ${new Date(lote.caducidad).toLocaleDateString()}
+                </p>
+            `;
+        });
+    } else {
+         detallesContenido.innerHTML += `<p style="margin-left: 10px;">No hay lotes activos.</p>`;
+    }
+
+    modalDetalles.style.display = 'flex';
 }
 
-/* ---------- Inicialización ---------- */
-async function actualizarVistas(){
-  await renderVentas(); // Actualiza Ventas Generales y Antibióticos
-  // Solo renderiza las secciones si están visibles
-  if(document.getElementById('historialSection').style.display === 'block') {
-    await renderHistorialCompleto();
-  }
-  if(document.getElementById('historialCorteSection').style.display === 'block') {
-    await renderHistorialCorte();
-  }
+document.getElementById('cerrarDetalles').onclick = () => {
+    modalDetalles.style.display = 'none';
+};
+
+
+// ---------------------------------------------------------------------------------------------------
+// ⚙️ Panel de Administración (CRUD y Lógica de Lotes)
+// ---------------------------------------------------------------------------------------------------
+const loginSection = document.getElementById('loginSection');
+const adminSection = document.getElementById('adminSection');
+const form = document.getElementById('addForm');
+const codigoInput = document.getElementById('codigo');
+let productoAEditar = null; 
+
+// Campos relacionados a la lógica de categorías
+const categoriaInput = document.getElementById('categoria');
+const stockInput = document.getElementById('stock');
+const loteCadFields = document.getElementById('loteCadFields');
+
+/**
+ * Muestra u oculta los campos de Lote y Stock basado en si la categoría es "Antibiótico".
+ */
+function toggleLoteFields() {
+    const categoria = categoriaInput.value.trim().toLowerCase();
+    
+    if (categoria === 'antibiótico') {
+        loteCadFields.classList.remove('oculto');
+        stockInput.classList.add('oculto');
+        
+        // Si estamos agregando o editando un antibiótico sin lotes, añadimos uno vacío.
+        if (lotesContainer.children.length === 0) {
+            document.getElementById('agregarLoteBtn').click(); 
+        }
+    } else {
+        loteCadFields.classList.add('oculto');
+        stockInput.classList.remove('oculto');
+        
+        // Limpiar lotes del formulario para evitar guardar datos incorrectos
+        lotesContainer.innerHTML = '';
+    }
 }
-(async function init(){
-  await openDB();
-  await actualizarVistas();
-  document.getElementById('searchInput').addEventListener('input', buscarHistorial);
 
-  // Registrar listeners de los botones del modal (evita dependencia de handlers inline)
-  const btnFinalizar = document.getElementById('btnFinalizarCorte');
-  if (btnFinalizar) btnFinalizar.addEventListener('click', finalizarCorte);
+// ⚠️ Se activa la función al cambiar la categoría
+categoriaInput.addEventListener('input', toggleLoteFields);
 
-  const btnCerrar = document.getElementById('btnCerrarCorte');
-  if (btnCerrar) btnCerrar.addEventListener('click', cerrarModalCorte);
-})();
+
+// 🔑 Manejo de Login Admin (Acceder a Panel)
+document.getElementById('btnAdminPanel').onclick = () => {
+    document.getElementById('btnAdminPanel').parentNode.classList.remove('show');
+    loginSection.style.display = 'block';
+    adminSection.style.display = 'none';
+    document.getElementById('entradasSection').style.display = 'none';
+
+    accionPendiente = () => {
+        adminSection.style.display = 'block';
+        limpiarFormularioAdmin();
+    };
+};
+
+document.getElementById('salirAdmin').onclick = () => {
+    adminSection.style.display = 'none';
+    loginSection.style.display = 'none';
+    limpiarFormularioAdmin();
+    
+    // 🆕 Desactivar estado Admin y re-renderizar
+    isAdminLoggedIn = false; 
+    renderInventario(inventario);
+};
+
+/**
+ * Limpia el formulario y lo pone en modo "Agregar".
+ */
+function limpiarFormularioAdmin() {
+    form.reset();
+    productoAEditar = null;
+    codigoInput.removeAttribute('readonly');
+    document.getElementById('deleteProductBtn').classList.add('oculto');
+    document.getElementById('lotesContainer').innerHTML = ''; 
+    
+    // Establecer el estado inicial de Lote/Stock (por defecto "Antibiótico")
+    categoriaInput.value = 'Antibiótico';
+    toggleLoteFields(); 
+}
+
+// 🧪 Lógica de Lotes en el Formulario Admin
+const lotesContainer = document.getElementById('lotesContainer');
+
+document.getElementById('agregarLoteBtn').onclick = () => {
+    const loteDiv = document.createElement('div');
+    loteDiv.className = 'lote-entry';
+    loteDiv.style.marginBottom = '10px';
+    loteDiv.innerHTML = `
+        <label>Lote:</label><input type="text" class="lote-id" placeholder="ID Lote" required>
+        <label>Stock:</label><input type="number" class="lote-stock" placeholder="Stock" min="0" required value="0" style="width: 80px;">
+        <label>Caducidad:</label><input type="date" class="lote-caducidad" required style="width: 120px;">
+        <button type="button" class="btn btn-del" onclick="this.parentNode.remove()">❌</button>
+    `;
+    lotesContainer.appendChild(loteDiv);
+};
+
+// ✍️ Cargar datos del producto para editar
+function editarProducto(codigo) {
+    // Si no está logueado como admin, simplemente ignora la acción.
+    if (!isAdminLoggedIn) return alert("Acceso denegado. Debe ingresar al Panel Administrador para editar productos.");
+
+    productoAEditar = inventario.find(p => p.codigo === codigo);
+    
+    if (productoAEditar) {
+        // Asumiendo que si el usuario hace clic en editar, tiene acceso de administrador
+        loginSection.style.display = 'none';
+        adminSection.style.display = 'block';
+        document.getElementById('deleteProductBtn').classList.remove('oculto');
+
+        // Llenar campos
+        document.getElementById('nombre').value = productoAEditar.nombre;
+        codigoInput.value = productoAEditar.codigo;
+        codigoInput.setAttribute('readonly', true);
+        document.getElementById('precio').value = productoAEditar.precio;
+        document.getElementById('stockMin').value = productoAEditar.stockMin;
+        categoriaInput.value = productoAEditar.categoria;
+        
+        // Cargar Lotes / Stock Simple
+        lotesContainer.innerHTML = '';
+        const esAntibiotico = productoAEditar.categoria.toLowerCase() === 'antibiótico';
+
+        if (esAntibiotico && productoAEditar.lotes && productoAEditar.lotes.length > 0) {
+            productoAEditar.lotes.forEach(lote => {
+                const loteDiv = document.createElement('div');
+                loteDiv.className = 'lote-entry';
+                loteDiv.style.marginBottom = '10px';
+                loteDiv.innerHTML = `
+                    <label>Lote:</label><input type="text" class="lote-id" value="${lote.lote}" placeholder="ID Lote" required>
+                    <label>Stock:</label><input type="number" class="lote-stock" value="${lote.stock}" placeholder="Stock" min="0" required style="width: 80px;">
+                    <label>Caducidad:</label><input type="date" class="lote-caducidad" value="${lote.caducidad}" required style="width: 120px;">
+                    <button type="button" class="btn btn-del" onclick="this.parentNode.remove()">❌</button>
+                `;
+                lotesContainer.appendChild(loteDiv);
+            });
+        } else if (esAntibiotico) {
+            document.getElementById('agregarLoteBtn').click();
+        } 
+        
+        if (!esAntibiotico) {
+            stockInput.value = calcularStockTotal(productoAEditar);
+        }
+        
+        toggleLoteFields(); 
+    }
+}
+
+// 🗑️ Eliminar Producto
+document.getElementById('deleteProductBtn').onclick = () => {
+    if (productoAEditar && confirm(`¿Está seguro de eliminar el producto ${productoAEditar.nombre} (${productoAEditar.codigo})?`)) {
+        inventario = inventario.filter(p => p.codigo !== productoAEditar.codigo);
+        guardarInventario();
+        limpiarFormularioAdmin();
+        alert('Producto eliminado.');
+    }
+};
+
+// 💾 Guardar Producto (Agregar/Editar)
+form.onsubmit = (e) => {
+    e.preventDefault();
+
+    const nombre = document.getElementById('nombre').value;
+    const codigo = codigoInput.value;
+    const precio = parseFloat(document.getElementById('precio').value);
+    const stockMin = parseInt(document.getElementById('stockMin').value);
+    const categoria = categoriaInput.value;
+    
+    let lotes = [];
+    let stockTotal = 0;
+    const esAntibiotico = categoria.toLowerCase() === 'antibiótico';
+
+    if (esAntibiotico) {
+        // Lógica para ANTIBIÓTICOS (con lotes)
+        const loteEntries = document.querySelectorAll('.lote-entry');
+        
+        loteEntries.forEach(entry => {
+            const id = entry.querySelector('.lote-id').value;
+            const stock = parseInt(entry.querySelector('.lote-stock').value);
+            const caducidad = entry.querySelector('.lote-caducidad').value;
+            
+            if (id && caducidad && !isNaN(stock) && stock >= 0) {
+                lotes.push({ lote: id, stock: stock, caducidad: caducidad });
+                stockTotal += stock; 
+            }
+        });
+
+        if (lotes.length === 0) {
+            return alert('Debe agregar al menos un lote con ID, Stock y Caducidad para productos Antibióticos.');
+        }
+
+    } else {
+        // Lógica para OTRAS CATEGORÍAS (sin lotes, usando stock simple)
+        const simpleStock = parseInt(stockInput.value);
+        if (isNaN(simpleStock) || simpleStock < 0) {
+            return alert('Ingrese un Stock Total válido para esta categoría.');
+        }
+        stockTotal = simpleStock;
+        lotes = []; // Asegurar que no se guarde ningún lote
+    }
+
+    const nuevoProducto = {
+        nombre,
+        codigo,
+        precio,
+        stockMin,
+        categoria,
+        lotes: lotes,
+        entradas: productoAEditar ? productoAEditar.entradas : 0, 
+        stock: stockTotal 
+    };
+
+    if (productoAEditar) {
+        // Editar
+        const index = inventario.findIndex(p => p.codigo === codigo);
+        inventario[index] = nuevoProducto;
+        alert('Producto actualizado.');
+    } else {
+        // Agregar
+        if (inventario.some(p => p.codigo === codigo)) {
+            return alert('Ya existe un producto con este código.');
+        }
+        inventario.push(nuevoProducto);
+        alert('Producto agregado.');
+    }
+
+    guardarInventario();
+    limpiarFormularioAdmin();
+};
+
+// ---------------------------------------------------------------------------------------------------
+// 🔑 Lógica de Acceso para funciones sensibles
+// ---------------------------------------------------------------------------------------------------
+
+let accionPendiente = null; 
+
+document.getElementById('loginForm').onsubmit = (e) => {
+    e.preventDefault();
+    const pass = document.getElementById('adminPass').value;
+    
+    if (pass === adminConfig[0].password) {
+        loginSection.style.display = 'none';
+        
+        // 🆕 Activar estado Admin y re-renderizar
+        isAdminLoggedIn = true; 
+        renderInventario(inventario); 
+        
+        if (accionPendiente) {
+            accionPendiente(); 
+        }
+        
+    } else {
+        alert('Contraseña incorrecta.');
+    }
+    
+    document.getElementById('adminPass').value = '';
+    accionPendiente = null;
+};
+
+function ejecutarSubirInventario() {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.csv';
+    fileInput.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const csvContent = event.target.result;
+                const newInventario = importarCSV(csvContent);
+                
+                if (newInventario.length > 0 && confirm(`Se encontraron ${newInventario.length} productos en el CSV. ¿Desea reemplazar el inventario actual con estos datos?`)) {
+                    inventario = newInventario;
+                    guardarInventario();
+                    alert('Inventario cargado y reemplazado con éxito.');
+                } else if (newInventario.length === 0) {
+                     alert('El archivo CSV está vacío o tiene un formato incorrecto.');
+                }
+
+            } catch (error) {
+                alert(`Error al procesar el archivo: ${error.message}`);
+                console.error(error);
+            }
+        };
+        reader.readAsText(file);
+    };
+    fileInput.click();
+}
+
+function ejecutarEliminarInventario() {
+     if (confirm("CONFIRMACIÓN FINAL: ¿Está absolutamente seguro de borrar TODOS los datos del inventario? Esta acción es irreversible.")) {
+        inventario = [];
+        guardarInventario();
+        alert('Inventario eliminado por completo.');
+    }
+}
+
+// Botones que requieren contraseña (Subir y Eliminar)
+document.getElementById('btnSubirInventario').onclick = () => {
+    document.getElementById('btnSubirInventario').parentNode.classList.remove('show');
+    adminSection.style.display = 'none';
+    document.getElementById('entradasSection').style.display = 'none';
+
+    accionPendiente = ejecutarSubirInventario;
+    loginSection.style.display = 'block';
+};
+
+document.getElementById('btnEliminarInventario').onclick = () => {
+    document.getElementById('btnEliminarInventario').parentNode.classList.remove('show');
+    adminSection.style.display = 'none';
+    document.getElementById('entradasSection').style.display = 'none';
+    
+    accionPendiente = ejecutarEliminarInventario;
+    loginSection.style.display = 'block';
+};
+
+
+// ---------------------------------------------------------------------------------------------------
+// ➕ Registro de Entradas (Existencias Físicas)
+// ---------------------------------------------------------------------------------------------------
+
+// Referencias a los nuevos campos
+const codigoEntradaInput = document.getElementById('codigoEntrada');
+const loteCadEntradasDiv = document.getElementById('loteCadEntradas');
+const loteEntradaInput = document.getElementById('loteEntrada');
+const caducidadEntradaInput = document.getElementById('caducidadEntrada');
+const cantidadEntradaInput = document.getElementById('cantidadEntrada');
+
+
+document.getElementById('btnEntradas').onclick = () => {
+    document.getElementById('btnEntradas').parentNode.classList.remove('show');
+    adminSection.style.display = 'none';
+    loginSection.style.display = 'none';
+    document.getElementById('entradasSection').style.display = 'block';
+    
+    // Limpiar campos y ocultar lote/caducidad al abrir
+    document.getElementById('formEntradas').reset();
+    loteCadEntradasDiv.classList.add('oculto');
+    loteEntradaInput.removeAttribute('required');
+    caducidadEntradaInput.removeAttribute('required');
+};
+
+document.getElementById('salirEntradas').onclick = () => {
+    document.getElementById('entradasSection').style.display = 'none';
+    // Asegurar que se limpien los campos al salir
+    document.getElementById('formEntradas').reset();
+    loteCadEntradasDiv.classList.add('oculto');
+};
+
+/**
+ * Muestra/oculta los campos de Lote/Caducidad si el producto es Antibiótico.
+ */
+function toggleLoteCadEntradas() {
+    const codigo = codigoEntradaInput.value.trim();
+    const producto = inventario.find(p => p.codigo === codigo);
+    
+    if (producto && producto.categoria.toLowerCase() === 'antibiótico') {
+        loteCadEntradasDiv.classList.remove('oculto');
+        loteEntradaInput.setAttribute('required', 'required');
+        caducidadEntradaInput.setAttribute('required', 'required');
+    } else {
+        loteCadEntradasDiv.classList.add('oculto');
+        loteEntradaInput.removeAttribute('required');
+        caducidadEntradaInput.removeAttribute('required');
+    }
+}
+
+
+/**
+ * Renderiza la tabla de historial de entradas.
+ */
+function renderEntradasHistorial() {
+    const tbody = document.getElementById('tablaEntradas').getElementsByTagName('tbody')[0];
+    tbody.innerHTML = '';
+    
+    // Mostrar las últimas 50, en orden cronológico inverso (más recientes primero)
+    entradasHistorial.slice().reverse().forEach((entrada, index) => {
+        const row = tbody.insertRow();
+        row.insertCell(0).textContent = entradasHistorial.length - index;
+        row.insertCell(1).textContent = entrada.codigo;
+        row.insertCell(2).textContent = entrada.nombre;
+        
+        // Stock Anterior
+        row.insertCell(3).textContent = entrada.stockAnterior !== undefined ? entrada.stockAnterior : 'N/A';
+        
+        // Entradas (Cantidad)
+        const cantCell = row.insertCell(4);
+        cantCell.textContent = `+${entrada.cantidad}`;
+        cantCell.className = 'entradas-azul';
+        
+        // Nuevo Stock
+        row.insertCell(5).textContent = entrada.nuevoStock !== undefined ? entrada.nuevoStock : 'N/A';
+        
+        row.insertCell(6).textContent = entrada.cajero;
+        row.insertCell(7).textContent = new Date(entrada.fecha).toLocaleString();
+    });
+}
+
+document.getElementById('formEntradas').onsubmit = (e) => {
+    e.preventDefault();
+    
+    const codigo = codigoEntradaInput.value.trim();
+    const cantidad = parseInt(cantidadEntradaInput.value);
+    
+    if (cantidad <= 0 || isNaN(cantidad)) {
+        return alert('La cantidad debe ser un número positivo.');
+    }
+    
+    const producto = inventario.find(p => p.codigo === codigo);
+    
+    if (!producto) {
+        return alert('Producto no encontrado.');
+    }
+    
+    const esAntibiotico = producto.categoria.toLowerCase() === 'antibiótico';
+
+    // 1. Capturar el Stock Anterior (calculado correctamente para lotes o simple stock)
+    const stockAnterior = calcularStockTotal(producto);
+    
+    let nuevoStock;
+
+    if (esAntibiotico) {
+        // Lógica de Lote y Caducidad
+        const loteId = loteEntradaInput.value.trim();
+        const caducidad = caducidadEntradaInput.value;
+        
+        if (!loteId || !caducidad) {
+            return alert('Para Antibióticos, debe especificar el Lote y la Caducidad.');
+        }
+        
+        if (!producto.lotes) {
+             producto.lotes = [];
+        }
+
+        // Buscar si el lote ya existe
+        let loteExistente = producto.lotes.find(l => l.lote === loteId);
+        
+        if (loteExistente) {
+             // ⚠️ Si el lote existe, se suma la cantidad, pero la caducidad DEBE ser la misma.
+            if (loteExistente.caducidad !== caducidad) {
+                return alert(`El Lote ${loteId} ya existe con la caducidad ${new Date(loteExistente.caducidad).toLocaleDateString()}. Use esa fecha, o ingrese un Lote diferente.`);
+            }
+            loteExistente.stock += cantidad;
+            alert(`Entrada de ${cantidad} unidades registrada con éxito al Lote ${loteId} del producto ${producto.nombre}.`);
+        } else {
+            // Lote nuevo
+            producto.lotes.push({ lote: loteId, stock: cantidad, caducidad: caducidad });
+            alert(`Lote ${loteId} (Cad: ${new Date(caducidad).toLocaleDateString()}) y ${cantidad} unidades registrados con éxito para ${producto.nombre}.`);
+        }
+        
+        // Calcular el Nuevo Stock para el historial
+        nuevoStock = calcularStockTotal(producto); 
+
+    } else {
+        // Si no es Antibiótico, sumamos al stock simple
+        producto.stock = (producto.stock || 0) + cantidad;
+        alert(`Entrada de ${cantidad} unidades registrada con éxito al stock del producto ${producto.nombre}.`);
+        
+        // El nuevo stock es el producto.stock actualizado
+        nuevoStock = producto.stock;
+    }
+
+    // 2. Registrar la entrada en el historial con Stock Anterior y Nuevo Stock
+    const entradaData = {
+        codigo: codigo,
+        nombre: producto.nombre,
+        stockAnterior: stockAnterior, 
+        cantidad: cantidad,
+        nuevoStock: nuevoStock, 
+        fecha: new Date().toISOString(),
+        cajero: usuarioActivo
+    };
+    entradasHistorial.push(entradaData);
+    
+    // 3. Guardar
+    producto.entradas = (producto.entradas || 0) + cantidad; // Actualizar el contador de entradas totales
+    guardarInventario(); 
+    guardarEntradasHistorial();
+    
+    document.getElementById('formEntradas').reset();
+    loteCadEntradasDiv.classList.add('oculto');
+    loteEntradaInput.removeAttribute('required');
+    caducidadEntradaInput.removeAttribute('required');
+};
+
+// ---------------------------------------------------------------------------------------------------
+// 📊 Importar/Exportar (CSV/PDF)
+// ---------------------------------------------------------------------------------------------------
+
+/**
+ * Procesa el contenido de un CSV y lo convierte en el formato de inventario.
+ * @param {string} csv - Contenido del archivo CSV.
+ * @returns {Array<object>} Nuevo array de inventario.
+ */
+function importarCSV(csv) {
+    const lines = csv.split('\n').filter(line => line.trim() !== '');
+    if (lines.length < 2) return [];
+
+    const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+    const productos = [];
+
+    // Definir los índices esperados (basado en el orden de exportación)
+    const indices = {
+        nombre: headers.indexOf('nombre'),
+        codigo: headers.indexOf('código'),
+        precio: headers.indexOf('precio'),
+        stock_simple: headers.indexOf('stock'), 
+        stockmin: headers.indexOf('mínimo'),
+        categoria: headers.indexOf('categoría'),
+        lotes: headers.indexOf('lotes/caducidad')
+    };
+    
+    // Función auxiliar para obtener el valor limpio de una columna
+    function getCleanValue(values, index) {
+        const val = (values[index] || '').trim();
+        return val.startsWith('"') && val.endsWith('"') ? val.slice(1, -1).trim() : val;
+    }
+
+    for (let i = 1; i < lines.length; i++) {
+        // Uso de una expresión regular simple para manejar campos entre comillas
+        const values = lines[i].match(/(".*?"|[^,]+)(?=\s*,|\s*$)/g) || [];
+        
+        // Limpiamos los valores de comillas dobles que persisten
+        const cleanedValues = values.map(v => getCleanValue([v], 0));
+        
+        if (cleanedValues.length < 6) continue;
+
+        const categoriaImportada = cleanedValues[indices.categoria] || 'General';
+        const esAntibiotico = categoriaImportada.toLowerCase() === 'antibiótico';
+        let lotes = [];
+        let stockTotal = 0;
+        
+        if (esAntibiotico) {
+            // LÓGICA ANTIBIÓTICO (REQUIERE LOTES)
+            const lotesRaw = cleanedValues[indices.lotes] || '';
+            // Formato esperado de lotes: "LoteID/Stock/Caducidad|LoteID/Stock/Caducidad"
+            lotesRaw.split('|').forEach(loteStr => {
+                const parts = loteStr.split('/');
+                if (parts.length === 3) {
+                    const [loteId, stockStr, caducidad] = parts;
+                    const stock = parseInt(stockStr);
+                    if (loteId && !isNaN(stock) && stock >= 0 && caducidad) {
+                        lotes.push({ lote: loteId.trim(), stock: stock, caducidad: caducidad.trim() });
+                        stockTotal += stock; // Sumar stock total de lotes
+                    }
+                }
+            });
+        } else {
+            // LÓGICA OTRAS CATEGORÍAS (USA STOCK SIMPLE)
+            const stockSimple = parseFloat(cleanedValues[indices.stock_simple] || 0);
+            stockTotal = stockSimple; 
+            lotes = []; // Asegurar que no haya lotes para esta categoría
+        }
+
+
+        productos.push({
+            nombre: cleanedValues[indices.nombre],
+            codigo: cleanedValues[indices.codigo],
+            precio: parseFloat(cleanedValues[indices.precio] || 0),
+            stockMin: parseInt(cleanedValues[indices.stockmin] || 0),
+            categoria: categoriaImportada,
+            lotes: lotes,
+            entradas: 0, 
+            stock: stockTotal 
+        });
+    }
+
+    return productos;
+}
+
+// 📂 Descargar Inventario CSV Completo
+document.getElementById('btnDescargarCSVCompleto').onclick = () => {
+    document.getElementById('btnDescargarCSVCompleto').parentNode.classList.remove('show');
+    descargarCSV(inventario, 'Inventario_Completo');
+};
+
+// 📁 Descargar Inventario PDF Completo
+document.getElementById('btnDescargarPDFCompleto').onclick = () => {
+    document.getElementById('btnDescargarPDFCompleto').parentNode.classList.remove('show');
+    descargarPDF(inventario, 'Inventario_Completo');
+};
+
+// 📂 Descargar por Categoría CSV (Pide Categoría)
+document.getElementById('btnDescargarCSV').onclick = () => {
+    document.getElementById('btnDescargarCSV').parentNode.classList.remove('show');
+    descargarPorCategoria('csv');
+};
+
+// 📄 Descargar por Categoría PDF (Pide Categoría)
+document.getElementById('btnDescargarPDF').onclick = () => {
+    document.getElementById('btnDescargarPDF').parentNode.classList.remove('show');
+    descargarPorCategoria('pdf');
+};
+
+function descargarPorCategoria(tipo) {
+    const categoria = prompt('Ingrese la Categoría a exportar (ej: Antibiótico, Analgésico):').trim();
+    if (!categoria) return;
+
+    const productosFiltrados = inventario.filter(p => p.categoria.toLowerCase() === categoria.toLowerCase());
+
+    if (productosFiltrados.length === 0) {
+        return alert(`No se encontraron productos en la categoría "${categoria}".`);
+    }
+
+    if (tipo === 'csv') {
+        descargarCSV(productosFiltrados, `Inventario_${categoria}`);
+    } else {
+        descargarPDF(productosFiltrados, `Inventario_${categoria}`);
+    }
+}
+
+/**
+ * Genera y descarga un archivo CSV.
+ * @param {Array<object>} productos - Lista de productos.
+ * @param {string} filename - Nombre base del archivo.
+ */
+function descargarCSV(productos, filename) {
+    let csv = 'Código,Nombre,Precio,Stock,Mínimo,Entradas,Categoría,Lotes/Caducidad\n';
+
+    productos.forEach(p => {
+        const stockTotal = calcularStockTotal(p);
+        const esAntibiotico = p.categoria.toLowerCase() === 'antibiótico';
+        
+        // Formato de Lotes para CSV: LoteID/Stock/Caducidad|LoteID/Stock/Caducidad
+        const lotesDetalle = esAntibiotico && p.lotes && p.lotes.length > 0
+            ? p.lotes.map(l => `${l.lote}/${l.stock}/${l.caducidad}`).join('|')
+            : 'N/A'; // N/A si no es antibiótico o si el antibiótico no tiene lotes
+
+        csv += `${p.codigo},"${p.nombre.replace(/"/g, '""')}",${p.precio.toFixed(2)},${stockTotal},${p.stockMin},${p.entradas || 0},"${p.categoria.replace(/"/g, '""')}",${lotesDetalle}\n`;
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', `${filename}_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+/**
+ * Genera y descarga un archivo PDF (Requiere jsPDF).
+ * @param {Array<object>} productos - Lista de productos.
+ * @param {string} filename - Nombre base del archivo.
+ */
+function descargarPDF(productos, filename) {
+    if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+        alert("Error: jsPDF no está cargado. Asegúrese de que las librerías CDN estén funcionando.");
+        return;
+    }
+    
+    // @ts-ignore
+    const { jsPDF } = window.jspdf; 
+    const doc = new jsPDF('landscape'); 
+    
+    doc.setFontSize(14);
+    doc.text(`Inventario ${filename.replace('Inventario_','')}`, 14, 15);
+    doc.setFontSize(10);
+    doc.text(`Fecha de Exportación: ${new Date().toLocaleDateString()}`, 14, 20);
+
+    const rows = productos.map((p,i)=>{
+        const stockTotal = calcularStockTotal(p);
+        const esAntibiotico = p.categoria.toLowerCase() === 'antibiótico';
+
+        // Detalle de lotes para PDF
+        const lotesDetalle = esAntibiotico && p.lotes && p.lotes.length > 0
+            ? p.lotes.map(l => {
+                const fechaCad = new Date(l.caducidad).toLocaleDateString();
+                return `Lote: ${l.lote} | Stock: ${l.stock} | Cad: ${fechaCad}`;
+            }).join('\n')
+            : 'N/A';
+
+        return [
+            i+1, 
+            p.codigo, 
+            p.nombre, 
+            '$'+p.precio.toFixed(2), 
+            stockTotal, 
+            p.stockMin, 
+            p.entradas || 0, 
+            p.categoria, 
+            lotesDetalle
+        ]
+    });
+
+    doc.autoTable({ 
+        head:[['#','Código','Nombre','Precio','Stock','Mínimo','Entradas','Categoría','Lotes / Caducidad']], 
+        body: rows, 
+        startY:25,
+        styles: { overflow: 'linebreak', fontSize: 8 },
+        columnStyles: {
+            2: { cellWidth: 30 }, // Nombre
+            8: { cellWidth: 50 }  // Lotes/Caducidad
+        }
+    });
+
+    doc.save(`${filename}_${new Date().toISOString().slice(0, 10)}.pdf`);
+}
+
+// ---------------------------------------------------------------------------------------------------
+// 🚪 Cierre de Sesión
+// ---------------------------------------------------------------------------------------------------
+document.getElementById('logout').onclick = () => {
+    localStorage.removeItem("usuarioActivo");
+    // 🆕 Desactivar estado Admin al cerrar sesión
+    isAdminLoggedIn = false; 
+    window.location.href = "index.html";
+};
+
+// ---------------------------------------------------------------------------------------------------
+// ☰ Dropdown Menú
+// ---------------------------------------------------------------------------------------------------
+document.querySelector('#menuOpciones .menu-btn').onclick = function() {
+    document.getElementById('menuOpciones').classList.toggle('show');
+};
+
+window.onclick = function(event) {
+    if (!event.target.matches('.menu-btn')) {
+        const dropdowns = document.getElementsByClassName("menu-dropdown");
+        for (let i = 0; i < dropdowns.length; i++) {
+            const openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+};
+
 </script>
 </body>
 </html>
