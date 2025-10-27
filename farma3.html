@@ -448,9 +448,7 @@ document.getElementById("btnCobrar").onclick=()=>{
     });
     guardarInventario();
   }
-
-  // Imprimir (La lógica de impresión se mantiene, solo se mejora la data)
-  const ventana=window.open("","Ticket","width=400,height=600");
+const ventana=window.open("","Ticket","width=400,height=600");
   const fecha=new Date();
   let html=`<html><head><title>Ticket</title>
   <style>
@@ -462,9 +460,8 @@ h2{margin:1px 0;}
     </style>
   </head><body>
   <h2 style="text-align:left; font-size:11px;  text-align:center;">➕FARMACIA Y ORTOPEDIA➕</h2>
-  <p style="text-align:left; win">Dirección:ZOQUIAPAN KM <br>34.5 MEXICO-PUEB,FRENTE A <br>HOSPITAL REGIONAL DE ESPECIALIDADES <br>IXTAPALUCA
+  <p style="text-align:left; win">Dirección:Carretera Federal Mexico - Puebla 4m 34.5 Edomex Col Zapopan  CP 56530 Ixtapaluca
 </p>
-<p>☏ Tel:55-1914-4251 ☏</p>
 <p>Tel:55-6979-8968 📞</p>
 <p> ✆ Tel:55-7883-6807 ✆</p><hr> 
   <p style="text-align:left;">Folio:${ventaData.folio}</p>
@@ -515,3 +512,4 @@ renderVenta();
 </script>
 </body>
 </html>
+
