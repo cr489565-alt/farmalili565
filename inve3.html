@@ -291,8 +291,7 @@ function renderInventario(productos) {
         row.insertCell(2).textContent = producto.nombre;
         
         const precioCell = row.insertCell(3);
-        precioCell.textContent = '$' + producto.precio.toFixed(2);
-        
+       precioCell.textContent = '$' + (Number(producto.precio) || 0).toFixed(2);
         const stockCell = row.insertCell(4);
         stockCell.textContent = stockTotal;
         stockCell.className = stockClass;
@@ -1093,4 +1092,5 @@ window.onclick = function(event) {
 </script>
 </body>
 </html>
+
 
