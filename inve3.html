@@ -8,7 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 <style>
 
-body {background:#f4f4f4;color:#000;font-family:system-ui,sans-serif;margin:0;padding:0;height:100vh;display:flex;flex-direction:column;font-size:1.15rem;overflow:hidden;}
+body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
 header {background:#fff;color:#000;padding:34px;font-size:26px;font-weight:bold;text-align:center;position:relative;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
 header img{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:250px;height:100px;border-radius:25px;border:0px solid #e5e7eb;}
 .main-menu {display:flex;align-items:center;padding:10px;background-color:#68af6b;color:white; }
@@ -18,7 +18,7 @@ header img{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:
 .main-menu .menu-link.active {background:#2563eb;color:white;border-color:#2563eb;}
 #cajero {margin-left:auto;font-weight:bold;color:#000;}
 #logout {background:#dc2626;color:#fff;border:none;border-radius:8px;padding:8px 12px;margin-left:12px;cursor:pointer;font-weight:bold;transition:0.2s;}
-#logout:hover {background:#b91c1c; dding:8px 12px;border-radius:8px;cursor:pointer;} 
+#logout:hover {background:#b91c1c; padding: 8px 12px;border-radius:8px;cursor:pointer;} 
 
 #searchBar { margin-left:10px; padding:8px; border-radius:6px;  }
 input,button,select{padding:9px;border-radius:6px;border:1px solid #d1d5db;margin:4px 0;background:#f9fafb;color:#1f2937;}
@@ -34,18 +34,28 @@ button:hover{background:#1d4ed8;}
 .btn-pdf:hover{background:#eab308;}
 .oculto{display:none;}
 .panel-admin{background:#ffffff;border:2px solid #2563eb;padding:1rem;border-radius:12px;margin-bottom:1rem;box-shadow:0 4px 6px rgba(0,0,0,0.05);}
-.stock-verde{background:#8cee73;color:#000000;}
-.stock-amarillo{background:#f1ef66;color:#000;}
-.stock-rojo{background:#f36969;color:#000000;}
-.stockmin-rojo{background:#f1ef66;color:#000;}
-.entradas-azul{background:#2563eb;color:#000000;}
+.numeracion { width:40px; text-align:center; font-weight:bold; color:#2563eb; }
+.precio-verde { background:#68af6b;color:rgb(0, 0, 0); padding:6px; border-radius:0px;  }
+.stock-verde{background:#16a34a;color:#fff;padding:6px;border-radius:6px}
+.stock-amarillo{background:#eab308;color:#000;padding:6px;border-radius:6px}
+.stock-rojo{background:#b91c1c;color:#fff;padding:6px;border-radius:6px}
+.stockmin-rojo{background:#f6ff00;color:#000;padding:6px;border-radius:6px}
+.entradas-azul{background:#2563eb;color:#fff;padding:6px;border-radius:6px}
 #tablaEntradasContainer {  flex-grow: 1;  overflow-y: relative;  max-height: 100%;}
-.section {  flex: 1;  overflow-x: auto;  border: 1px solid #4f5256;  border-radius: 5px;  background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)),
-   url('lododoc .png')  no-repeat center center;  background-size: auto;  background-position: auto;  background-attachment: auto;  max-height: 58vh;   min-height: 58vh; box-shadow: inset 0 0 8px rgba(0,0,0,0.2);  display: flex;  flex-direction: column;}
-.table  { width: 100%; border-collapse: collapse; margin-top: 0px; table-layout: fixed; min-height: 100%;}
-th, td { padding:2px; border-bottom: 1px solid #e5e7eb; text-align: left; word-wrap: break-word;}
-th { position: sticky; top: 0; background: #68af6b; color: white; z-index: 10;}
-tr:hover { background-color: rgb(66, 252, 59);}
+
+  
+ .section { text-align:center; width:95%; background:linear-gradient(120deg,#ffffff 80%,#dbeafe 100%); padding:24px; border-radius:15px; box-shadow:0 8px 28px rgba(0,0,0,.1); margin:12px auto; }
+   .table  { width: 100%; border-collapse: collapse; margin-top: 0px; table-layout: fixed; min-height: 100%;}
+
+th, td { padding:1px; border-bottom: 1px solid #e5e7eb; text-align: left; word-wrap: break-word;}
+th {  background-color:#68af6b;  position: sticky; top: 0; z-index: 2; color: rgb(0, 0, 0); text-align: left; padding: 0px;
+}
+
+h2.seccion { display:flex; justify-content:space-between; align-items:center; margin-top:0; color:#000000; background:#067be8; padding:10px; border-radius:8px; }
+table { width:100%; border-collapse:collapse; margin-top:12px; background:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05); }
+tr:nth-child(even) { background-color:#f9fafb; }
+tr:hover { background-color: rgb(174, 207, 205);}
+
 .menu-dropdown{position:relative;display:inline-block;margin-left:10px;}
 .menu-btn{background:#2563eb;color:white;padding:8px 12px;border:none;border-radius:8px;cursor:pointer;font-weight:500;}
 .menu-btn:hover{background:#1e40af;}
@@ -53,12 +63,31 @@ tr:hover { background-color: rgb(66, 252, 59);}
 .dropdown-content button{width:100%;text-align:left;padding:10px;border:none;background:none;color:#111827;cursor:pointer;border-bottom:1px solid #e5e7eb;}
 .dropdown-content button:hover{background:#f3f4f6;}
 .menu-dropdown.show .dropdown-content{display:block;}
-.precio-verde { background:#8cee73;  }
+
 #modalDetalles { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:9999;}
 .modal-contenido { background:#fff; padding:20px; border-radius:10px; width:90%; max-width:500px; box-shadow:0 5px 15px rgba(0,0,0,0.3); text-align:left;}
 .modal-contenido h3 { margin-top:0; color:#2563eb; }
 .modal-contenido p { font-size:15px; margin:6px 0; }
 .modal-footer { text-align:right; margin-top:10px; }
+
+/* Estilos para campos de Entradas Dinámicos */
+#loteCadEntradas {
+    background: #eef2ff;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+    border: 1px dashed #2563eb;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+#loteCadEntradas input, #loteCadEntradas select {
+    width: 150px;
+}
+#loteCadEntradas label {
+    font-weight: bold;
+    color: #1f2937;
+}
 </style>
 </head>
 <body>
@@ -135,6 +164,14 @@ tr:hover { background-color: rgb(66, 252, 59);}
     <form id="formEntradas">
         <input type="text" id="codigoEntrada" placeholder="Código del Producto" required>
         <input type="number" id="cantidadEntrada" placeholder="Cantidad a sumar" min="1" required>
+        
+        <div id="loteCadEntradas" class="oculto">
+             <label for="loteEntrada">Lote:</label>
+             <input type="text" id="loteEntrada" placeholder="ID del Lote">
+             <label for="caducidadEntrada">Caducidad:</label>
+             <input type="date" id="caducidadEntrada">
+        </div>
+        
         <button type="submit" class="btn entradas-azul">Registrar Entrada</button>
         <button type="button" id="salirEntradas" class="btn btn-del">Cancelar</button>
     </form>
@@ -164,13 +201,14 @@ tr:hover { background-color: rgb(66, 252, 59);}
 </section>
 
 <section class="section">
+📦 Inventario - General
     <table id="inventarioTable" class="table">
         <thead>
             <tr>
-                <th>#</th>
+                 <th class="numeracion">#</th>
                 <th>Código</th>
                 <th>Producto</th>
-                <th>Precio ($)</th>
+                 <th class ="precio-verde">Precio </th>
                 <th>Stock Total</th>
                 <th>Mínimo</th>
                 <th>Entradas</th>
@@ -230,7 +268,7 @@ let adminConfig = parseJSON('adminConfig');
 let entradasHistorial = parseJSON('entradasHistorial');
 
 if (adminConfig.length === 0) {
-    adminConfig.push({ password: 'Mariposa' }); // Contraseña por defecto
+    adminConfig.push({ password: 'admin' }); // Contraseña por defecto
     setJSON('adminConfig', adminConfig);
 }
 
@@ -291,7 +329,7 @@ function renderInventario(productos) {
         row.insertCell(2).textContent = producto.nombre;
         
         const precioCell = row.insertCell(3);
-       precioCell.textContent = '$' + (Number(producto.precio) || 0).toFixed(2);
+      precioCell.textContent = '$' + (Number(producto.precio) || 0).toFixed(2);
         const stockCell = row.insertCell(4);
         stockCell.textContent = stockTotal;
         stockCell.className = stockClass;
@@ -344,6 +382,9 @@ document.addEventListener('DOMContentLoaded', () => {
     renderEntradasHistorial();
     // Inicializar la visibilidad de lotes/stock en el panel admin al cargar
     toggleLoteFields(); 
+    
+    // **NUEVO** Listener para el campo de código de entradas
+    document.getElementById('codigoEntrada').addEventListener('input', toggleLoteCadEntradas);
 });
 
 // ---------------------------------------------------------------------------------------------------
@@ -730,16 +771,52 @@ document.getElementById('btnEliminarInventario').onclick = () => {
 // ➕ Registro de Entradas (Existencias Físicas)
 // ---------------------------------------------------------------------------------------------------
 
+// Referencias a los nuevos campos
+const codigoEntradaInput = document.getElementById('codigoEntrada');
+const loteCadEntradasDiv = document.getElementById('loteCadEntradas');
+const loteEntradaInput = document.getElementById('loteEntrada');
+const caducidadEntradaInput = document.getElementById('caducidadEntrada');
+const cantidadEntradaInput = document.getElementById('cantidadEntrada');
+
+
 document.getElementById('btnEntradas').onclick = () => {
     document.getElementById('btnEntradas').parentNode.classList.remove('show');
     adminSection.style.display = 'none';
     loginSection.style.display = 'none';
     document.getElementById('entradasSection').style.display = 'block';
+    
+    // Limpiar campos y ocultar lote/caducidad al abrir
+    document.getElementById('formEntradas').reset();
+    loteCadEntradasDiv.classList.add('oculto');
+    loteEntradaInput.removeAttribute('required');
+    caducidadEntradaInput.removeAttribute('required');
 };
 
 document.getElementById('salirEntradas').onclick = () => {
     document.getElementById('entradasSection').style.display = 'none';
+    // Asegurar que se limpien los campos al salir
+    document.getElementById('formEntradas').reset();
+    loteCadEntradasDiv.classList.add('oculto');
 };
+
+/**
+ * Muestra/oculta los campos de Lote/Caducidad si el producto es Antibiótico.
+ */
+function toggleLoteCadEntradas() {
+    const codigo = codigoEntradaInput.value.trim();
+    const producto = inventario.find(p => p.codigo === codigo);
+    
+    if (producto && producto.categoria.toLowerCase() === 'antibiótico') {
+        loteCadEntradasDiv.classList.remove('oculto');
+        loteEntradaInput.setAttribute('required', 'required');
+        caducidadEntradaInput.setAttribute('required', 'required');
+    } else {
+        loteCadEntradasDiv.classList.add('oculto');
+        loteEntradaInput.removeAttribute('required');
+        caducidadEntradaInput.removeAttribute('required');
+    }
+}
+
 
 /**
  * Renderiza la tabla de historial de entradas.
@@ -774,8 +851,8 @@ function renderEntradasHistorial() {
 document.getElementById('formEntradas').onsubmit = (e) => {
     e.preventDefault();
     
-    const codigo = document.getElementById('codigoEntrada').value.trim();
-    const cantidad = parseInt(document.getElementById('cantidadEntrada').value);
+    const codigo = codigoEntradaInput.value.trim();
+    const cantidad = parseInt(cantidadEntradaInput.value);
     
     if (cantidad <= 0 || isNaN(cantidad)) {
         return alert('La cantidad debe ser un número positivo.');
@@ -795,28 +872,37 @@ document.getElementById('formEntradas').onsubmit = (e) => {
     let nuevoStock;
 
     if (esAntibiotico) {
-        if (!producto.lotes || producto.lotes.length === 0) {
-            return alert('Este producto es Antibiótico y requiere Lotes. Edite el producto en el Panel Admin y asigne un lote antes de registrar una entrada.');
-        }
-
-        // Si es Antibiótico, pedimos el Lote
-        const loteSeleccionado = prompt(`Producto: ${producto.nombre}\nLotes disponibles: ${producto.lotes.map(l => `${l.lote} (Stock: ${l.stock})`).join(', ')}\n\nIngrese el ID del Lote al que sumará ${cantidad} unidades:`);
+        // Lógica de Lote y Caducidad
+        const loteId = loteEntradaInput.value.trim();
+        const caducidad = caducidadEntradaInput.value;
         
-        if (loteSeleccionado) {
-            const lote = producto.lotes.find(l => l.lote === loteSeleccionado);
-            
-            if (!lote) {
-                return alert('Lote no encontrado para este producto. Verifique el ID del lote.');
-            }
-
-            lote.stock += cantidad; // Sumar al stock del lote
-            alert(`Entrada de ${cantidad} unidades registrada con éxito al Lote ${loteSeleccionado} del producto ${producto.nombre}.`);
-            
-            // Calcular el Nuevo Stock para el historial
-            nuevoStock = calcularStockTotal(producto); 
-        } else {
-            return; // Cancelado por el usuario
+        if (!loteId || !caducidad) {
+            return alert('Para Antibióticos, debe especificar el Lote y la Caducidad.');
         }
+        
+        if (!producto.lotes) {
+             producto.lotes = [];
+        }
+
+        // Buscar si el lote ya existe
+        let loteExistente = producto.lotes.find(l => l.lote === loteId);
+        
+        if (loteExistente) {
+             // ⚠️ Si el lote existe, se suma la cantidad, pero la caducidad DEBE ser la misma.
+            if (loteExistente.caducidad !== caducidad) {
+                return alert(`El Lote ${loteId} ya existe con la caducidad ${new Date(loteExistente.caducidad).toLocaleDateString()}. Use esa fecha, o ingrese un Lote diferente.`);
+            }
+            loteExistente.stock += cantidad;
+            alert(`Entrada de ${cantidad} unidades registrada con éxito al Lote ${loteId} del producto ${producto.nombre}.`);
+        } else {
+            // Lote nuevo
+            producto.lotes.push({ lote: loteId, stock: cantidad, caducidad: caducidad });
+            alert(`Lote ${loteId} (Cad: ${new Date(caducidad).toLocaleDateString()}) y ${cantidad} unidades registrados con éxito para ${producto.nombre}.`);
+        }
+        
+        // Calcular el Nuevo Stock para el historial
+        nuevoStock = calcularStockTotal(producto); 
+
     } else {
         // Si no es Antibiótico, sumamos al stock simple
         producto.stock = (producto.stock || 0) + cantidad;
@@ -844,6 +930,9 @@ document.getElementById('formEntradas').onsubmit = (e) => {
     guardarEntradasHistorial();
     
     document.getElementById('formEntradas').reset();
+    loteCadEntradasDiv.classList.add('oculto');
+    loteEntradaInput.removeAttribute('required');
+    caducidadEntradaInput.removeAttribute('required');
 };
 
 // ---------------------------------------------------------------------------------------------------
@@ -1092,6 +1181,3 @@ window.onclick = function(event) {
 </script>
 </body>
 </html>
-
-
-
