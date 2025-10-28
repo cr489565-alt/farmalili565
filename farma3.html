@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💳 Ventas - FarmaciaLili 1.0 💳</title>
+<title>💳 Ventas - FarmaciaLili 3.0 💳</title>
 <style>
 body {background:#f4f4f4;color:#000;font-family:system-ui,sans-serif;margin:0;padding:0;height:100vh;display:flex;flex-direction:column;font-size:1.15rem;overflow:hidden;}
 header {background:#fff;color:#000;padding:34px;font-size:26px;font-weight:bold;text-align:center;position:relative;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
@@ -220,7 +220,7 @@ function renderVenta(){
 
       loteHtml=`<select data-index="${index}" class="loteSelect">
         <option value="">${v.lote ? `Lote: ${v.lote}` : 'lotes'}</option>
-        ${lotesDisponibles.map(l=>`<option value="${l.lote}" data-cad="${l.caducidad}" data-stock="${l.stock}" :''}>${l.lote} (Stock:${l.stock} - Cad:${l.caducidad})</option>`).join('')}
+        ${lotesDisponibles.map(l=>`<option value="${l.lote}" data-cad="${l.caducidad}" data-stock="${l.stock}" ${l.lote===v.lote?'selected':''}>${l.lote} (Stock:${l.stock} - Cad:${l.caducidad})</option>`).join('')}
       </select>`;
       
       // Asegura que la cantidad no exceda el stock del lote
@@ -448,7 +448,9 @@ document.getElementById("btnCobrar").onclick=()=>{
     });
     guardarInventario();
   }
-const ventana=window.open("","Ticket","width=400,height=600");
+
+  // Imprimir (La lógica de impresión se mantiene, solo se mejora la data)
+  const ventana=window.open("","Ticket","width=400,height=600");
   const fecha=new Date();
   let html=`<html><head><title>Ticket</title>
   <style>
@@ -460,7 +462,7 @@ h2{margin:1px 0;}
     </style>
   </head><body>
   <h2 style="text-align:left; font-size:11px;  text-align:center;">➕FARMACIA Y ORTOPEDIA➕</h2>
-  <p style="text-align:left; win">Dirección:Carretera Federal Mexico - Puebla 4m 34.5 Edomex Col Zapopan  CP 56530 Ixtapaluca
+  <p style="text-align:left; win">Carretera Federal Mexico - Puebla 4m 34.5 Edomex Col Zapopan  CP 56530 Ixtapaluca
 </p>
 <p>Tel:55-6979-8968 📞</p>
 <p> ✆ Tel:55-7883-6807 ✆</p><hr> 
@@ -512,5 +514,3 @@ renderVenta();
 </script>
 </body>
 </html>
-
-
