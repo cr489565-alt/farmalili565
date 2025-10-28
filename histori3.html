@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>📜 Historial - FarmaciaLili 1.0 📜</title>
+<title>📜 Historial - FarmaciaLili 3.1 📜</title>
 <style>
 body { font-family: system-ui, sans-serif; background:whit; color:#000000; margin:0; padding:0; }
 header {background:#fff;color:#000;padding:34px;font-size:26px;font-weight:bold;text-align:center;position:relative;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
@@ -60,7 +60,7 @@ section.card { flex: 1;  overflow-y: auto; overflow-x: auto;   border: 1px solid
 <body>
 <header>
   <img src="lododoc .png" alt="Logo Ventas">
-  📜 Historial - FarmaciaLili 3.0 📜 
+  📜 Historial - FarmaciaLili 3.1 📜 
 </header>
 
 <nav class="main-menu">
@@ -73,6 +73,7 @@ section.card { flex: 1;  overflow-y: auto; overflow-x: auto;   border: 1px solid
     <div class="dropdown-content">
       <a href="#" onclick="toggleHistorial()">📂 Historial de ventas 📂</a>
       <a href="#" onclick="toggleHistorialCorte()">📋 Historial de Corte 📋</a>
+      <a href="#" onclick="showReimpresionPanel()">🖨️ Reimprimir Ticket 🖨️</a>
     </div>
   </div>
   
@@ -93,7 +94,10 @@ section.card { flex: 1;  overflow-y: auto; overflow-x: auto;   border: 1px solid
         <tfoot>
             <tr>
                 <td colspan="12" style="text-align: left; padding: 8px;">
-                    <div class="action-row" style="justify-content: flex-start; padding: 0;">
+                    <div class="action-row" style="justify-content: flex-start; padding: 0; align-items: baseline;">
+                        <label for="inicioCajaTemp" style="font-weight: bold;">Inicio Caja ($):</label>
+                        <input id="inicioCajaTemp" type="number" value="0.00" step="0.01" style="width: 80px;" onkeypress="handleInicioCajaKey(event)">
+                        <button class="btn-primary btn-save-temp" onclick="guardarInicioCajaTemporal()">💾 Fijar</button>
                     </div>
                 </td>
                 <td style="text-align: right; font-weight: bold;">Total General</td>
@@ -118,6 +122,15 @@ section.card { flex: 1;  overflow-y: auto; overflow-x: auto;   border: 1px solid
       </table>
     </div>
   </section>
+
+    <section class="card" id="reimpresionPanel" style="display: none;">
+        <h2>🖨️ Reimprimir Ticket de Venta</h2>
+        <div class="search-container" style="justify-content: flex-start;">
+            <input type="text" id="folioReimpresion" class="search-input" placeholder="Ingrese el Folio Tiket (ej: T1234)">
+            <button onclick="reimprimirTicketPorFolio()" class="search-btn">Reimprimir</button>
+        </div>
+        <div id="reimpresionStatus" class="note" style="margin-top: 10px; padding: 10px; border-radius: 5px; background: #fff3cd; color: #856404; display: none;"></div>
+    </section>
 
     <section class="card" id="historialSection">
     <h2>📂 Historial de Ventas Completas 📂</h2>
@@ -152,6 +165,9 @@ section.card { flex: 1;  overflow-y: auto; overflow-x: auto;   border: 1px solid
              <th>Total G. Tarjeta</th>
              <th>Total G. Transferencia</th>
              <th>Total G. Proveedor</th>
+             <th>➕ Entradas</th> 
+             <th>➖ Salidas</th> 
+             <th>Efectivo Contado</th> 
              <th>Efectivo Neto</th>
           </tr>
         </thead>
@@ -164,6 +180,16 @@ section.card { flex: 1;  overflow-y: auto; overflow-x: auto;   border: 1px solid
 <div class="modal" id="modalCorte">
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <h3 id="modalTitle">💵 Panel de Corte</h3>
+
+    <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+        <label>💵 Entradas de Efectivo: 
+          <input id="entradasEfectivo" type="number" value="0.00" step="0.01" onchange="autorizarMovimiento('entradasEfectivo')">
+        </label>
+        <label>💸 Salidas de Efectivo: 
+          <input id="salidasEfectivo" type="number" value="0.00" step="0.01" onchange="autorizarMovimiento('salidasEfectivo')">
+        </label>
+    </div>
+
     <label style="margin-top:8px;">Cantidad Inicio Caja: <input id="inicioCaja" type="number" value="0" step="0.01" readonly style="padding:6px;border-radius:6px;border:1px solid #c7ddff; background-color: #e2e8f0;"></label>
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
       <label>💵 1000: <input class="billete" data-valor="1000" type="number" value="0"></label>
@@ -200,7 +226,7 @@ section.card { flex: 1;  overflow-y: auto; overflow-x: auto;   border: 1px solid
       <h4 style="margin:0 0 10px; color:#1e40af; text-align: center; font-weight: bold;">💰 Totales Generales Calculados:</h4>
       <div style="display:flex; flex-wrap:wrap; gap:15px; background:#e0f2fe; padding:8px; border-radius:6px;">
         <div style="flex:1; min-width:150px;">
-          <p style="margin:5px 0; font-weight:bold; color:#0369a1;">TOTAL GENERAL EFECTIVO (V.Efectivo - V.Proveedor): <span id="totalGeneralEfectivo">$0.00</span></p>
+          <p style="margin:5px 0; font-weight:bold; color:#0369a1;">TOTAL EFECTIVO VENTA (V.Efectivo - V.Proveedor): <span id="totalGeneralEfectivo">$0.00</span></p>
           <p style="margin:5px 0; font-weight:bold;">TOTAL GENERAL TARJETA: <span id="totalGeneralTarjeta">$0.00</span></p>
         </div>
         <div style="flex:1; min-width:150px;">
@@ -212,11 +238,12 @@ section.card { flex: 1;  overflow-y: auto; overflow-x: auto;   border: 1px solid
       <hr style="border:0; border-top:2px solid #0369a1; margin: 15px 0;">
 
       <div class="total-row" style="font-size:1.1rem; color:#b91c1c;">
-        EFECTIVO NETO (Contado - Inicio Caja): <span id="efectivoNeto">$0.00</span>
+        EFECTIVO NETO (Contado - Esperado): <span id="efectivoNeto">$0.00</span>
       </div>
     </div>
 
     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;">
+      <button class="btn-primary" onclick="realizarPreCorte()" style="background:#f97316;">🖨️ Pre-Corte</button>
       <button class="btn-primary" onclick="finalizarCorte()">✅ Finalizar Corte e Imprimir</button>
       <button class="btn-secondary" onclick="cerrarModalCorte()">❌ Cerrar</button>
     </div>
@@ -224,13 +251,14 @@ section.card { flex: 1;  overflow-y: auto; overflow-x: auto;   border: 1px solid
 </div>
 
 <script>
+// --- Variables de Configuración ---
 let usuarioActivo = localStorage.getItem("usuarioActivo");
 if(usuarioActivo){
   document.getElementById("cajero").textContent = "👤 Cajero: " + usuarioActivo;
 }
 
-// Contraseña para el historial de corte (Pista: 1234)
-const CONTRASENA_CORTE = "1234"; 
+const PASSWORD_CORTE = "1234"; // Contraseña para el historial de corte
+const PASSWORD_MOVIMIENTO = "5678"; // Contraseña para entradas/salidas de efectivo
 
 function parseJSON(key){ 
   try{ 
@@ -255,17 +283,20 @@ function cerrarSesion() {
   window.location.href = "index.html";
 }
 
-// Evento para el botón de cerrar sesión
 document.getElementById("logout").addEventListener("click", cerrarSesion);
 
-// Función para cargar las ventas no cortadas (simplificada)
+// --- Lógica de Ventas y Corte ---
+
 function cargarTodasLasVentas(){
   const ventas = parseJSON('ventas');
   return ventas.filter(venta => venta.productos && venta.productos.length > 0);
 }
 
+// ... [El resto de las funciones renderVentas, guardarInicioCajaTemporal, handleInicioCajaKey, etc., permanecen igual]
+
 function renderVentas(){
-  const ventas = cargarTodasLasVentas();
+  // ... (código existente para renderizar ventas generales) ...
+  const ventas = cargarTodasLasVentas();
   const tbodyG = document.querySelector("#tabla-ventas-general tbody");
   tbodyG.innerHTML = ""; 
   let totalG = 0;
@@ -290,7 +321,6 @@ function renderVentas(){
         <td>${v.clienteCedula||'-'}</td>
         <td>${v.folioReceta||'-'}</td>
         <td>${v.fecha||'-'}</td>
-        <td>${v.cajero||'-'}</td>
         <td>${v.metodoPago||'-'}</td>
         <td style="text-align: right;">${formatDinero(subtotal)}</td>`;
       tbodyG.appendChild(trG);
@@ -352,7 +382,7 @@ function handleInicioCajaKey(event) {
         guardarInicioCajaTemporal();
     }
 }
-
+// ... [El resto de las funciones de historial y búsqueda]
 
 function renderHistorialCompleto() {
   const ventasCorte = parseJSON('ventasCorte');
@@ -381,80 +411,76 @@ function renderHistorialCompleto() {
 }
 
 function buscarHistorial() {
-  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  const ventasCorte = parseJSON('ventasCorte');
-  const tbody = document.querySelector("#tabla-historial tbody");
-  tbody.innerHTML = "";
-  let idx = 1;
-  
-  ventasCorte.forEach(item => {
-    const searchableString = [
-      item.producto, item.codigo, item.categoria, item.folio, item.folioProveedor, 
-      item.doctor, item.cedula, item.receta, item.fecha, item.cajero, item.metodo,
-    ].join(' ').toLowerCase();
-    
-    if (searchableString.includes(searchTerm)) {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${idx++}</td>
-        <td>${item.codigo||'-'}</td>
-        <td>${item.producto||'-'}</td>
-        <td>${item.cantidad||0}</td>
-        <td>${item.categoria||'-'}</td>
-        <td>${item.folio||'-'}</td>
-        <td>${item.folioProveedor||'-'}</td>
-        <td>${item.doctor||'-'}</td>
-        <td>${item.cedula||'-'}</td>
-        <td>${item.receta||'-'}</td>
-        <td>${item.fecha||'-'}</td>
-        <td>${item.cajero||'-'}</td>
-        <td>${item.metodo||'-'}</td>
-        <td style="text-align: right;">${formatDinero(item.subtotal)}</td>`;
-      tbody.appendChild(tr);
-    }
-  });
-  
-  if (tbody.children.length === 0) {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td colspan="14" style="text-align:center; padding:20px;">No se encontraron resultados para "${searchTerm}"</td>`;
-    tbody.appendChild(tr);
-  }
-}
-
-function limpiarBusqueda() {
-  document.getElementById('searchInput').value = '';
-  renderHistorialCompleto();
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const ventasCorte = parseJSON('ventasCorte');
+    const tbody = document.querySelector("#tabla-historial tbody");
+    tbody.innerHTML = "";
+    let idx = 1;
+    
+    ventasCorte.forEach(item => {
+        const searchableString = [
+            item.producto, item.codigo, item.categoria, item.folio, item.folioProveedor, 
+            item.doctor, item.cedula, item.receta, item.fecha, item.cajero, item.metodo,
+        ].join(' ').toLowerCase();
+        
+        if (searchableString.includes(searchTerm)) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${idx++}</td>
+            <td>${item.codigo||'-'}</td>
+            <td>${item.producto||'-'}</td>
+            <td>${item.cantidad||0}</td>
+            <td>${item.categoria||'-'}</td>
+            <td>${item.folio||'-'}</td>
+            <td>${item.folioProveedor||'-'}</td>
+            <td>${item.doctor||'-'}</td>
+            <td>${item.cedula||'-'}</td>
+            <td>${item.receta||'-'}</td>
+            <td>${item.fecha||'-'}</td>
+            <td>${item.cajero||'-'}</td>
+            <td>${item.metodo||'-'}</td>
+            <td style="text-align: right;">${formatDinero(item.subtotal)}</td>`;
+            tbody.appendChild(tr);
+        }
+    });
+    
+    if (tbody.children.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td colspan="14" style="text-align:center; padding:20px;">No se encontraron resultados para "${searchTerm}"</td>`;
+        tbody.appendChild(tr);
+    }
 }
 
 function toggleHistorial() {
   const historialSection = document.getElementById('historialSection');
   const historialCorteSection = document.getElementById('historialCorteSection');
+  const reimpresionPanel = document.getElementById('reimpresionPanel');
   
   if (historialSection.style.display === 'none' || historialSection.style.display === '') {
     historialSection.style.display = 'block';
     historialCorteSection.style.display = 'none';
+    reimpresionPanel.style.display = 'none';
     renderHistorialCompleto();
   } else {
     historialSection.style.display = 'none';
   }
 }
 
-// FUNCIÓN CLAVE: Muestra el panel de contraseña y luego el historial de corte
 function toggleHistorialCorte() {
     const historialSection = document.getElementById('historialSection');
     const historialCorteSection = document.getElementById('historialCorteSection');
-    
-    // Si la sección ya está visible, la ocultamos sin pedir contraseña
+    const reimpresionPanel = document.getElementById('reimpresionPanel');
+
     if (historialCorteSection.style.display === 'block') {
         historialCorteSection.style.display = 'none';
         return;
     }
 
-    // Pedir contraseña
     const password = prompt("Ingrese la contraseña para ver el Historial de Corte ");
 
-    if (password === CONTRASENA_CORTE) {
+    if (password === PASSWORD_CORTE) {
         historialCorteSection.style.display = 'block';
         historialSection.style.display = 'none';
+        reimpresionPanel.style.display = 'none';
         renderHistorialCorte();
     } else {
         alert("Contraseña incorrecta. Acceso denegado.");
@@ -478,17 +504,44 @@ function renderHistorialCorte() {
       <td>${formatDinero(corte.tarjeta||0)}</td>
       <td>${formatDinero(corte.transferencia||0)}</td>
       <td>${formatDinero(corte.proveedor||0)}</td>
+      <td>${formatDinero(corte.entradas||0)}</td> 
+      <td>${formatDinero(corte.salidas||0)}</td> 
+      <td>${formatDinero(corte.efectivoContado||0)}</td> 
       <td style="text-align: right;">${formatDinero(corte.efectivoNeto||0)}</td>`;
     tbody.appendChild(tr);
   });
 }
 
-// ---------- Modal Corte ----------
+// ---------- Autorización de Movimiento (NUEVO) ----------
+
+function autorizarMovimiento(idInput) {
+    const input = document.getElementById(idInput);
+    const newValue = parseFloat(input.value) || 0;
+    
+    // Solo pedimos contraseña si el nuevo valor es significativo
+    if (newValue === 0) {
+        calcularTotalEfectivo(false);
+        return;
+    }
+
+    const password = prompt("Ingrese la contraseña de Gerente/Supervisor para autorizar este movimiento de $"+newValue.toFixed(2)+":");
+
+    if (password === PASSWORD_MOVIMIENTO) {
+        calcularTotalEfectivo(false);
+    } else {
+        alert("Contraseña incorrecta. Movimiento no autorizado. Valor restablecido a 0.00.");
+        input.value = '0.00';
+        calcularTotalEfectivo(false);
+    }
+}
+
+
+// ---------- Modal Corte y Cálculos ----------
 
 function abrirModalCorte(){
   document.getElementById('modalCorte').style.display = 'flex';
   
-  // 1. Cargar valor guardado de inicio de caja (del input 'inicioCajaTemp' fijado)
+  // 1. Cargar valor guardado de inicio de caja
   const inicioGuardado = localStorage.getItem('inicioCajaTemporal');
   const inputInicioModal = document.getElementById('inicioCaja');
   
@@ -501,8 +554,11 @@ function abrirModalCorte(){
   // 2. Calcular y mostrar los totales por método de pago INMEDIATAMENTE
   calcularTotalesMetodosPago();
   
-  // 3. Reiniciar los campos de billetes
+  // 3. Reiniciar los campos de billetes y E/S de efectivo
   document.querySelectorAll('.billete').forEach(b => b.value = '0');
+  document.getElementById('entradasEfectivo').value = '0.00';
+  document.getElementById('salidasEfectivo').value = '0.00';
+
   document.getElementById('totalEfectivoContado').textContent = '$0.00';
   document.getElementById('efectivoNeto').textContent = '$0.00'; 
 }
@@ -541,7 +597,6 @@ function calcularTotalesMetodosPago(){
     }
   });
   
-    // Obtener el valor de Inicio de Caja
     const inicioCaja = parseFloat(document.getElementById('inicioCaja').value) || 0;
 
     // Mostrar Resumen
@@ -559,7 +614,6 @@ function calcularTotalesMetodosPago(){
     document.getElementById('totalGeneralTransferencia').textContent = formatDinero(totalTransferencia);
     document.getElementById('totalGeneralProveedor').textContent = formatDinero(totalProveedor);
 
-    // Recalcular Efectivo Neto (Contado - Inicio Caja)
     calcularTotalEfectivo(true);
 }
 
@@ -571,56 +625,109 @@ function calcularTotalEfectivo(skipUpdateMetodosPago = false) {
   });
   document.getElementById('totalEfectivoContado').textContent = formatDinero(totalEContado);
 
-  // Calcular Efectivo Neto
   const inicioCaja = parseFloat(document.getElementById('inicioCaja').value) || 0;
-  const efectivoNeto = totalEContado - inicioCaja;
-  document.getElementById('efectivoNeto').textContent = formatDinero(efectivoNeto);
+  const entradas = parseFloat(document.getElementById('entradasEfectivo').value) || 0;
+  const salidas = parseFloat(document.getElementById('salidasEfectivo').value) || 0;
+  
+  const efectivoVentas = parseFloat(document.getElementById('resumenEfectivo').textContent.replace('$', '')) || 0;
+  const totalProveedor = parseFloat(document.getElementById('resumenProveedor').textContent.replace('$', '')) || 0;
+  
+  // Lo que debería haber en caja para cuadrar: Inicio + (Ventas Efectivo - V.Proveedor) + Entradas - Salidas
+  const efectivoEsperado = inicioCaja + (efectivoVentas - totalProveedor) + entradas - salidas;
+
+  // Diferencia (Efectivo Neto) para cuadre: Contado - Esperado
+  const diferenciaCuadre = totalEContado - efectivoEsperado;
+  
+  document.getElementById('efectivoNeto').textContent = formatDinero(diferenciaCuadre); 
 }
 
-// Eventos para los inputs en el modal
 document.querySelectorAll('.billete').forEach(b => {
   b.addEventListener('input', () => calcularTotalEfectivo(false)); 
 });
+// La autorización ya maneja el cálculo después de la validación
+document.getElementById('entradasEfectivo').addEventListener('input', () => {
+  const input = document.getElementById('entradasEfectivo');
+  if (parseFloat(input.value) === 0) calcularTotalEfectivo(false);
+});
+document.getElementById('salidasEfectivo').addEventListener('input', () => {
+  const input = document.getElementById('salidasEfectivo');
+  if (parseFloat(input.value) === 0) calcularTotalEfectivo(false);
+});
+
+
+// ---------- Lógica de Pre-Corte (NUEVO) ----------
+
+function realizarPreCorte(){
+  const data = obtenerDatosCorte();
+  if (!data) return; // Si hay error en la data, no procedemos.
+
+  imprimirTicketCorte(
+    data.inicioCaja, 
+    data.efectivoContado, 
+    data.tarjeta, 
+    data.transferencia, 
+    data.proveedor, 
+    data.totalGeneral,
+    data.efectivoVentas, 
+    data.totalGeneralEfectivo, 
+    data.efectivoNeto,
+    data.entradas, 
+    data.salidas,
+    "PRE-CORTE" // Bandera para el título
+  );
+
+  alert('Pre-Corte realizado. Ticket impreso. Los datos NO han sido guardados ni borrados.');
+  // No hay cierre de sesión ni borrado de ventas
+}
+
+// ---------- Lógica de Corte Final ----------
+
+function obtenerDatosCorte() {
+    // 1. Valores de entrada y conteo
+    const inicioCaja = parseFloat(document.getElementById('inicioCaja').value) || 0;
+    const entradas = parseFloat(document.getElementById('entradasEfectivo').value) || 0;
+    const salidas = parseFloat(document.getElementById('salidasEfectivo').value) || 0;
+    
+    const billetes = document.querySelectorAll('.billete');
+    let efectivoContado = 0;
+    billetes.forEach(b => efectivoContado += Number(b.value || 0) * Number(b.dataset.valor || 0));
+    
+    // 2. Totales de Ventas (Tomados del resumen)
+    const efectivoVentas = parseFloat(document.getElementById('resumenEfectivo').textContent.replace('$', '')) || 0;
+    const tarjeta = parseFloat(document.getElementById('resumenTarjeta').textContent.replace('$', '')) || 0;
+    const transferencia = parseFloat(document.getElementById('resumenTransferencia').textContent.replace('$', '')) || 0;
+    const proveedor = parseFloat(document.getElementById('resumenProveedor').textContent.replace('$', '')) || 0;
+    
+    // 3. Totales Generales Calculados
+    const totalGeneralEfectivo = efectivoVentas - proveedor;
+    const totalGeneral = totalGeneralEfectivo + tarjeta + transferencia;
+
+    // Cálculo del Efectivo Neto (Diferencia para el cuadre)
+    const efectivoEsperado = inicioCaja + totalGeneralEfectivo + entradas - salidas;
+    const efectivoNeto = efectivoContado - efectivoEsperado; 
+
+    return {
+        inicioCaja, efectivoContado, efectivoVentas, tarjeta, transferencia, proveedor, totalGeneralEfectivo, totalGeneral, efectivoNeto, entradas, salidas
+    };
+}
 
 function finalizarCorte(){
-  // 1. Valores de entrada y conteo
-  const inicioCaja = parseFloat(document.getElementById('inicioCaja').value) || 0;
-  const billetes = document.querySelectorAll('.billete');
-  let efectivoContado = 0;
-  billetes.forEach(b => efectivoContado += Number(b.value || 0) * Number(b.dataset.valor || 0));
-  
-  // 2. Totales de Ventas (Tomados del resumen)
-  const efectivoVentas = parseFloat(document.getElementById('resumenEfectivo').textContent.replace('$', '')) || 0;
-  const tarjeta = parseFloat(document.getElementById('resumenTarjeta').textContent.replace('$', '')) || 0;
-  const transferencia = parseFloat(document.getElementById('resumenTransferencia').textContent.replace('$', '')) || 0;
-  const proveedor = parseFloat(document.getElementById('resumenProveedor').textContent.replace('$', '')) || 0;
-  
-  // 3. Totales Generales Calculados
-  const totalGeneralEfectivo = efectivoVentas - proveedor;
-  const efectivoNeto = efectivoContado - inicioCaja; 
-  const totalGeneral = totalGeneralEfectivo + tarjeta + transferencia;
+  const data = obtenerDatosCorte();
+  if (!data) return;
 
   // Guardar el corte
   const cortes = parseJSON('cortes');
   cortes.push({
     fecha: new Date().toLocaleString(), 
     cajero: usuarioActivo, 
-    inicioCaja: inicioCaja,
-    efectivoContado: efectivoContado, 
-    efectivoVentas: efectivoVentas, 
-    tarjeta: tarjeta, 
-    transferencia: transferencia, 
-    proveedor: proveedor, 
-    totalGeneralEfectivo: totalGeneralEfectivo, 
-    efectivoNeto: efectivoNeto, 
-    total: totalGeneral
+    ...data // Esparce todos los datos calculados en el objeto corte
   });
   setJSON('cortes', cortes);
 
   const ventas = cargarTodasLasVentas(); 
   const ventasCorte = parseJSON('ventasCorte');
   
-  // Mover las ventas activas al historial
+  // Mover las ventas activas al historial (Lógica actual: mover productos individuales)
   ventas.forEach(v => {
     v.productos.forEach(item => {
       ventasCorte.push({
@@ -657,150 +764,215 @@ function finalizarCorte(){
 
   // Imprimir ticket
   imprimirTicketCorte(
-    inicioCaja, 
-    efectivoContado, 
-    tarjeta, 
-    transferencia, 
-    proveedor, 
-    totalGeneral,
-    efectivoVentas, 
-    totalGeneralEfectivo, 
-    efectivoNeto 
+    data.inicioCaja, 
+    data.efectivoContado, 
+    data.tarjeta, 
+    data.transferencia, 
+    data.proveedor, 
+    data.totalGeneral,
+    data.efectivoVentas, 
+    data.totalGeneralEfectivo, 
+    data.efectivoNeto,
+    data.entradas, 
+    data.salidas,
+    "CORTE FINAL" // Bandera para el título
   );
 
   cerrarModalCorte();
   
-  // Actualizar la vista de la tabla de ventas (vacía)
   renderVentas();
   
   // Cerrar sesión
   cerrarSesion();
 }
 
-function imprimirTicketCorte(inicioCaja, efectivo, tarjeta, transferencia, proveedor, totalGeneral) {
+/**
+ * Genera e imprime un ticket con el resumen del corte de caja.
+ * @param {string} tipo Tipo de corte: "CORTE FINAL" o "PRE-CORTE".
+ */
+function imprimirTicketCorte(inicioCaja, efectivoContado, tarjeta, transferencia, proveedor, totalGeneral, efectivoVentas, totalGeneralEfectivo, efectivoNeto, entradas, salidas, tipo) {
   const ventana = window.open("","Ticket","width=300,height=600");
   const fecha = new Date().toLocaleString();
   
-  let html = `<html><head><title>Ticket de Corte</title>
+  // Cálculo de cuadre para el ticket
+  const efectivoEsperado = inicioCaja + efectivoVentas - proveedor + entradas - salidas;
+  const diferenciaCuadre = efectivoContado - efectivoEsperado;
+
+  let html = `<html><head><title>Ticket de ${tipo}</title>
   <style>
-    body { 
-      font-family: 'Courier New', monospace; 
-      margin: 0; 
-      padding: 10px; 
-      background-color: #fff; 
-      color: #000;
-      font-size: 10px;
-      line-height: 1.2;
-      width: 2.2in;
-      margin: 0 auto;
-    }
-    .ticket-header {
-      text-align: center;
-      padding: 5px 0;
-      border-bottom: 1px solid #000;
-      margin-bottom: 10px;
-    }
-    .ticket-header h2 {
-      margin: 3px 0;
-      font-size: 14px;
-      color: #000;
-    }
-    .ticket-header p {
-      margin: 2px 0;
-      font-size: 9px;
-    }
-    .info-container {
-      display: flex;
-      justify-content: space-between;
-      margin: 8px 0;
-      font-size: 10px;
-    }
-    .info-container div {
-      margin: 2px 0;
-    }
-    .info-container strong {
-      color: #000;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 10px 0;
-      font-size: 10px;
-    }
-    th, td {
-      padding: 4px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-    th {
-      background-color: #f0f0f0;
-      color: #000;
-    }
-    .total-row {
-      font-weight: bold;
-      background-color: #f0f0f0;
-    }
-    .resumen-row {
-      font-weight: bold;
-      margin: 5px 0;
-    }
-    .footer {
-      text-align: center;
-      margin-top: 15px;
-      padding-top: 10px;
-      border-top: 1px dashed #000;
-      font-style: italic;
-      color: #000;
-      font-size: 9px;
-    }
-    .center { text-align: center; }
-    .right { text-align: right; }
-    .bold { font-weight: bold; }
+    body { font-family: 'Courier New', monospace; margin: 0; padding: 10px; background-color: #fff; color: #000; font-size: 10px; line-height: 1.2; width: 2.2in; margin: 0 auto; }
+    .ticket-header { text-align: center; padding: 5px 0; border-bottom: 1px solid #000; margin-bottom: 10px; }
+    .ticket-header h2 { margin: 3px 0; font-size: 14px; color: #000; }
+    .ticket-header p { margin: 2px 0; font-size: 9px; }
+    .info-container { display: flex; justify-content: space-between; margin: 8px 0; font-size: 10px; }
+    .resumen-row { font-weight: bold; margin: 5px 0; }
+    .footer { text-align: center; margin-top: 15px; padding-top: 10px; border-top: 1px dashed #000; font-style: italic; color: #000; font-size: 9px; }
   </style>
   </head><body>
   <div class="ticket-header">
-    <h2>💊 FarmaciaLili - Corte 💊</h2>
-    <p>Farmacia Copias, Manzana 012</p>
-    <p>56589 Zoquiapan, Méx</p>
-    <p>Tel: 55 7883 6807</p>
+    <h2>[ ${tipo} ]</h2>
+    <p>💊 FarmaciaLili - Corte 💊</p>
+    <p>Fecha: ${fecha}</p>
+    <p>Cajero: ${usuarioActivo}</p>
   </div>
   
-  <div class="info-container">
-    <div>
-      <div><strong>Fecha:</strong> ${fecha}</div>
-    </div>
-    <div>
-      <div><strong>Cajero:</strong> ${usuarioActivo}</div>
-    </div>
-  </div>
-  
+  <div style="border-top: 1px solid #000; margin: 8px 0;"></div>
+
   <div class="resumen-row">
-    <p><strong>Inicio Caja:</strong> ${formatDinero(inicioCaja)}</p>
-    <p><strong>Efectivo:</strong> ${formatDinero(efectivo)}</p>
-    <p><strong>Tarjeta:</strong> ${formatDinero(tarjeta)}</p>
-    <p><strong>Transferencia:</strong> ${formatDinero(transferencia)}</p>
-    <p><strong>Proveedores:</strong> ${formatDinero(proveedor)}</p>
-    <p><strong>Total Neto:</strong> ${formatDinero(totalGeneral)}</p>
+    <p>💰 **EFECTIVO CONTADO:** ${formatDinero(efectivoContado)}</p>
+    <p>💲 Inicio Caja: ${formatDinero(inicioCaja)}</p>
+    <p style="color: ${diferenciaCuadre !== 0 ? 'red' : 'green'};">**DIFERENCIA (Contado - Esperado):** ${formatDinero(diferenciaCuadre)}</p>
   </div>
+
+  <div style="border-top: 1px solid #000; margin: 8px 0;"></div>
+
+  <div class="resumen-row">
+    <p>📊 **MOVIMIENTOS DE CAJA**</p>
+    <p>Ventas Efectivo: ${formatDinero(efectivoVentas)}</p>
+    <p>➕ Entradas Efectivo: ${formatDinero(entradas)}</p>
+    <p>➖ Salidas Efectivo: ${formatDinero(salidas)}</p>
+    <p style="border-top: 1px solid #ddd; padding-top: 3px;">**EFECTIVO ESPERADO (Contado):** ${formatDinero(efectivoEsperado)}</p>
+  </div>
+
+  <div style="border-top: 1px solid #000; margin: 8px 0;"></div>
+
+  <div class="resumen-row">
+    <p>⭐ **TOTALES GENERALES**</p>
+    <p>TOTAL VENTA EFECTIVO (V.Efectivo - V.Proveedor): ${formatDinero(totalGeneralEfectivo)}</p>
+    <p>TOTAL VENTA TARJETA: ${formatDinero(tarjeta)}</p>
+    <p>TOTAL VENTA TRANSFERENCIA: ${formatDinero(transferencia)}</p>
+    <p>TOTAL VENTA PROVEEDOR: ${formatDinero(proveedor)}</p>
+    <p style="border-top: 1px solid #000; padding-top: 3px;">**TOTAL VENTA DÍA:** ${formatDinero(totalGeneral)}</p>
+  </div>
+  
   <br>
   <div class="footer">
-    FIRRNA JEFE 
-    <p> ✅ Corte Finalizado ✅ </p>
+    <p> ${tipo === 'CORTE FINAL' ? '✅ Corte Finalizado ✅' : '❕ Esto es un Pre-Corte ❕'} </p>
     <p> 🩺 Gracias por su confianza 🩺 </p>
   </div>
   </body></html>`;
   
   ventana.document.write(html);
+  ventana.document.close();
   ventana.print();
-  ventana.close();
+}
+
+
+// ---------- Lógica de Reimpresión de Tickets (NUEVO) ----------
+
+function showReimpresionPanel() {
+    const reimpresionPanel = document.getElementById('reimpresionPanel');
+    const historialSection = document.getElementById('historialSection');
+    const historialCorteSection = document.getElementById('historialCorteSection');
+
+    historialSection.style.display = 'none';
+    historialCorteSection.style.display = 'none';
+    reimpresionPanel.style.display = 'block';
+    document.getElementById('reimpresionStatus').style.display = 'none';
+}
+
+function reimprimirTicketPorFolio() {
+    const folio = document.getElementById('folioReimpresion').value.trim();
+    const statusDiv = document.getElementById('reimpresionStatus');
+    statusDiv.style.display = 'block';
+
+    if (!folio) {
+        statusDiv.textContent = "❌ Por favor, ingrese un número de Folio Tiket.";
+        statusDiv.style.background = '#f8d7da';
+        statusDiv.style.color = '#721c24';
+        return;
+    }
+
+    const ventasCorte = parseJSON('ventasCorte');
+    
+    // 1. Agrupar items por Folio
+    const itemsVenta = ventasCorte.filter(item => item.folio === folio);
+
+    if (itemsVenta.length === 0) {
+        statusDiv.textContent = `❌ Folio Tiket "${folio}" no encontrado en el historial.`;
+        statusDiv.style.background = '#f8d7da';
+        statusDiv.style.color = '#721c24';
+        return;
+    }
+
+    // 2. Reconstruir los datos de la venta para el ticket (usando el primer elemento como base)
+    const baseVenta = itemsVenta[0];
+    let subtotalTotal = 0;
+    
+    const productosReimpresion = itemsVenta.map(item => {
+        const itemTotal = item.cantidad * item.subtotal; // Nota: subtotal en ventasCorte es el precio unitario
+        subtotalTotal += itemTotal;
+        return {
+            nombre: item.producto,
+            cantidad: item.cantidad,
+            precio: item.subtotal, 
+            total: itemTotal
+        };
+    });
+    
+    // 3. Imprimir el ticket de venta
+    imprimirTicketVenta(baseVenta, productosReimpresion, subtotalTotal);
+
+    statusDiv.textContent = `✅ Ticket de Folio "${folio}" reimpreso con éxito.`;
+    statusDiv.style.background = '#d4edda';
+    statusDiv.style.color = '#155724';
+}
+
+function imprimirTicketVenta(baseVenta, productos, total) {
+    const ventana = window.open("", "TicketVenta", "width=300,height=600");
+    
+    let itemsHtml = productos.map(p => `
+        <div style="display:flex; justify-content:space-between;">
+            <span>${p.cantidad} x ${p.nombre.substring(0, 20)}</span>
+            <span>${formatDinero(p.total)}</span>
+        </div>
+        <div style="text-align:right; font-size:9px;">(${formatDinero(p.precio)} c/u)</div>
+    `).join('');
+
+    let html = `<html><head><title>Ticket Venta</title>
+    <style>
+      body { font-family: 'Courier New', monospace; margin: 0; padding: 10px; background-color: #fff; color: #000; font-size: 10px; line-height: 1.2; width: 2.2in; margin: 0 auto; }
+      .ticket-header { text-align: center; padding: 5px 0; border-bottom: 1px solid #000; margin-bottom: 10px; }
+      .ticket-header h2 { margin: 3px 0; font-size: 14px; color: #000; }
+      .info-container { margin: 8px 0; font-size: 10px; }
+      .resumen-row { font-weight: bold; margin: 5px 0; }
+      .footer { text-align: center; margin-top: 15px; padding-top: 10px; border-top: 1px dashed #000; font-style: italic; color: #000; font-size: 9px; }
+    </style>
+    </head><body>
+    <div class="ticket-header">
+        <h2>REIMPRESIÓN TICKET</h2>
+        <p>Folio: ${baseVenta.folio}</p>
+        <p>Fecha: ${baseVenta.fecha}</p>
+        <p>Cajero: ${baseVenta.cajero}</p>
+    </div>
+    
+    <div class="info-container">
+        <p style="border-bottom: 1px dashed #000;">** DETALLE DE LA VENTA **</p>
+        ${itemsHtml}
+    </div>
+
+    <div style="border-top: 1px solid #000; margin: 8px 0;"></div>
+
+    <div class="resumen-row" style="text-align:right;">
+        <p>SUBTOTAL: ${formatDinero(total)}</p>
+        <p>IVA (Asumido 0%): ${formatDinero(0)}</p>
+        <p style="font-size: 14px; border-top: 1px dashed #000;">TOTAL: ${formatDinero(total)}</p>
+    </div>
+    
+    <div class="footer">
+        <p>Método de Pago: ${baseVenta.metodo}</p>
+        <p>🩺 Gracias por su preferencia 🩺</p>
+    </div>
+    </body></html>`;
+    
+    ventana.document.write(html);
+    ventana.document.close();
+    ventana.print();
 }
 
 // Inicialización
 renderVentas();
-
-// Asegurar que el DOM esté listo
 document.addEventListener('DOMContentLoaded', function() {
-  // Evento para búsqueda en tiempo real
   document.getElementById('searchInput').addEventListener('input', function() {
     if (this.value.trim() === '') {
       renderHistorialCompleto();
@@ -812,6 +984,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
-
-
-
